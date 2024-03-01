@@ -1,0 +1,27 @@
+/* XPM */
+static char *ground2[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 5 1 ",
+"  c #281D27",
+". c #332D30",
+"X c #463F3B",
+"o c #514B43",
+"O c #5F584C",
+/* pixels */
+"   .....      ..",
+"  ..OOOOOOOOOOO.",
+".OO...    OoOooo",
+" Oo.OOOOO .OoooX",
+"X.o.oooXoX.OXoXX",
+"X ...  X  .  XoX",
+" OOOOOO OOOOo.XX",
+".oXXXo..OooXX X ",
+" ........  ...  ",
+"  OOOOOo..OOOOOo",
+" OoOoooo Ooooooo",
+" OOoooX  OoXXXXX",
+" OooXoX  XooX . ",
+"  XooXoX XoX OOO",
+"..XoXXXX.XXX.Ooo",
+"  .XXXX . XX XXX"
+};
