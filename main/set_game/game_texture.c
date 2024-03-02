@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   xpm_texture.c                                      :+:      :+:    :+:   */
+/*   game_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -22,7 +22,7 @@
 /* **************************** [^] INCLUDES [^] **************************** */
 
 void
-	*xpm_texture(t_game game_library, char *file)
+	*game_texture(t_game game_library, char *file)
 {
 	void	*result;
 

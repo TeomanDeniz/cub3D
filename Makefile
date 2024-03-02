@@ -6,9 +6,17 @@
 #    By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 10:48:13 by hdeniz            #+#    #+#              #
-#    Updated: 2024/10/26 16:31:01 by hdeniz           ###   ########.fr        #
+#    Updated: 2024/03/02 16:31:01 by hdeniz           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+ifndef MAKECMDGOALS
+    MAKECMDGOALS := ./main
+endif
+
+ifeq ($(filter $(MAKECMDGOALS),bonus b),bonus)
+    MAKECMDGOALS := ./bonus
+endif
 
 # *************************** [v] MAIN SOURCES [v] *************************** #
 LIBFT_SRC	=	./libft/ft_strdup.c \
@@ -31,7 +39,10 @@ LIBFT_SRC	=	./libft/ft_strdup.c \
 				./libft/get_next_line/get_next_line_utils.c \
 				./libft/get_next_line/get_next_line.c
 
-MAIN_SRC	=	$(LIBFT_SRC)
+MAIN_SRC	=	$(LIBFT_SRC) \
+				./main/exit_functions/game_error.c \
+				./main/exit_functions/close_window.c \
+				./main/set_game/set_game.c
 # *************************** [^] MAIN SOURCES [^] *************************** #
 
 # ************************** [v] BONUS SOURCES [v] *************************** #
@@ -59,7 +70,7 @@ BONUS_SRC	=	$(LIBFT_SRC)
 		CC			=	gcc
 	# [COMPILER]
 	# [EXE]
-		MAIN_EXE	=	"cub3D"
+		MAIN_EXE	=	"cub3D.exe"
 		MAIN		=	./main/cub3D.c
 	# [EXE]
 	# [ARCHIVE AND OVERLINKING CHECKER]
@@ -71,13 +82,18 @@ BONUS_SRC	=	$(LIBFT_SRC)
 						-framework OpenGL -framework AppKit -L./minilibx # -g
 	# [COMPILER FLAGS]
 	# [.c STRINGS TO .o]
-		MAIN_OBJ	=	$(eval MAIN_OBJ := $$(MAIN_SRC:.c=.o))$(MAIN_OBJ)
+		MAIN_OBJ	=	$(MAIN_SRC:.c=.o)
 	# [.c STRINGS TO .o]
+	# [CHECK MAIN IS COMPILED]
+		MAIN_READY	=	$(MAIN:.c=.o)
+	# [CHECK MAIN IS COMPILED]
 	# ANIMATION VARIABLES
 		TERMINAL_LEN	:=	\
 			$(eval TERMINAL_LEN := $(shell tput cols))$(TERMINAL_LEN)
 		NUMBER_OF_FILES	:=	0
 		FILE_COUNTER	:=	0
+		N_OBJ			:=	$(eval N_OBJ := $$(shell find $(MAKECMDGOALS) \
+		"./libft" -name '*.o' -type f | wc -w | sed "s/ //g" | bc))$(N_OBJ)
 	# ANIMATION VARIABLES
 # **************************** [^] VARIABLES [^] ***************************** #
 
@@ -111,15 +127,19 @@ endef
 # ***************************#* [^] FUNCIONS [^] ***************************** #
 
 %.o: %.c
+	$(eval NUMBER_OF_FILES := $(shell echo $(MAIN_SRC) \
+		| wc -w | sed "s/ //g" | bc))
+	$(eval NUMBER_OF_FILES := $(shell echo $(NUMBER_OF_FILES) - $(N_OBJ) | bc))
+	$(if $(filter 0,$(NUMBER_OF_FILES)), $(eval NUMBER_OF_FILES := 1))
 	$(eval FILE_COUNTER := $(shell echo $(FILE_COUNTER) + 1 | bc))
 	$(call progress_bar,$(FILE_COUNTER),$(NUMBER_OF_FILES),$<)
 	@rm -f $(MAIN_EXE) 2>/dev/null
 	@rm -f $(BONUS_EXE) 2>/dev/null
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-all: files_n_calculator $(MLX) $(NAME)
+all: $(NAME)
 
-$(NAME): $(MAIN) $(MAIN_OBJ)
+$(NAME): $(MLX) $(MAIN_OBJ)
 	@ar rc $(NAME) $(MAIN_OBJ) 2>/dev/null && \
 	echo "\n\n $(C_BLINK)$(B2F15) $(NAME) is ready! $(C_RESET)\n"
 	@$(CC) $(MAIN_FLAGS) $(MAIN) $(NAME) -o "./$(MAIN_EXE)" && \
@@ -137,7 +157,7 @@ $(MLX):
 	@echo " $(B2F15)MLX Done !$(C_RESET)"
 
 b: bonus
-bonus: bonus_files_n_calculator $(BONUS_NAME)
+bonus: $(BONUS_NAME)
 
 c: clean
 clear: clean
@@ -148,7 +168,7 @@ clean:
 
 fc: fclean
 fclean: clean
-	@rm $(NAME) $(BONUS_NAME) 2>/dev/null && \
+	@rm $(NAME) $(BONUS_NAME) $(MAIN_READY) 2>/dev/null && \
 	echo "\n $(B1F11) $(NAME) $(F15)deleted! $(C_RESET)\n" || \
 	echo "\n $(B12F15) $(NAME) is not exist already! $(C_RESET)\n"
 	@rm $(MAIN_EXE) $(BONUS_EXE) 2>/dev/null && \
@@ -156,27 +176,5 @@ fclean: clean
 	echo "\n $(B12F15) $(MAIN_EXE) is not exist already! $(C_RESET)\n"
 
 re: fc all
-
-files_n_calculator:
-	@echo ""
-	$(eval FILE_COUNTER := 0)
-	$(eval NUMBER_OF_FILES := $(shell echo $(MAIN_SRC) \
-		| wc -w | sed "s/ //g" | bc))
-	$(eval N_OBJ := \
-		$(shell find "./main" "./libft" \
-		-name '*.o' -type f | wc -w | sed "s/ //g" | bc))
-	$(eval NUMBER_OF_FILES := $(shell echo $(NUMBER_OF_FILES) - $(N_OBJ) | bc))
-	$(if $(filter 0,$(NUMBER_OF_FILES)), $(eval NUMBER_OF_FILES := 1))
-
-bonus_files_n_calculator:
-	@echo ""
-	$(eval FILE_COUNTER := 0)
-	$(eval NUMBER_OF_FILES := $(shell echo $(BONUS_SRC) \
-		| wc -w | sed "s/ //g" | bc))
-	$(eval N_OBJ := \
-		$(shell find "./bonus" "./libft" \
-		-name '*.o' -type f | wc -w | sed "s/ //g" | bc))
-	$(eval NUMBER_OF_FILES := $(shell echo $(NUMBER_OF_FILES) - $(N_OBJ) | bc))
-	$(if $(filter 0,$(NUMBER_OF_FILES)), $(eval NUMBER_OF_FILES := 1))
 
 .PHONY: all fclean fc clean clear c bonus b

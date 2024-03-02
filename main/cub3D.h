@@ -23,8 +23,8 @@
 
 /* ********************* [V] CONSTANTS - GAME SETUP [V] ********************* */
 # define SLICE 0.2
-# define WINDOW_WIDTH 500
-# define WINDOW_HEIGHT 500
+# define WINDOW_WIDTH 1000
+# define WINDOW_HEIGHT 1000
 /* ********************* [^] CONSTANTS - GAME SETUP [^] ********************* */
 
 /* *********************** [V] CONSTANTS - INPUTS [V] *********************** */
@@ -123,12 +123,7 @@ struct s_game {
 	t_game_ptr				*mlx;
 	void					*window;
 	char					*window_title;
-	int						window_width;
-	int						window_height;
 	char					**map;
-	int						fps;
-	int						game_speed;
-	double					steps;
 	struct s_texture_packs	texture_pack;
 	struct s_object			object;
 };
