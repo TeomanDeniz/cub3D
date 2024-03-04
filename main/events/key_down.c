@@ -32,12 +32,12 @@ int
 	if (key == KEY_ESC)
 		close_window(game);
 	if ((key == LETTER_KEY_DOWN || key == ARROW_KEY_DOWN))
-		game->object.player.position[0] = 1;
+		game->object.player.movement[0] = 1;
 	if ((key == LETTER_KEY_UP || key == ARROW_KEY_UP))
-		game->object.player.position[1] = 1;
+		game->object.player.movement[1] = 1;
 	if ((key == LETTER_KEY_LEFT || key == ARROW_KEY_LEFT))
-		game->object.player.position[2] = 1;
+		game->object.player.movement[2] = 1;
 	if ((key == LETTER_KEY_RIGHT || key == ARROW_KEY_RIGHT))
-		game->object.player.position[3] = 1;
+		game->object.player.movement[3] = 1;
 	return (0);
 }

@@ -10,13 +10,22 @@
 #                                                                              #
 # **************************************************************************** #
 
+# ************************* [v] SET MAKECMDGOALS [v] ************************* #
+#                                                                              #
+# IT IS A FIX FOR OVERLINKING, INSTEAD IF CALLING A PHONY TO CALCULATE HOW     #
+# MANY .o FILES HAVE, WE DIRECTLY CALCULATING IT IN GLOBAL VARIABLES.          #
+#                                                                              #
+################################################################################
 ifndef MAKECMDGOALS
-    MAKECMDGOALS := ./main
+	MAKECMDGOALS := ./main
 endif
 
 ifeq ($(filter $(MAKECMDGOALS),bonus b),bonus)
-    MAKECMDGOALS := ./bonus
+	MAKECMDGOALS := ./bonus
+else
+	MAKECMDGOALS := ./main
 endif
+# ************************* [^] SET MAKECMDGOALS [^] ************************* #
 
 # *************************** [v] MAIN SOURCES [v] *************************** #
 LIBFT_SRC	=	./libft/ft_strdup.c \
@@ -51,14 +60,14 @@ BONUS_SRC	=	$(LIBFT_SRC)
 
 # ****************************** [v] BONUS [v] ******************************* #
 	# [EXE]
-		BONUS_EXE	=	#"cub3D_bonus"
-		BONUS		=	#./bonus/cub3D.c
+#		BONUS_EXE	=	#"cub3D_bonus"
+#		BONUS		=	#./bonus/cub3D.c
 	# [EXE]
 	# [ARCHIVE AND OVERLINKING CHECKER]
-		BONUS_NAME		=	#./bonus/cub3D_bonus.a
+#		BONUS_NAME		=	#./bonus/cub3D_bonus.a
 	# [ARCHIVE AND OVERLINKING CHECKER]
 	# [.c STRINGS TO .o]
-		BONUS_OBJ	=	$(eval BONUS_OBJ := $$(BONUS_SRC:.c=.o))$(BONUS_OBJ)
+#		BONUS_OBJ	=	$(eval BONUS_OBJ := $$(BONUS_SRC:.c=.o))$(BONUS_OBJ)
 	# [.c STRINGS TO .o]
 # ****************************** [^] BONUS [^] ******************************* #
 
@@ -109,6 +118,7 @@ BONUS_SRC	=	$(LIBFT_SRC)
 	F13		=	$(shell tput setaf 13)
 	F14		=	$(shell tput setaf 14)
 	F10		=	$(shell tput setaf 10)
+	F0		=	$(shell tput setaf 0)
 # ****************************** [^] COLORS [^] ****************************** #
 
 # ***************************#* [v] FUNCIONS [v] ***************************** #
@@ -134,30 +144,32 @@ endef
 	$(eval FILE_COUNTER := $(shell echo $(FILE_COUNTER) + 1 | bc))
 	$(call progress_bar,$(FILE_COUNTER),$(NUMBER_OF_FILES),$<)
 	@rm -f $(MAIN_EXE) 2>/dev/null
-	@rm -f $(BONUS_EXE) 2>/dev/null
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@#@rm -f $(BONUS_EXE) 2>/dev/null
+	@$(CC) $(CFLAGS) -c $< -o $@ 2>/dev/null || (\
+		echo "\n\n $(B1F15) Failed to compile [$(F11)$<$(F15)] $(C_RESET)\n" &&\
+		$(CC) $(CFLAGS) -c $< -o $@)
 
 all: $(NAME)
 
 $(NAME): $(MLX) $(MAIN_OBJ)
 	@ar rc $(NAME) $(MAIN_OBJ) 2>/dev/null && \
-	echo "\n\n $(C_BLINK)$(B2F15) $(NAME) is ready! $(C_RESET)\n"
+		echo "\n\n $(C_BLINK)$(B2F15) $(NAME) is ready! $(C_RESET)\n"
 	@$(CC) $(MAIN_FLAGS) $(MAIN) $(NAME) -o "./$(MAIN_EXE)" && \
-	echo "\n\n $(C_BLINK)$(B2F15) $(MAIN_EXE) is ready! $(C_RESET)\n"
+		echo "\n\n $(C_BLINK)$(B2F15) $(MAIN_EXE) is ready! $(C_RESET)\n"
 
-$(BONUS_NAME): $(BONUS) $(BONUS_OBJ)
-	@ar rc $(BONUS_NAME) $(BONUS_OBJ) 2>/dev/null && \
-	echo "\n\n $(C_BLINK)$(B2F15) $(BONUS_NAME) is ready! $(C_RESET)\n"
-	@$(CC) $(MAIN_FLAGS) $(BONUS) $(BONUS_NAME) -o "./$(BONUS_EXE)" && \
-	echo "\n\n $(C_BLINK)$(B2F15) $(BONUS_EXE) is ready! $(C_RESET)\n"
+#$(BONUS_NAME): $(BONUS) $(BONUS_OBJ)
+#	@ar rc $(BONUS_NAME) $(BONUS_OBJ) 2>/dev/null && \
+#		echo "\n\n $(C_BLINK)$(B2F15) $(BONUS_NAME) is ready! $(C_RESET)\n"
+#	@$(CC) $(MAIN_FLAGS) $(BONUS) $(BONUS_NAME) -o "./$(BONUS_EXE)" && \
+#		echo "\n\n $(C_BLINK)$(B2F15) $(BONUS_EXE) is ready! $(C_RESET)\n"
 
 $(MLX):
-	@echo " $(F10)$(shell tput setaf 0)COMPILING MLX!!!! $(C_RESET)"
-	@make -C "./minilibx"
+	@echo " $(F0)COMPILING MLX!!!! $(C_RESET)"
+	@make -C "./minilibx" 1>/dev/null
 	@echo " $(B2F15)MLX Done !$(C_RESET)"
 
-b: bonus
-bonus: $(BONUS_NAME)
+#b: bonus
+#bonus: $(BONUS_NAME)
 
 c: clean
 clear: clean
@@ -165,16 +177,17 @@ clean:
 	@rm $(MAIN_OBJ) $(BONUS_OBJ) 2>/dev/null && \
 		echo "\n $(B1F15) Objects are cleared! $(C_RESET)\n" || \
 		echo "\n $(B12F15) Nothing to clear! $(C_RESET)\n"
+	$(eval N_OBJ := "0")
 
 fc: fclean
 fclean: clean
 	@rm $(NAME) $(BONUS_NAME) $(MAIN_READY) 2>/dev/null && \
-	echo "\n $(B1F11) $(NAME) $(F15)deleted! $(C_RESET)\n" || \
-	echo "\n $(B12F15) $(NAME) is not exist already! $(C_RESET)\n"
+		echo "\n $(B1F11) $(NAME) $(F15)deleted! $(C_RESET)\n" || \
+		echo "\n $(B12F15) $(NAME) is not exist already! $(C_RESET)\n"
 	@rm $(MAIN_EXE) $(BONUS_EXE) 2>/dev/null && \
-	echo "\n $(B1F11) $(MAIN_EXE) $(F15)deleted! $(C_RESET)\n" || \
-	echo "\n $(B12F15) $(MAIN_EXE) is not exist already! $(C_RESET)\n"
+		echo "\n $(B1F11) $(MAIN_EXE) $(F15)deleted! $(C_RESET)\n" || \
+		echo "\n $(B12F15) $(MAIN_EXE) is not exist already! $(C_RESET)\n"
 
 re: fc all
 
-.PHONY: all fclean fc clean clear c bonus b
+.PHONY: all fclean fc clean clear c #bonus b

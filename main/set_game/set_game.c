@@ -36,24 +36,46 @@
 /* **************************** [^] INCLUDES [^] **************************** */
 
 /* *************************** [V] PROTOTYPES [V] *************************** */
-static inline char	*get_title(char **argv);
+static char	*get_title(char **argv);
+static void	set_player_struct(t_game game);
 /* *************************** [^] PROTOTYPES [^] *************************** */
 
 void
-	set_game(t_game game_library, char **argv)
+	set_game(t_game game, char **argv)
 {
-	game_library->mlx = mlx_init();
-	if (!game_library->mlx)
-		game_error(game_library, " ERROR - MLX failed to build\n", 1);
-	game_library->window_title = get_title(argv);
-	game_library->window = mlx_new_window(\
-		game_library->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, \
-		game_library->window_title);
-	if (!game_library->window)
-		game_error(game_library, " ERROR - Window failed to build\n", 2);
+	game->mlx = mlx_init();
+	if (!game->mlx)
+		game_error(game, " ERROR - MLX failed to build\n", 1);
+	game->window_title = get_title(argv);
+	game->window = mlx_new_window(\
+		game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, \
+		game->window_title);
+	if (!game->window)
+		game_error(game, " ERROR - Window failed to build\n", 2);
+	set_player_struct(game);
 }
 
-static inline char
+static void
+	set_player_struct(t_game game)
+{
+	game->object.player.x = 0; // HERE
+	game->object.player.y = 0; // HERE
+	game->object.player.target_x = 0.0; // HERE
+	game->object.player.target_y = 0.0; // HERE
+	game->object.player.angle = 0.0F; // HERE
+	game->object.player.angle_target_x = 0.0F; // HERE
+	game->object.player.angle_target_y = 0.0F; // HERE
+	game->object.player.key_movement[0] = 0;
+	game->object.player.key_movement[1] = 0;
+	game->object.player.key_movement[2] = 0;
+	game->object.player.key_movement[3] = 0;
+	game->object.player.key_rotation[0] = 0;
+	game->object.player.key_rotation[1] = 0;
+	game->object.player.key_rotation[2] = 0;
+	game->object.player.key_rotation[3] = 0;
+}
+
+static char
 	*get_title(char **argv)
 {
 	register int	eax;

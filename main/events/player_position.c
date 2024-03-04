@@ -25,10 +25,10 @@
 /* **************************** [^] INCLUDES [^] **************************** */
 
 /* *************************** [V] PROTOTYPES [V] *************************** */
-static inline char	barrier_hit_yu(t_game game);
-static inline char	barrier_hit_xl(t_game game);
-static inline char	barrier_hit_yd(t_game game);
-static inline char	barrier_hit_xr(t_game game);
+static char	barrier_hit_yu(t_game game);
+static char	barrier_hit_xl(t_game game);
+static char	barrier_hit_yd(t_game game);
+static char	barrier_hit_xr(t_game game);
 /* *************************** [^] PROTOTYPES [^] *************************** */
 
 void
@@ -48,7 +48,7 @@ void
 		game->object.player.target_y, SLICE);
 }
 
-static inline char
+static char
 	barrier_hit_yu(t_game game)
 {
 	register int	ecx;
@@ -71,7 +71,7 @@ static inline char
 	return (0);
 }
 
-static inline char
+static char
 	barrier_hit_xl(t_game game)
 {
 	register int	ecx;
@@ -94,7 +94,7 @@ static inline char
 	return (0);
 }
 
-static inline char
+static char
 	barrier_hit_yd(t_game game)
 {
 	register int	ecx;
@@ -118,7 +118,7 @@ static inline char
 	return (0);
 }
 
-static inline char
+static char
 	barrier_hit_xr(t_game game)
 {
 	register int	ecx;

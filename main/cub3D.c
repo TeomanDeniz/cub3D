@@ -19,18 +19,21 @@
 #   char *mlx_get_data_addr(void *, int *, int *, int *);
 #    int mlx_hook(void *, int, int, int (*f)(), void *);
 #    int mlx_destroy_window(void *, void *);
-*/
+#*/
 #include "cub3D.h" /*
 # struct s_game;
 #typedef t_game;
-*/
+#    int key_down(int, t_game);
+#    int key_up(int, t_game);
+#    int close_window(t_game);
+#*/
 #include <stdlib.h> /*
-# define EXIT_FAILURE 1
-*/
+# define EXIT_SUCCESS
+#*/
 /* **************************** [^] INCLUDES [^] **************************** */
 
 /* *************************** [V] PROTOTYPES [V] *************************** */
-//static inline int	loop(t_game game);
+extern inline int	loop(t_game game);
 /* *************************** [^] PROTOTYPES [^] *************************** */
 
 int
@@ -41,10 +44,17 @@ int
 
 	game = (struct s_game){0};
 	set_game(&game, argv);
-	//mlx_loop_hook(game.mlx, loop, &game);
-	//mlx_hook(game.window, 17, (1L << 0), close_window, &game);
-	//mlx_hook(game.window, 2, 1L << 0, key_down, &game);
-	//mlx_hook(game.window, 3, 1L << 1, key_up, &game);
+	mlx_loop_hook(game.mlx, loop, &game);
+	mlx_hook(game.window, 17, (1L << 0), close_window, &game);
+	mlx_hook(game.window, 2, 1L << 0, key_down, &game);
+	mlx_hook(game.window, 3, 1L << 1, key_up, &game);
 	mlx_loop(game.mlx);
 	return (EXIT_SUCCESS);
+}
+
+extern inline int
+	loop(t_game game)
+{
+	calculate_photons(game);
+	return (0);
 }

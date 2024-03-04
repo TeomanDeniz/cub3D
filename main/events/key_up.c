@@ -28,12 +28,12 @@ int
 	key_up(int key, t_game game)
 {
 	if (key == LETTER_KEY_DOWN || key == ARROW_KEY_DOWN)
-		game->object.player.position[0] = 0;
+		game->object.player.movement[0] = 0;
 	if (key == LETTER_KEY_UP || key == ARROW_KEY_UP)
-		game->object.player.position[1] = 0;
+		game->object.player.movement[1] = 0;
 	if (key == LETTER_KEY_LEFT || key == ARROW_KEY_LEFT)
-		game->object.player.position[2] = 0;
+		game->object.player.movement[2] = 0;
 	if (key == LETTER_KEY_RIGHT || key == ARROW_KEY_RIGHT)
-		game->object.player.position[3] = 0;
+		game->object.player.movement[3] = 0;
 	return (0);
 }

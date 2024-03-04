@@ -86,8 +86,11 @@ struct s_player
 	double	y;
 	double	target_x;
 	double	target_y;
-	char	position[4];
-	char	rotation;
+	float	angle;
+	float	angle_target_x;
+	float	angle_target_y;
+	char	key_movement[4];
+	char	key_rotation[4];
 };
 
 /*struct s_wall
@@ -133,32 +136,30 @@ struct s_game {
 typedef struct s_game	*t_game;
 /* ***************************** [^] TYPEDEF [^] **************************** */
 
-/* ************************ [V] ./EXIT_FUNCTIONS [V] ************************ */
+/* ************************ [V] ./exit_functions [V] ************************ */
 extern void	game_error(t_game game, char *error_message, char mode);
 extern int	close_window(t_game game);
-/* ************************ [^] ./EXIT_FUNCTIONS [^] ************************ */
+/* ************************ [^] ./exit_functions [^] ************************ */
 
-/* **************************** [V] ./EVENTS [V] **************************** */
+/* **************************** [V] ./events [V] **************************** */
 extern int	key_down(int key, t_game game);
 extern int	key_up(int key, t_game game);
 extern void	player_position(t_game game);
-extern void	debug(t_game game);
 extern void	game(t_game game);
-/* **************************** [^] ./EVENTS [^] **************************** */
+/* **************************** [^] ./events [^] **************************** */
 
-/* *************************** [V] ./SEt_game [V] **************************** */
+/* *************************** [V] ./set_game [V] **************************** */
 extern void	set_game(t_game game_library, char **argv);
-extern void	*xpm_texture(t_game game_library, char *file);
+extern void	*game_texture(t_game game_library, char *file);
 extern void	free_objects(t_game game);
 extern void	set_walls_as_objects(t_game game_library);
-extern void	set_coins_as_objects(t_game game_library);
 extern void	free_textures(t_game game, int id);
 extern void	set_map_textures(t_game game);
-/* ********************* [V] ./SEt_game/LOAD_TEXTURES [V] ******************** */
-extern void	load_textures(t_game game_library);
-extern void	load_wall(t_game game_lib, int *z);
-/* ********************* [^] ./SEt_game/LOAD_TEXTURES [^] ******************** */
-/* *************************** [^] ./SEt_game [^] **************************** */
+/* ********************* [V] ./set_game/load_textures [V] ******************** */
+//extern void	load_textures(t_game game_library);
+//extern void	load_wall(t_game game_lib, int *z);
+/* ********************* [^] ./set_game/load_textures [^] ******************** */
+/* *************************** [^] ./set_game [^] **************************** */
 
 /****************************************************************************\
 |*                        MINILIBX EVENT HOOK LIST                          *|
