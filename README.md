@@ -47,4 +47,4 @@ $$x\left(i_{index}\right)=p_{hoton}\cdot\sin\left(m_{od}\left(a_{ngle1},\ 2\pi\r
 
 $$y\left(i_{index}\right)=p_{hoton}\cdot\cos\left(m_{od}\left(a_{ngle1},\ 2\pi\right)+a_{ngle3}\right)+y_{character}$$
 
-Url: https://www.desmos.com/calculator/moxzogi2mj
+Url: https://www.desmos.com/calculator/o9hazz0dip
