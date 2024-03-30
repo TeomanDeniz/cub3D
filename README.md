@@ -91,7 +91,7 @@ Let's write a formula from zero to solve that too:
 
 * $`y_{parallel}`$ The distance between ray shooter
 
-* $`p_{hoton}=0`$ Distance between the photon and character. It starts from 0, we'll going to increase it directly to find the distance between the wall and character
+* $`p_{hoton}=0`$ Distance between the photon and ray shooter ($`y_{parallel}`$). It starts from 0, we'll going to increase it directly to find the distance between the wall and character
 
 This is almost work same but with $`y_{parallel}`$ in the code, you can now also add a ray shooting point parallelly in to formula instead of sending the rays from a single point.
 
@@ -100,3 +100,12 @@ $$x_{ray}=x_{coordinate}+p_{hoton}\cdot\cos\left(\theta_{rotation}\right)-\left(
 $$y_{ray}=y_{coordinate}+p_{hoton}\cdot\sin\left(\theta_{rotation}\right)+\left(y_{parallel}\cdot\cos\left(\theta_{rotation}\right)\right)$$
 
 <img src="https://raw.githubusercontent.com/TeomanDeniz/TeomanDeniz/main/images/repo_projects/cub3D/g1.png">
+
+Good! Now all we need is settle the $`y_{parallel}`$ automatically by $`i_{ndex}`$ and $`p_{erspective}`$! And about the $`p_{erspective}`$, we don't need to chane it to $`\theta_{perspective}`$ anymore.
+
+Now our new variables are:
+
+* $`p_{erspective}`$ Let's set it 50 or 60 degree
+
+* $`i_{ndex}`$ The `[index]` of ray. Limit: $`\left\{ 0 < i_{ndex} < p_{erspective}\cdot 4 \right\}`$
+
