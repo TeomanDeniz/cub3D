@@ -41,9 +41,9 @@ $$\theta_{rotation}=m_{od}\left(r_{otation}\cdot\frac{\pi}{180}+0.0001,\ 2\pi\ri
 
 We converted degree to theta. A value that $`\cos\left(\theta\right)`$ and $`\sin\left(\theta\right)`$ can understand.
 
-$$x_{ray}=p_{hoton}\cdot\sin\left(\theta_{rotation}\right)+x_{coordinate}$$
+$$x_{ray}=p_{hoton}\cdot\cos\left(\theta_{rotation}\right)+x_{coordinate}$$
 
-$$y_{ray}=p_{hoton}\cdot\cos\left(\theta_{rotation}\right)+y_{coordinate}$$
+$$y_{ray}=p_{hoton}\cdot\sin\left(\theta_{rotation}\right)+y_{coordinate}$$
 
 <img src="https://raw.githubusercontent.com/TeomanDeniz/TeomanDeniz/main/images/repo_projects/cub3D/4.gif">
 
