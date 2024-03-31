@@ -45,7 +45,7 @@ $$x_{ray}=p_{hoton}\cdot\sin\left(\theta_{rotation}\right)+x_{coordinate}$$
 
 $$y_{ray}=p_{hoton}\cdot\cos\left(\theta_{rotation}\right)+y_{coordinate}$$
 
-<img src="https://raw.githubusercontent.com/TeomanDeniz/TeomanDeniz/main/images/repo_projects/cub3D/1.gif">
+<img src="https://raw.githubusercontent.com/TeomanDeniz/TeomanDeniz/main/images/repo_projects/cub3D/4.gif">
 
 Good we can now able to send a ray.
 
@@ -73,7 +73,7 @@ $$x_{ray}=p_{hoton}\cdot\cos\left(\theta_{rotation}+\theta_{view}\right)+x_{coor
 
 $$y_{ray}=p_{hoton}\cdot\sin\left(\theta_{rotation}+\theta_{view}\right)+y_{coordinate}$$
 
-<img src="https://raw.githubusercontent.com/TeomanDeniz/TeomanDeniz/main/images/repo_projects/cub3D/2.gif">
+<img src="https://raw.githubusercontent.com/TeomanDeniz/TeomanDeniz/main/images/repo_projects/cub3D/5.gif">
 
 * [**You can also simulate it in Desmos calculator**](https://www.desmos.com/calculator/ehlq27ohbt)
 
@@ -125,6 +125,6 @@ $$x_{ray}=x_{coordinate}+p_{hoton}\cdot\cos\left(\theta_{rotation}\right)-\left(
 
 $$y_{ray}=y_{coordinate}+p_{hoton}\cdot\sin\left(\theta_{rotation}\right)+\left(y_{parallel}\cdot\cos\left(\theta_{rotation}\right)\right)$$
 
-<img src="https://raw.githubusercontent.com/TeomanDeniz/TeomanDeniz/main/images/repo_projects/cub3D/3.png">
+<img src="https://raw.githubusercontent.com/TeomanDeniz/TeomanDeniz/main/images/repo_projects/cub3D/3.gif">
 
 * [**You can also simulate it in Desmos calculator**](https://www.desmos.com/calculator/wbvov4tq84)
