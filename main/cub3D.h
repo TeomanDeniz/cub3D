@@ -3,29 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/05 14:44:43 by hdeniz            #+#    #+#             */
-/*   Updated: 2023/09/11 ??:??:?? by hdeniz           ###   ########.fr       */
+/*   Created: 2024/04/20 14:40:55 by hdeniz            #+#    #+#             */
+/*   Updated: 2024/04/20 14:40:56 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H 202403
 
-/* *********************** [V] CONSTANTS - PLAYER [V] *********************** */
-# define PLAYER_SPEED 3.0
-/* *********************** [^] CONSTANTS - PLAYER [^] *********************** */
-
-/* ******************** [V] CONSTANTS - DEVICE SETUP [V] ******************** */
-# define SPEED 250
-/* ******************** [^] CONSTANTS - DEVICE SETUP [^] ******************** */
-
 /* ********************* [V] CONSTANTS - GAME SETUP [V] ********************* */
 # define SLICE 0.2
 # define WINDOW_WIDTH 1000
 # define WINDOW_HEIGHT 1000
+# define RAY_MULTIPY 1
+# define PERSPECTIVE 66.0
 /* ********************* [^] CONSTANTS - GAME SETUP [^] ********************* */
+
+/* ******************* [v] CONSTANTS - ERROR MESSAGES [v] ******************* */
+# define ERROR4 "Allocaction error."
+/* ******************* [^] CONSTANTS - ERROR MESSAGES [^] ******************* */
 
 /* *********************** [V] CONSTANTS - INPUTS [V] *********************** */
 # define LETTER_KEY_LEFT 0 // A
@@ -39,96 +37,52 @@
 # define KEY_ESC 53 // ESC
 /* *********************** [^] CONSTANTS - INPUTS [^] *********************** */
 
-/* *************************** [V] MLX STRUCTS [V] ************************** */
-typedef struct s_mlx_img_list
-{
-	int						width;
-	int						height;
-	char					*buffer;
-	float					vertexes[8];
-	struct s_mlx_img_list	*next;
-}	t_game_img_list;
-
-typedef struct s_mlx_img_ctx
-{
-	unsigned int			texture;
-	unsigned int			vbuffer;
-	t_game_img_list			*img;
-	struct s_mlx_img_ctx	*next;
-}	t_game_img_ctx;
-
-typedef struct s_mlx_win_list
-{
-	void					*winid;
-	t_game_img_ctx			*img_list;
-	int						nb_flush;
-	int						pixmgt;
-	struct s_mlx_win_list	*next;
-}	t_game_win_list;
-
-typedef struct s_mlx_ptr
-{
-	void			*appid;
-	t_game_win_list	*win_list;
-	t_game_img_list	*img_list;
-	void			(*loop_hook)(void *);
-	void			*loop_hook_data;
-	void			*loop_timer;
-	t_game_img_list	*font;
-	int				main_loop_active;
-}	t_game_ptr;
-/* *************************** [^] MLX STRUCTS [^] ************************** */
+# include <stdlib.h> /*
+# typedef size_t;
+#         */
 
 /* ***************************** [V] STRUCTS [V] **************************** */
-struct s_player
+typedef struct s_image
+{
+	void	*image;
+	char	*buffer;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_image;
+
+struct s_ray
 {
 	double	x;
 	double	y;
-	double	target_x;
-	double	target_y;
-	float	angle;
-	float	angle_target_x;
-	float	angle_target_y;
-	char	key_movement[4];
-	char	key_rotation[4];
+	double	distance;
+	double	view;
+	double	theta;
+
 };
 
-/*struct s_wall
+struct s_game
 {
-	int	x;
-	int	y;
-};*/
-
-struct s_barrier
-{
-	int		start_x;
-	int		start_y;
-	int		end_x;
-	int		end_y;
-};
-
-struct s_object
-{
-	struct s_player		player;
-	//struct s_wall		*wall;
-	struct s_barrier	*barrier;
-	int					number_of_barriers;
-	int					number_of_walls;
-};
-
-struct s_texture_packs
-{
-	void	*wall;
-	void	*ground;
-};
-
-struct s_game {
-	t_game_ptr				*mlx;
-	void					*window;
-	char					*window_title;
-	char					**map;
-	struct s_texture_packs	texture_pack;
-	struct s_object			object;
+	/***[vvv] MLX [vvv]***/
+	void			*mlx;
+	void			*window;
+	/***[^^^] MLX [^^^]***/
+	/***[vvv] CHARACTER VALUES [vvv]***/
+	size_t			perspective;
+	double			x;
+	double			y;
+	/***[^^^] CHARACTER VALUES [^^^]***/
+	/***[vvv] MATH FORMULAS [vvv]***/
+	double			theta_rotation;
+	double			theta_perspective;
+	/***[^^^] MATH FORMULAS [^^^]***/
+	char			*window_title;
+	char			**map;
+	unsigned int	movement[8];
+	double			wall_pixel_width;
+	size_t			ray_size;
+	struct s_ray	*ray;
+	t_image			canvas;
 };
 /* ***************************** [^] STRUCTS [^] **************************** */
 
@@ -137,29 +91,18 @@ typedef struct s_game	*t_game;
 /* ***************************** [^] TYPEDEF [^] **************************** */
 
 /* ************************ [V] ./exit_functions [V] ************************ */
-extern void	game_error(t_game game, char *error_message, char mode);
+extern void	game_error(t_game game, char *message);
 extern int	close_window(t_game game);
 /* ************************ [^] ./exit_functions [^] ************************ */
 
 /* **************************** [V] ./events [V] **************************** */
 extern int	key_down(int key, t_game game);
 extern int	key_up(int key, t_game game);
-extern void	player_position(t_game game);
-extern void	game(t_game game);
 /* **************************** [^] ./events [^] **************************** */
 
-/* *************************** [V] ./set_game [V] **************************** */
-extern void	set_game(t_game game_library, char **argv);
-extern void	*game_texture(t_game game_library, char *file);
-extern void	free_objects(t_game game);
-extern void	set_walls_as_objects(t_game game_library);
-extern void	free_textures(t_game game, int id);
-extern void	set_map_textures(t_game game);
-/* ********************* [V] ./set_game/load_textures [V] ******************** */
-//extern void	load_textures(t_game game_library);
-//extern void	load_wall(t_game game_lib, int *z);
-/* ********************* [^] ./set_game/load_textures [^] ******************** */
-/* *************************** [^] ./set_game [^] **************************** */
+/* *************************** [v] ./set_game [v] *************************** */
+extern void	set_game(t_game game, char **argv);
+/* *************************** [^] ./set_game [^] *************************** */
 
 /****************************************************************************\
 |*                        MINILIBX EVENT HOOK LIST                          *|

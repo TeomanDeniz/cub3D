@@ -75,8 +75,8 @@ $$y_{ray}=p_{hoton}\cdot\sin\left(\theta_{rotation}+\theta_{view}\right)+y_{coor
 
 <img src="https://raw.githubusercontent.com/TeomanDeniz/TeomanDeniz/main/images/repo_projects/cub3D/5.gif">
 
-* [**You can also simulate it in Desmos calculator**](https://www.desmos.com/calculator/ehlq27ohbt)
-
+* [**You can also simulate it in Desmos calculator**](https://www.desmos.com/calculator/j3di7dpuy2)
+<!--
 # Fish eye problem
 
 Now we need to fix the fish eye effect. It is happening because of the difference distance between rays cause we're sending our rays from a single spot.
@@ -128,3 +128,7 @@ $$y_{ray}=y_{coordinate}+p_{hoton}\cdot\sin\left(\theta_{rotation}\right)+\left(
 <img src="https://raw.githubusercontent.com/TeomanDeniz/TeomanDeniz/main/images/repo_projects/cub3D/3.gif">
 
 * [**You can also simulate it in Desmos calculator**](https://www.desmos.com/calculator/wbvov4tq84)
+
+-->
+
+https://www.desmos.com/calculator/l1c5bjr0fg

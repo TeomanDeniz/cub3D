@@ -10,9 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+/* INCLUDES */
+#include "../ft_math.h"
+/* INCLUDES */
+
 double
 	ft_fabs(register double x)
 {
+	if (ft_isnan(x))
+		return (-(0.0 / 0.0));
 	if (x < 0.0)
 		return (x * -1.0);
 	return (x);

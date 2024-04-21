@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/05 14:40:55 by hdeniz            #+#    #+#             */
-/*   Updated: 2023/08/05 14:40:56 by hdeniz           ###   ########.fr       */
+/*   Created: 2024/04/20 14:40:55 by hdeniz            #+#    #+#             */
+/*   Updated: 2024/04/20 14:40:56 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@
 #   char *mlx_get_data_addr(void *, int *, int *, int *);
 #    int mlx_hook(void *, int, int, int (*f)(), void *);
 #    int mlx_destroy_window(void *, void *);
-#*/
+#        */
 #include "cub3D.h" /*
 # struct s_game;
 #typedef t_game;
 #    int key_down(int, t_game);
 #    int key_up(int, t_game);
 #    int close_window(t_game);
-#*/
+#        */
 #include <stdlib.h> /*
 # define EXIT_SUCCESS
-#*/
+#        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 /* *************************** [V] PROTOTYPES [V] *************************** */
@@ -39,9 +39,19 @@ extern inline int	loop(t_game game);
 int
 	main(int argc, char **argv)
 {
-	(void)argc, (void)argv;
 	struct s_game	game;
 
+	game.map = (char *[100]){\
+		"1111111111", \
+		"1000000001", \
+		"1000110001", \
+		"1000000001", \
+		"1000000001", \
+		"1000000001", \
+		"1000000001", \
+		"1111111111", \
+	};
+	(void)argc, (void)argv;
 	game = (struct s_game){0};
 	set_game(&game, argv);
 	mlx_loop_hook(game.mlx, loop, &game);
@@ -52,9 +62,13 @@ int
 	return (EXIT_SUCCESS);
 }
 
+#include <stdio.h>
+
 extern inline int
 	loop(t_game game)
 {
-	calculate_photons(game);
+	(void)game;
+	//calculate_photons(game);
+	mlx_put_image_to_window(game->mlx, game->window, game->canvas.image, 0, 0);
 	return (0);
 }
