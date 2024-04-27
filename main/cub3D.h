@@ -5,27 +5,52 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 14:40:55 by hdeniz            #+#    #+#             */
-/*   Updated: 2024/04/20 14:40:56 by hdeniz           ###   ########.fr       */
+/*   Created: 2023/08/05 14:44:43 by hdeniz            #+#    #+#             */
+/*   Updated: 2023/09/11 ??:??:?? by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+
+ KENAR TIRTIKLANMA
+
+ BALIK GÖZ
+
+ HARİTA KONTROLÜ
+
+ HARİTAYI İŞLEME
+
+*/
+
+#include <stdio.h> ////////////////////////// DELETE
 
 #ifndef CUB3D_H
 # define CUB3D_H 202403
 
-/* ********************* [V] CONSTANTS - GAME SETUP [V] ********************* */
-# define SLICE 0.2
-# define WINDOW_WIDTH 1000
-# define WINDOW_HEIGHT 1000
-# define RAY_MULTIPY 1
-# define PERSPECTIVE 66.0
+/* *********************** [v] CONSTANTS - OTHERS [v] *********************** */
+# define PLAYER_SPEED 0.02
+# define M_2XPI 6.283185307
+/* *********************** [^] CONSTANTS - PLAYER [^] *********************** */
+
+/* *********************** [v] CONSTANTS - ERRORS [v] *********************** */
+# define ERROR1 "Failed to open MLX"
+# define ERROR2 "Failed to open windows via using MLX"
+# define ERROR3 "RAM failed to allocate 'game->photon'"
+# define ERROR4 "Failed to open 'game->render.image' via using MLX"
+/* *********************** [^] CONSTANTS - ERRORS [^] *********************** */
+
+/* ********************* [v] CONSTANTS - GAME SETUP [v] ********************* */
+# define DEFAULT_PERSPECTIVE 66.0 // DEGREE
+# define PHOTON_MULTIPY 8.0
+# define DEFULT_WINDOW_X_SIZE 2200
+# define DEFULT_WINDOW_Y_SIZE 1200
+# define RENDER_EPSILON 0.01
+# define ROTATE_SPEED 1.5 // DEGREE
+# define WALL_SIZE DEFULT_WINDOW_Y_SIZE / 2 // PX
+# define SLICE 0.1
 /* ********************* [^] CONSTANTS - GAME SETUP [^] ********************* */
 
-/* ******************* [v] CONSTANTS - ERROR MESSAGES [v] ******************* */
-# define ERROR4 "Allocaction error."
-/* ******************* [^] CONSTANTS - ERROR MESSAGES [^] ******************* */
-
-/* *********************** [V] CONSTANTS - INPUTS [V] *********************** */
+/* *********************** [v] CONSTANTS - INPUTS [v] *********************** */
 # define LETTER_KEY_LEFT 0 // A
 # define LETTER_KEY_RIGHT 2 // D
 # define LETTER_KEY_UP 13 // W
@@ -37,11 +62,23 @@
 # define KEY_ESC 53 // ESC
 /* *********************** [^] CONSTANTS - INPUTS [^] *********************** */
 
+/* **************************** [v] INCLUDES [v] **************************** */
 # include <stdlib.h> /*
 # typedef size_t;
-#         */
+# */
+# include <stdbool.h> /*
+# typedef bool;
+# */
+/* **************************** [^] INCLUDES [^] **************************** */
 
-/* ***************************** [V] STRUCTS [V] **************************** */
+/* ***************************** [v] STRUCTS [v] **************************** */
+struct s_photon
+{
+	double	distance;
+	double	angle;
+	double	fish_eye_fix;
+};
+
 typedef struct s_image
 {
 	void	*image;
@@ -51,58 +88,73 @@ typedef struct s_image
 	int		endian;
 }	t_image;
 
-struct s_ray
+typedef struct s_game
 {
-	double	x;
-	double	y;
-	double	distance;
-	double	view;
-	double	theta;
-
-};
-
-struct s_game
-{
-	/***[vvv] MLX [vvv]***/
 	void			*mlx;
 	void			*window;
-	/***[^^^] MLX [^^^]***/
-	/***[vvv] CHARACTER VALUES [vvv]***/
-	size_t			perspective;
-	double			x;
-	double			y;
-	/***[^^^] CHARACTER VALUES [^^^]***/
-	/***[vvv] MATH FORMULAS [vvv]***/
-	double			theta_rotation;
-	double			theta_perspective;
-	/***[^^^] MATH FORMULAS [^^^]***/
-	char			*window_title;
 	char			**map;
-	unsigned int	movement[8];
-	double			wall_pixel_width;
-	size_t			ray_size;
-	struct s_ray	*ray;
-	t_image			canvas;
-};
+	struct s_photon	*photon;
+	size_t			photon_len;
+	double			perspective;
+	double			perspective_angle;
+	double			rotate;
+	double			target_rotate;
+	double			rotate_angle;
+	double			player_x;
+	double			player_y;
+	double			target_player_x;
+	double			target_player_y;
+	double			wall_pixel_size;
+	double			cos_angle;
+	double			sin_angle;
+	double			fix_fish_eye;
+	int				window_x;
+	int				window_y;
+	double			skyline;
+	double			target_skyline;
+	bool			move[8];
+	bool			setup;
+	t_image			render;
+}	*t_game;
 /* ***************************** [^] STRUCTS [^] **************************** */
 
-/* ***************************** [V] TYPEDEF [V] **************************** */
-typedef struct s_game	*t_game;
-/* ***************************** [^] TYPEDEF [^] **************************** */
-
-/* ************************ [V] ./exit_functions [V] ************************ */
-extern void	game_error(t_game game, char *message);
+/* ************************ [v] ./exit_functions [v] ************************ */
+extern void	game_error(t_game game, char *error_message, char mode);
 extern int	close_window(t_game game);
 /* ************************ [^] ./exit_functions [^] ************************ */
 
-/* **************************** [V] ./events [V] **************************** */
-extern int	key_down(int key, t_game game);
-extern int	key_up(int key, t_game game);
-/* **************************** [^] ./events [^] **************************** */
+/* **************************** [v] ./setup [v] ***************************** */
+extern void	setup(t_game game);
+/* **************************** [^] ./setup [^] ***************************** */
 
-/* *************************** [v] ./set_game [v] *************************** */
-extern void	set_game(t_game game, char **argv);
-/* *************************** [^] ./set_game [^] *************************** */
+/* ************************** [v] ./game_exit [v] *************************** */
+extern void	exit_game(t_game game, int error_level);
+/* ************************** [^] ./game_exit [^] *************************** */
+
+/* ************************** [v] ./error_game [v] ************************** */
+extern void	error_game(t_game game, const char *const error_message);
+/* ************************** [^] ./error_game [^] ************************** */
+
+/* ************************** [v] ./free_game [v] *************************** */
+extern void	free_game(t_game game);
+/* ************************** [^] ./free_game [^] *************************** */
+
+/* ************************** [v] ./raycasting [v] ************************** */
+extern void	raycasting(t_game game);
+/* ************************** [^] ./raycasting [^] ************************** */
+
+/* ************************* [v] ./game_events [v] ************************** */
+extern int	close_game(void *arg);
+extern int	key_up(int key, void *arg);
+extern int	key_down(int key, void *arg);
+/* ************************* [^] ./game_events [^] ************************** */
+
+/* **************************** [v] ./render [v] **************************** */
+extern void	putpixel(t_game game, register int x, register int y, \
+register int color);
+extern void	clear_window(t_game game);
+extern void	render(t_game game);
+/* **************************** [^] ./render [^] **************************** */
 
 /****************************************************************************\
 |*                        MINILIBX EVENT HOOK LIST                          *|

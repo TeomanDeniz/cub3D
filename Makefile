@@ -6,7 +6,7 @@
 #    By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 10:48:13 by hdeniz            #+#    #+#              #
-#    Updated: 2024/04/20 16:31:01 by hdeniz           ###   ########.fr        #
+#    Updated: 2024/03/02 16:31:01 by hdeniz           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,166 +28,31 @@ endif
 # ************************* [^] SET MAKECMDGOALS [^] ************************* #
 
 # *************************** [v] MAIN SOURCES [v] *************************** #
-LIBFT_SRC	=	./libft/ft_strdup.c \
-				./libft/ft_strlen.c \
-				./libft/ft_rand.c \
-				./libft/ft_strjoin.c \
-				./libft/ft_strlcat.c \
-				./libft/ft_strlcpy.c \
-				./libft/ft_split.c \
-				./libft/ft_putnbr.c \
-				./libft/ft_free_matrix.c \
-				./libft/ft_copy_matrix.c \
-				./libft/ft_print_matrix.c \
-				./libft/ft_matrixlen.c \
-				./libft/ft_numlen.c \
-				./libft/get_next_line/get_next_line_utils.c \
-				./libft/get_next_line/get_next_line.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_exp.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_exp10.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_exp10f.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_exp2.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_exp2f.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_expf.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_expm1.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_expm1f.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_frexp.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_frexpf.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_ilogb.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_ilogbf.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_ldexp.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_ldexpf.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_log.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_log10.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_log10f.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_log1p.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_log1pf.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_log2.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_log2f.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_logb.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_logbf.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_logf.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_scalbln.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_scalblnf.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_scalbn.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_scalbnf.c \
-				./libft/ft_math/Floating-point_Classification/ft_isfinite.c \
-				./libft/ft_math/Floating-point_Classification/ft_isinf.c \
-				./libft/ft_math/Floating-point_Classification/ft_isnan.c \
-				./libft/ft_math/Floating-point_Classification/ft_isnormal.c \
-				./libft/ft_math/Floating-point_Classification/ft_signbit.c \
-				./libft/ft_math/Hyperbolic/ft_acosh.c \
-				./libft/ft_math/Hyperbolic/ft_acoshf.c \
-				./libft/ft_math/Hyperbolic/ft_asinh.c \
-				./libft/ft_math/Hyperbolic/ft_asinhf.c \
-				./libft/ft_math/Hyperbolic/ft_atanh.c \
-				./libft/ft_math/Hyperbolic/ft_atanhf.c \
-				./libft/ft_math/Hyperbolic/ft_cosh.c \
-				./libft/ft_math/Hyperbolic/ft_coshf.c \
-				./libft/ft_math/Hyperbolic/ft_sinh.c \
-				./libft/ft_math/Hyperbolic/ft_sinhf.c \
-				./libft/ft_math/Hyperbolic/ft_tanh.c \
-				./libft/ft_math/Hyperbolic/ft_tanhf.c \
-				./libft/ft_math/Other/ft_erf.c \
-				./libft/ft_math/Other/ft_erfc.c \
-				./libft/ft_math/Other/ft_erfcf.c \
-				./libft/ft_math/Other/ft_erff.c \
-				./libft/ft_math/Other/ft_fabs.c \
-				./libft/ft_math/Other/ft_fabsf.c \
-				./libft/ft_math/Other/ft_fibonacci.c \
-				./libft/ft_math/Other/ft_fma.c \
-				./libft/ft_math/Other/ft_fmaf.c \
-				./libft/ft_math/Other/ft_fmax.c \
-				./libft/ft_math/Other/ft_fmaxf.c \
-				./libft/ft_math/Other/ft_fmin.c \
-				./libft/ft_math/Other/ft_fminf.c \
+LIBFT_SRC	=	./libft/memory/ft_free_matrix.c \
+				./libft/memory/ft_safe_free.c \
+				./libft/string/ft_strlen.c \
+				./libft/string/ft_matrixlen.c \
 				./libft/ft_math/Other/ft_lerp.c \
-				./libft/ft_math/Other/ft_lerpf.c \
-				./libft/ft_math/Other/ft_lgamma.c \
-				./libft/ft_math/Other/ft_lgammaf.c \
-				./libft/ft_math/Other/ft_modf.c \
-				./libft/ft_math/Other/ft_modff.c \
-				./libft/ft_math/Other/ft_tgamma.c \
-				./libft/ft_math/Other/ft_tgammaf.c \
-				./libft/ft_math/Power/ft_cbrt.c \
-				./libft/ft_math/Power/ft_cbrtf.c \
-				./libft/ft_math/Power/ft_hypot.c \
-				./libft/ft_math/Power/ft_hypotf.c \
-				./libft/ft_math/Power/ft_invsqrt.c \
-				./libft/ft_math/Power/ft_invsqrtf.c \
-				./libft/ft_math/Power/ft_pow.c \
-				./libft/ft_math/Power/ft_pow10.c \
-				./libft/ft_math/Power/ft_pow10f.c \
-				./libft/ft_math/Power/ft_powf.c \
-				./libft/ft_math/Power/ft_sqrt.c \
-				./libft/ft_math/Power/ft_sqrtf.c \
-				./libft/ft_math/Rounding_Remainder/ft_ceil.c \
-				./libft/ft_math/Rounding_Remainder/ft_ceilf.c \
-				./libft/ft_math/Rounding_Remainder/ft_copysign.c \
-				./libft/ft_math/Rounding_Remainder/ft_copysignf.c \
-				./libft/ft_math/Rounding_Remainder/ft_fdim.c \
-				./libft/ft_math/Rounding_Remainder/ft_fdimf.c \
-				./libft/ft_math/Rounding_Remainder/ft_floor.c \
-				./libft/ft_math/Rounding_Remainder/ft_floorf.c \
-				./libft/ft_math/Rounding_Remainder/ft_fmod.c \
-				./libft/ft_math/Rounding_Remainder/ft_fmodf.c \
-				./libft/ft_math/Rounding_Remainder/ft_lrint.c \
-				./libft/ft_math/Rounding_Remainder/ft_lrintf.c \
-				./libft/ft_math/Rounding_Remainder/ft_lround.c \
-				./libft/ft_math/Rounding_Remainder/ft_lroundf.c \
-				./libft/ft_math/Rounding_Remainder/ft_nan.c \
-				./libft/ft_math/Rounding_Remainder/ft_nanf.c \
-				./libft/ft_math/Rounding_Remainder/ft_nearbyint.c \
-				./libft/ft_math/Rounding_Remainder/ft_nearbyintf.c \
-				./libft/ft_math/Rounding_Remainder/ft_nextafter.c \
-				./libft/ft_math/Rounding_Remainder/ft_nextafterf.c \
-				./libft/ft_math/Rounding_Remainder/ft_nexttoward.c \
-				./libft/ft_math/Rounding_Remainder/ft_nexttowardf.c \
-				./libft/ft_math/Rounding_Remainder/ft_remainder.c \
-				./libft/ft_math/Rounding_Remainder/ft_remainderf.c \
-				./libft/ft_math/Rounding_Remainder/ft_remquo.c \
-				./libft/ft_math/Rounding_Remainder/ft_remquof.c \
-				./libft/ft_math/Rounding_Remainder/ft_rint.c \
-				./libft/ft_math/Rounding_Remainder/ft_rintf.c \
-				./libft/ft_math/Rounding_Remainder/ft_round.c \
-				./libft/ft_math/Rounding_Remainder/ft_roundf.c \
-				./libft/ft_math/Rounding_Remainder/ft_trunc.c \
-				./libft/ft_math/Rounding_Remainder/ft_truncf.c \
-				./libft/ft_math/Trigonometric/ft_acos.c \
-				./libft/ft_math/Trigonometric/ft_acosf.c \
-				./libft/ft_math/Trigonometric/ft_asin.c \
-				./libft/ft_math/Trigonometric/ft_asinf.c \
-				./libft/ft_math/Trigonometric/ft_atan.c \
-				./libft/ft_math/Trigonometric/ft_atan2.c \
-				./libft/ft_math/Trigonometric/ft_atan2f.c \
-				./libft/ft_math/Trigonometric/ft_atanf.c \
-				./libft/ft_math/Trigonometric/ft_cos.c \
-				./libft/ft_math/Trigonometric/ft_cosf.c \
-				./libft/ft_math/Trigonometric/ft_cospi.c \
-				./libft/ft_math/Trigonometric/ft_cospif.c \
-				./libft/ft_math/Trigonometric/ft_cot.c \
-				./libft/ft_math/Trigonometric/ft_cotf.c \
-				./libft/ft_math/Trigonometric/ft_csc.c \
-				./libft/ft_math/Trigonometric/ft_cscf.c \
-				./libft/ft_math/Trigonometric/ft_sec.c \
-				./libft/ft_math/Trigonometric/ft_secf.c \
+				./libft/ft_math/Other/ft_fabs.c \
 				./libft/ft_math/Trigonometric/ft_sin.c \
-				./libft/ft_math/Trigonometric/ft_sincos.c \
-				./libft/ft_math/Trigonometric/ft_sincosf.c \
-				./libft/ft_math/Trigonometric/ft_sinf.c \
-				./libft/ft_math/Trigonometric/ft_sinpi.c \
-				./libft/ft_math/Trigonometric/ft_sinpif.c \
-				./libft/ft_math/Trigonometric/ft_tan.c \
-				./libft/ft_math/Trigonometric/ft_tanf.c \
-				./libft/ft_math/Trigonometric/ft_tanpi.c \
-				./libft/ft_math/Trigonometric/ft_tanpif.c
+				./libft/ft_math/Trigonometric/ft_cos.c \
+				./libft/ft_math/Rounding_Remainder/ft_floor.c \
+				./libft/ft_math/Rounding_Remainder/ft_fmod.c \
+				./libft/ft_math/Floating-point_Classification/ft_isnan.c \
+				./libft/ft_math/Floating-point_Classification/ft_isinf.c
 
 MAIN_SRC	=	$(LIBFT_SRC) \
-				./main/exit_functions/game_error.c \
-				./main/exit_functions/close_window.c \
-				./main/set_game/set_game.c \
-				./main/events/key_down.c \
-				./main/events/key_up.c
+				./main/error_game/error_game.c \
+				./main/free_game/free_game.c \
+				./main/exit_game/exit_game.c \
+				./main/setup/setup.c \
+				./main/game_events/close_game.c \
+				./main/game_events/key_up.c \
+				./main/game_events/key_down.c \
+				./main/raycasting/raycasting.c \
+				./main/render/putpixel.c \
+				./main/render/clear_window.c \
+				./main/render/render.c
 # *************************** [^] MAIN SOURCES [^] *************************** #
 
 # ************************** [v] BONUS SOURCES [v] *************************** #
@@ -215,14 +80,14 @@ BONUS_SRC	=	$(LIBFT_SRC)
 		CC			=	gcc
 	# [COMPILER]
 	# [EXE]
-		MAIN_EXE	=	./cub3D.exe
+		MAIN_EXE	=	./cub3D
 		MAIN		=	./main/cub3D.c
 	# [EXE]
 	# [ARCHIVE AND OVERLINKING CHECKER]
 		NAME		=	./cub3D.a
 	# [ARCHIVE AND OVERLINKING CHECKER]
 	# [COMPILER FLAGS]
-		CFLAGS		=	-Wall -Wextra -Werror -Imlx # -g
+		CFLAGS		=	-Wall -Wextra -Werror -O3 -Imlx # -g
 		MAIN_FLAGS	=	-Wall -Wextra -Werror -lmlx \
 						-framework OpenGL -framework AppKit -L./minilibx # -g
 	# [COMPILER FLAGS]
@@ -311,6 +176,7 @@ clean:
 	@rm $(MAIN_OBJ) $(BONUS_OBJ) 2>/dev/null && \
 		echo "\n $(B1F15) Objects are cleared! $(C_RESET)\n" || \
 		echo "\n $(B12F15) Nothing to clear! $(C_RESET)\n"
+	@#@make -C "./minilibx" "clean" 1>/dev/null
 	$(eval N_OBJ := "0")
 
 fc: fclean

@@ -14,20 +14,24 @@
 #include "../ft_math.h"
 /* INCLUDES */
 
+#include <stdio.h>
+
 double
 	ft_sin(register double x)
 {
-	register double			result;
+	double					result;
 	register double			term;
 	register unsigned int	epsilon;
 
+	if (x == 0.0)
+		return (x);
 	if (ft_isinf(x))
 		return (0.0 / 0.0);
 	x = ft_fmod(x, 2.0 * M_PI);
 	epsilon = 3;
 	term = x;
 	result = x;
-	while (ft_fabs(term) > 1E-15)
+	while (ft_fabs(term) > 1E-10)
 	{
 		term = -term * x * x / (epsilon * (epsilon - 1.0));
 		result += term;

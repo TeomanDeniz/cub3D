@@ -17,17 +17,19 @@
 double
 	ft_cos(register double x)
 {
-	register double			result;
+	double					result;
 	register double			term;
 	register unsigned int	epsilon;
 
+	if (x == 0.0)
+		return (1.0);
 	if (ft_isinf(x))
 		return (0.0 / 0.0);
 	result = 1.0;
 	term = 1.0;
 	epsilon = 0;
 	x = ft_fmod(x, 2.0 * M_PI);
-	while (++epsilon, ft_fabs(term) > 1E-15)
+	while (++epsilon, ft_fabs(term) > 1E-10)
 	{
 		term = -term * x * x / (2.0 * epsilon - 1.0) / (2.0 * epsilon);
 		result += term;

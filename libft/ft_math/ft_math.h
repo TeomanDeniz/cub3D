@@ -102,6 +102,24 @@
 # endif
 /* Limits of long double type */
 
+/* Environments that used in ft_fpclassify function */
+# ifndef FP_NAN
+#  define FP_NAN          0
+# endif
+# ifndef FP_INFINITE
+#  define FP_INFINITE     1
+# endif
+# ifndef FP_ZERO
+#  define FP_ZERO         2
+# endif
+# ifndef FP_SUBNORMAL
+#  define FP_SUBNORMAL    3
+# endif
+# ifndef FP_NORMAL
+#  define FP_NORMAL       4
+# endif
+/* Environments that used in ft_fpclassify function */
+
 /* Constants (Float) */
 # ifndef M_E_F
 #  define M_E_F 2.71828182845904523536F // Euler's Number
@@ -291,12 +309,34 @@ float		ft_fdimf(register float x, register float y);
 /* Rounding and Remainder functions */
 
 /* Floating-point Classification functions */
+int			ft_fpclassify(register double x);
 int			ft_isfinite(register double x);
 int			ft_isnormal(register double x);
 int			ft_isinf(register double x);
 int			ft_isnan(register double x);
 int			ft_signbit(double x);
+double		ft_significand(register double x);
+/* [Float] */
+int			ft_fpclassifyf(register float x);
+float		ft_significandf(register float x);
 /* Floating-point Classification functions */
+
+/* Bessel functions */
+double		ft_j0(register double x);
+double		ft_j1(register double x);
+double		ft_jn(register int n, register double x);
+double		ft_y0(register double x);
+double		ft_y1(register double x);
+double		ft_yn(register int n, register double x);
+/* [Float] */
+float		ft_j0f(register float x);
+float		ft_j1f(register float x);
+float		ft_jnf(register int n, register float x);
+float		ft_y0f(register float x);
+float		ft_y1f(register float x);
+float		ft_ynf(register int n, register float x);
+/* [Float] */
+/* Bessel functions */
 
 /* Other functions */
 double		ft_fabs(register double x);
@@ -322,5 +362,30 @@ float		ft_fmaxf(register float x, register float y);
 float		ft_lerpf(register float x, register float y, register float f);
 /* [Float] */
 /* Other functions */
+
+/* Neural Network functions */
+double		ft_sigmoid(register double x);
+double		ft_swish(register double x);
+double		ft_relu(register double x);
+double		ft_leakyrelu(register double x, register double alpha);
+double		ft_elu(register double x, register double alpha);
+double		ft_prelu(register double x, register double alpha);
+double		ft_mish(register double x);
+void		ft_softmax(double *x, register int size);
+double		ft_softmin(double *x, register int size, register double alpha);
+double		ft_softmedian(double *x, register int size, register double alpha);
+/* [Float] */
+float		ft_eluf(register float x, register float alpha);
+float		ft_leakyreluf(register float x, register float alpha);
+float		ft_mishf(register float x);
+float		ft_preluf(register float x, register float alpha);
+float		ft_reluf(register float x);
+float		ft_sigmoidf(register float x);
+void		ft_softmaxf(float *x, register int size);
+float		ft_softmedianf(float *x, register int size, register float alpha);
+float		ft_softminf(float *x, register int size, register float alpha);
+float		ft_swishf(register float x);
+/* [Float] */
+/* Neural Network functions */
 
 #endif /* FT_MATH_H */
