@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_fdim.c                                          :+:      :+:    :+:   */
+/*   ft_numlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/20 00:51:30 by hdeniz            #+#    #+#             */
-/*   Updated: 2023/03/20 00:52:33 by hdeniz           ###   ########.fr       */
+/*   Created: 2023/09/03 18:10:11 by hdeniz            #+#    #+#             */
+/*   Updated: 2023/09/03 18:10:13 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* INCLUDES */
-#include "../ft_math.h"
-/* INCLUDES */
-
-double
-	ft_fdim(register double x, register double y)
+int
+	ft_numlen(register int number)
 {
-	if (ft_isinf(x) == 1 || ft_isnan(x))
-		return (x);
-	if (ft_isnan(y))
-		return (y);
-	if (x > y)
-		return (x - y);
-	return (0.0);
+	int	result;
+
+	result = -1;
+	while (++result, number)
+		number /= 10;
+	return (result);
 }

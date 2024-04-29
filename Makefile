@@ -6,7 +6,7 @@
 #    By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 10:48:13 by hdeniz            #+#    #+#              #
-#    Updated: 2024/03/02 16:31:01 by hdeniz           ###   ########.fr        #
+#    Updated: 2024/04/29 16:31:01 by hdeniz           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,29 +30,29 @@ endif
 # *************************** [v] MAIN SOURCES [v] *************************** #
 LIBFT_SRC	=	./libft/memory/ft_free_matrix.c \
 				./libft/memory/ft_safe_free.c \
+				./libft/memory/ft_matrixlen.c \
 				./libft/string/ft_strlen.c \
 				./libft/string/ft_matrixlen.c \
-				./libft/ft_math/Other/ft_lerp.c \
-				./libft/ft_math/Other/ft_fabs.c \
-				./libft/ft_math/Trigonometric/ft_sin.c \
-				./libft/ft_math/Trigonometric/ft_cos.c \
-				./libft/ft_math/Rounding_Remainder/ft_floor.c \
-				./libft/ft_math/Rounding_Remainder/ft_fmod.c \
+				./libft/ft_math/Other/ft_lerpf.c \
+				./libft/ft_math/Other/ft_fabsf.c \
+				./libft/ft_math/Other/ft_fminf.c \
+				./libft/ft_math/Trigonometric/ft_sinf.c \
+				./libft/ft_math/Trigonometric/ft_cosf.c \
+				./libft/ft_math/Rounding_Remainder/ft_floorf.c \
+				./libft/ft_math/Rounding_Remainder/ft_fmodf.c \
 				./libft/ft_math/Floating-point_Classification/ft_isnan.c \
 				./libft/ft_math/Floating-point_Classification/ft_isinf.c
 
 MAIN_SRC	=	$(LIBFT_SRC) \
-				./main/error_game/error_game.c \
-				./main/free_game/free_game.c \
-				./main/exit_game/exit_game.c \
+				./main/exit_functions/game_error.c \
+				./main/exit_functions/close_window.c \
 				./main/setup/setup.c \
-				./main/game_events/close_game.c \
-				./main/game_events/key_up.c \
-				./main/game_events/key_down.c \
-				./main/raycasting/raycasting.c \
+				./main/events/key_down.c \
+				./main/events/key_up.c \
+				./main/render/cast_rays.c \
+				./main/render/render.c \
 				./main/render/putpixel.c \
-				./main/render/clear_window.c \
-				./main/render/render.c
+				./main/render/skybox.c
 # *************************** [^] MAIN SOURCES [^] *************************** #
 
 # ************************** [v] BONUS SOURCES [v] *************************** #
@@ -64,9 +64,6 @@ BONUS_SRC	=	$(LIBFT_SRC)
 #		BONUS_EXE	=	#"cub3D_bonus"
 #		BONUS		=	#./bonus/cub3D.c
 	# [EXE]
-	# [ARCHIVE AND OVERLINKING CHECKER]
-#		BONUS_NAME		=	#./bonus/cub3D_bonus.a
-	# [ARCHIVE AND OVERLINKING CHECKER]
 	# [.c STRINGS TO .o]
 #		BONUS_OBJ	=	$(eval BONUS_OBJ := $$(BONUS_SRC:.c=.o))$(BONUS_OBJ)
 	# [.c STRINGS TO .o]
@@ -74,7 +71,7 @@ BONUS_SRC	=	$(LIBFT_SRC)
 
 # **************************** [v] VARIABLES [v] ***************************** #
 	# [MLX]
-	MLX				=	./minilibx/libmlx.a
+		MLX			=	./minilibx/libmlx.a
 	# [MLX]
 	# [COMPILER]
 		CC			=	gcc
@@ -83,12 +80,9 @@ BONUS_SRC	=	$(LIBFT_SRC)
 		MAIN_EXE	=	./cub3D
 		MAIN		=	./main/cub3D.c
 	# [EXE]
-	# [ARCHIVE AND OVERLINKING CHECKER]
-		NAME		=	./cub3D.a
-	# [ARCHIVE AND OVERLINKING CHECKER]
 	# [COMPILER FLAGS]
 		CFLAGS		=	-Wall -Wextra -Werror -O3 -Imlx # -g
-		MAIN_FLAGS	=	-Wall -Wextra -Werror -lmlx \
+		MAIN_FLAGS	=	-Wall -Wextra -Werror -lmlx -O3 \
 						-framework OpenGL -framework AppKit -L./minilibx # -g
 	# [COMPILER FLAGS]
 	# [.c STRINGS TO .o]
@@ -156,10 +150,8 @@ $(MAIN_EXE): $(MAIN) $(MAIN_OBJ)
 	@$(CC) $(MAIN_FLAGS) $(MAIN) $(MAIN_OBJ) -o "$(MAIN_EXE)" && \
 		echo "\n\n $(C_BLINK)$(B2F15) $(MAIN_EXE) is ready! $(C_RESET)\n"
 
-#$(BONUS_NAME): $(BONUS) $(BONUS_OBJ)
-#	@ar rc $(BONUS_NAME) $(BONUS_OBJ) 2>/dev/null && \
-#		echo "\n\n $(C_BLINK)$(B2F15) $(BONUS_NAME) is ready! $(C_RESET)\n"
-#	@$(CC) $(MAIN_FLAGS) $(BONUS) $(BONUS_NAME) -o "./$(BONUS_EXE)" && \
+#$(BONUS_EXE): $(BONUS) $(BONUS_OBJ)
+#	@$(CC) $(MAIN_FLAGS) $(BONUS) $(BONUS_OBJ) -o "./$(BONUS_EXE)" && \
 #		echo "\n\n $(C_BLINK)$(B2F15) $(BONUS_EXE) is ready! $(C_RESET)\n"
 
 $(MLX):
@@ -168,7 +160,7 @@ $(MLX):
 	@echo " $(B2F15)MLX Done !$(C_RESET)"
 
 #b: bonus
-#bonus: $(BONUS_NAME)
+#bonus: $(BONUS_EXE)
 
 c: clean
 clear: clean
@@ -181,9 +173,6 @@ clean:
 
 fc: fclean
 fclean: clean
-	@rm $(NAME) $(BONUS_NAME) $(MAIN_READY) 2>/dev/null && \
-		echo "\n $(B1F11) $(NAME) $(F15)deleted! $(C_RESET)\n" || \
-		echo "\n $(B12F15) $(NAME) is not exist already! $(C_RESET)\n"
 	@rm $(MAIN_EXE) $(BONUS_EXE) 2>/dev/null && \
 		echo "\n $(B1F11) $(MAIN_EXE) $(F15)deleted! $(C_RESET)\n" || \
 		echo "\n $(B12F15) $(MAIN_EXE) is not exist already! $(C_RESET)\n"

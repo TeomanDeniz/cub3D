@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cos.c                                           :+:      :+:    :+:   */
+/*   ft_cosf.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 11:38:23 by hdeniz            #+#    #+#             */
-/*   Updated: 2023/03/19 17:26:21 by hdeniz           ###   ########.fr       */
+/*   Updated: 2023/03/20 03:33:34 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,26 @@
 #include "../ft_math.h"
 /* INCLUDES */
 
-double
-	ft_cos(register double x)
-{
-	register double			result;
-	register double			term;
-	register unsigned int	epsilon;
+#define C1 -0.5F
+#define C2 0.04166666790843009949F
+#define C3 -0.001388888922888541072845F
+#define C4 0.0000248010409741333834694453F
+#define C5 -0.00000027524696384370577306981F
+#define C6 0.00000000208765109230880597526F
 
-	if (ft_isinf(x))
-		return (0.0 / 0.0);
-	result = 1.0;
-	term = 1.0;
-	epsilon = 0;
-	x = ft_fmod(x, 2.0 * M_PI);
-	while (++epsilon, ft_fabs(term) > 1E-15)
-	{
-		term = -term * x * x / (2.0 * epsilon - 1.0) / (2.0 * epsilon);
-		result += term;
-	}
-	return (result);
+float
+	ft_cosf(register float x)
+{
+    float			result;
+    register float	x_x;
+
+    x = ((x) - ((int)(x / M_PI_F)) * (M_PI_F));
+    x_x = x * x;
+    result = (1.0F + x_x * \
+    	(C1 + x_x * \
+    	(C2 + x_x * \
+    	(C3 + x_x * \
+    	(C4 + x_x * \
+    	(C5 + x_x * C6))))));
+    return (result);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clear_window.c                                     :+:      :+:    :+:   */
+/*   skybox.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,15 +12,15 @@
 
 /* **************************** [v] INCLUDES [v] **************************** */
 #include "../cub3D.h" /*
-# define DEFULT_WINDOW_Y_SIZE
-# define DEFULT_WINDOW_X_SIZE
+# define WINDOW_WIDTH
+# define WINDOW_HEIGHT
 #typedef *t_game;
-#   void putpixel(t_game, int, int, int);
+#   void putpixel(t_game, int, int, uint);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 void
-	clear_window(t_game game)
+	skybox(t_game game, register int ground, register int floor)
 {
 	register int	x;
 	register int	y;
@@ -29,20 +29,20 @@ void
 	while (y < (int)game->skyline)
 	{
 		x = 0;
-		while (x < DEFULT_WINDOW_X_SIZE)
+		while (x < WINDOW_WIDTH)
 		{
-			putpixel(game, x, y, 0X222222);
+			putpixel(game, x, y, (unsigned)floor);
 			++x;
 		}
 		++y;
 	}
 	y = (int)game->skyline;
-	while (y < DEFULT_WINDOW_Y_SIZE)
+	while (y < WINDOW_HEIGHT)
 	{
 		x = 0;
-		while (x < DEFULT_WINDOW_X_SIZE)
+		while (x < WINDOW_WIDTH)
 		{
-			putpixel(game, x, y, 0X666666);
+			putpixel(game, x, y, (unsigned)ground);
 			++x;
 		}
 		++y;

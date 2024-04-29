@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_remquof.c                                       :+:      :+:    :+:   */
+/*   ft_sinf.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 15:53:17 by hdeniz            #+#    #+#             */
-/*   Updated: 2023/03/19 22:20:20 by hdeniz           ###   ########.fr       */
+/*   Created: 2022/02/14 11:38:23 by hdeniz            #+#    #+#             */
+/*   Updated: 2023/03/20 03:34:48 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,25 @@
 #include "../ft_math.h"
 /* INCLUDES */
 
-float
-	ft_remquof(register float x, register float y, int *quotient)
-{
-	register float	result;
+#define S1 -1.66666666666666324348e-01F
+#define S2 8.33333333332248946124e-03F
+#define S3 -1.98412698298579493134e-04F
+#define S4 2.75573137070700676789e-06F
+#define S5 -2.50507602534068634195e-08F
+#define S6 1.58969099521155010221e-10F
 
-	if (ft_isnan(y))
-		return (y);
-	if (ft_isnan(x))
-		return (x);
-	if (y == 0.0F || ft_isinf(x))
-		return (0.0F / 0.0F);
-	result = ft_fmodf(x, y);
-	*quotient = (int)(x / y);
+float
+	ft_sinf(register float x)
+{
+	float			result;
+	register float	x_x;
+
+	x = ((x) - ((int)(x / M_PI_F)) * (M_PI_F));
+	x_x = x * x;
+	result = (x + x_x * x * \
+		(S1 + x_x * S2 + x_x * \
+		(S3 + x_x * \
+		(S4 + x_x * \
+		(S5 + x_x * S6)))));
 	return (result);
 }

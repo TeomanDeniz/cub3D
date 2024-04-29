@@ -39,6 +39,7 @@ extern int		ft_atoi(const char *const string);
 extern char		*ft_itoa(register int number);
 extern int		ft_tolower(int character);
 extern int		ft_toupper(int character);
+extern int		ft_numlen(register int number);
 /* ************************** [^] ./converters [^] ************************** */
 /* **************************** [v] ./lists [v] ***************************** */
 extern void		ft_lstadd_back(t_list **list, t_list *new_list);
@@ -66,6 +67,7 @@ register size_t len);
 extern void		*ft_memset(void *base, register int character, \
 register size_t len);
 extern bool		ft_safe_free(void **variable);
+extern int		ft_matrixlen(char **matrix);
 /* **************************** [^] ./memory [^] **************************** */
 /* **************************** [v] ./output [v] **************************** */
 extern void		ft_putchar_fd(char character, register int fd);

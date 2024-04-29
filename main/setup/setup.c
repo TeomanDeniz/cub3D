@@ -5,134 +5,140 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 01:08:03 by hdeniz            #+#    #+#             */
-/*   Updated: 2024/03/08 01:08:04 by hdeniz           ###   ########.fr       */
+/*   Created: 2024/04/20 14:40:55 by hdeniz            #+#    #+#             */
+/*   Updated: 2024/04/20 14:40:56 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* **************************** [v] INCLUDES [v] **************************** */
+/* **************************** [V] INCLUDES [V] **************************** */
 #include "../../minilibx/mlx.h" /*
-#   void *mlx_init(void);
-#   void *mlx_new_window(void *, int, int, char const *);
-
+#   void *mlx_new_window(void *, int, int, char *);
 #   void *mlx_new_image(void *, int, int);
 #   char *mlx_get_data_addr(void *, int *, int *, int *);
-#    int mlx_hook(void *, int, int, int (*f)(), void *);
-#    int mlx_destroy_window(void *, void *);
-#*/
+#        */
+#include "../../libft/libft.h" /*
+#    int ft_strlen(char *);
+#    int ft_matrixlen(char **);
+#        */
 #include "../cub3D.h" /*
-# define ERROR1
-# define ERROR2
-# define ERROR3
-# define DEFULT_WINDOW_X_SIZE
-# define DEFULT_WINDOW_Y_SIZE
-# define DEFAULT_PERSPECTIVE
-# define PHOTON_MULTIPY
-# struct s_photon;
-#typedef *t_game;
-#   void error_game(t_game, char *);
-#*/
+# define WINDOW_WIDTH
+# define WINDOW_HEIGHT
+# define PERSPECTIVE
+# define RAY_MULTIPY
+#typedef t_game;
+#   void game_error(t_game, char *);
+#        */
 #include <stdlib.h> /*
-#typedef size_t;
 #   void *malloc(size_t);
-#*/
+#        */
 #include "../../libft/ft_math/ft_math.h" /*
-# define M_PI
-# double ft_floor(double);
-# double ft_fmod(double, double);
-#*/
-#include <math.h>
+# define M_PI_F
+#  float ft_floorf(float);
+#  float ft_fmodf(float, float);
+#        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 /* *************************** [v] PROTOTYPES [v] *************************** */
-static void	set_photons(t_game game);
-static void	prepare_render(t_game game);
-static void	setup2(t_game game);
+extern inline char	*get_title(char **argv);
+extern inline void	set_key_inputs(t_game game);
+extern inline void	set_rays(t_game game);
+extern inline void	prepare_canvas(t_game game);
 /* *************************** [^] PROTOTYPES [^] *************************** */
 
 void
-	setup(t_game game)
+	setup(t_game game, int argc, char **argv)
 {
+	game->argv = argv;
+	game->argc = argc;
 	game->mlx = mlx_init();
 	if (!game->mlx)
-		error_game(game, ERROR1);
-	game->window = mlx_new_window(game->mlx, DEFULT_WINDOW_X_SIZE, \
-		DEFULT_WINDOW_Y_SIZE, "Title");
+		game_error(game, "MLX failed to create.");
+	game->window_title = get_title(game->argv);
+	game->window = mlx_new_window(\
+		game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, \
+		game->window_title);
 	if (!game->window)
-		error_game(game, ERROR2);
-	game->window_x = DEFULT_WINDOW_X_SIZE;
-	game->window_y = DEFULT_WINDOW_Y_SIZE;
-	game->perspective = DEFAULT_PERSPECTIVE;
-	game->photon_len = (size_t)(game->perspective * PHOTON_MULTIPY);
-	game->rotate = 180.0; // BURASI DEĞİŞECEK ( + 90.0 olacak)
-	game->target_rotate = game->rotate;
-	game->player_x = 4.5; // BURASI DEĞİŞECEK
-	game->player_y = 0.0; // BURASI DEĞİŞECEK
-	game->target_player_x = game->player_x;
-	game->target_player_y = game->player_y;
-	game->perspective_angle = ft_fmod((game->perspective / 2.0) * \
-		(M_PI / 180.0) + 0.0001, 2.0 * M_PI);
-	game->rotate_angle = game->rotate * (M_PI / 180.0) + 0.0001;
-	game->cos_angle = cos(game->rotate_angle);
-	game->sin_angle = sin(game->rotate_angle);
-	game->wall_pixel_size = ((double)game->window_x / (double)game->photon_len);
-	game->skyline = (double)(game->window_y / 2);
+		game_error(game, "MLX_WINDOW failed to open.");
+	set_key_inputs(game);
+	game->perspective = PERSPECTIVE;
+	game->theta_perspective = ft_fmodf((game->perspective / 2.0F) * \
+		(M_PI_F / 180.0F) + 0.0001F, 2.0F * M_PI_F);
+	game->number_of_rays = (size_t)(game->perspective * RAY_MULTIPY);
+	game->x = 3.5; // MAP
+	game->y = 3.5; // MAP
+	game->target_x = game->x;
+	game->target_y = game->y;
+	game->theta_rotation = 1.57; // MAP
+	game->theta_target_rotation = game->theta_rotation;
+	game->wall_pixel_width = ((float)WINDOW_WIDTH / \
+		(float)game->number_of_rays);
+	game->map_weight = ft_strlen(*game->map);
+	game->map_height = ft_matrixlen(game->map);
+	game->skyline = (float)(WINDOW_HEIGHT / 2);
 	game->target_skyline = game->skyline;
-	setup2(game);
+	game->cos_theta_rotation = ft_cosf(game->theta_rotation);
+	game->sin_theta_rotation = ft_sinf(game->theta_rotation);
+	set_rays(game);
+	prepare_canvas(game);
 }
 
-static void
-	setup2(t_game game)
+extern inline void
+	prepare_canvas(t_game game)
 {
-	game->setup = false;
-	set_photons(game);
-	prepare_render(game);
-	game->fix_fish_eye = ((0 / \
-		((ft_floor(game->perspective * PHOTON_MULTIPY) / 2)) * \
-		game->perspective_angle) - game->perspective_angle) + (\
-		((game->photon_len / 2) / ((ft_floor(game->perspective * \
-		PHOTON_MULTIPY) / 2)) * game->perspective_angle) - \
-		game->perspective_angle);
-	game->move[0] = false;
-	game->move[1] = false;
-	game->move[2] = false;
-	game->move[3] = false;
-	game->move[4] = false;
-	game->move[5] = false;
-	game->move[6] = false;
-	game->move[7] = false;
-	//set_map(game); // SETUP MAP
+	game->canvas.image = \
+		mlx_new_image(game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	if (!game->canvas.image)
+		game_error(game, ERROR4);
+	game->canvas.buffer = mlx_get_data_addr(game->canvas.image, \
+		&game->canvas.bits_per_pixel, &game->canvas.line_length, \
+		&game->canvas.endian);
+	game->canvas.x = WINDOW_WIDTH;
+	game->canvas.y = WINDOW_HEIGHT;
+	game->canvas.size = WINDOW_WIDTH * WINDOW_HEIGHT;
 }
 
-static void
-	prepare_render(t_game game)
-{
-	game->render.image = \
-		mlx_new_image(game->mlx, game->window_x, game->window_y);
-	if (!game->render.image)
-		error_game(game, ERROR4);
-	game->render.buffer = mlx_get_data_addr(game->render.image, \
-		&game->render.bits_per_pixel, &game->render.line_length, \
-		&game->render.endian);
-	game->render.bits_per_pixel /= 8;
-}
-
-static void
-	set_photons(t_game game)
+extern inline void
+	set_rays(t_game game)
 {
 	register size_t	index;
 
-	game->photon = (struct s_photon *)malloc(sizeof(struct s_photon) * \
-		game->photon_len);
-	if (!game->photon)
-		error_game(game, ERROR3);
+	game->ray = (struct s_ray *) malloc(sizeof(struct s_ray) * RAY_MULTIPY * \
+		game->perspective);
+	if (!game->ray)
+		game_error(game, "game->ray failed to allocate.");
 	index = 0;
-	while (index < game->photon_len)
+	while (index < game->number_of_rays)
 	{
-		game->photon[index].angle = ((index / \
-			(ft_floor(game->perspective * PHOTON_MULTIPY) / 2)) * \
-			game->perspective_angle) - game->perspective_angle;
-		game->photon[index].fish_eye_fix = 0.7;
+		game->ray[index].distance = 0.0F;
+		game->ray[index].theta = ((index / \
+			(ft_floorf(game->perspective * RAY_MULTIPY) / 2.0F)) * \
+			game->theta_perspective) - game->theta_perspective;
 		++index;
 	}
+}
+
+extern inline void
+	set_key_inputs(t_game game)
+{
+	game->key[0] = 0U;
+	game->key[1] = 0U;
+	game->key[2] = 0U;
+	game->key[3] = 0U;
+	game->key[4] = 0U;
+	game->key[5] = 0U;
+	game->key[6] = 0U;
+	game->key[7] = 0U;
+}
+
+extern inline char
+	*get_title(char **argv)
+{
+	register int	eax;
+
+	if (!argv[1])
+		return ("[Random Map]"); // BURAYA BAK
+	eax = ft_strlen(argv[1]) - 1;
+	while ((eax > 0) && (argv[1][eax] != '/') && (argv[1][eax] != '\\'))
+		--eax;
+	return (argv[1] + eax + (eax != 0));
 }

@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_game.c                                       :+:      :+:    :+:   */
+/*   game_error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 01:53:10 by hdeniz            #+#    #+#             */
-/*   Updated: 2024/03/08 01:53:12 by hdeniz           ###   ########.fr       */
+/*   Created: 2024/04/20 14:40:55 by hdeniz            #+#    #+#             */
+/*   Updated: 2024/04/20 14:40:56 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* **************************** [v] INCLUDES [v] **************************** */
+/* **************************** [V] INCLUDES [V] **************************** */
 #include "../cub3D.h" /*
-#typedef *t_game;
-#   void free_game(t_game);
-#   void exit_game(t_game, int);
-#*/
+#typedef t_game;
+#        */
+#include <stdlib.h> /*
+# define EXIT_FAILURE 1
+#   void exit(int);
+#        */
+#include "../../minilibx/mlx.h" /*
+#    int mlx_destroy_window(void *, void *);
+#        */
 #include "../../libft/libft.h" /*
-# size_t ft_strlen(char *);
-#*/
+#    int ft_strlen(char *);
+#        */
 #include <unistd.h> /*
-#ssize_t write(int, void *, size_t);
-#*/
+#sszie_t write(int, void *, size_t);
+#        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 void
-	error_game(t_game game, const char *const error_message)
+	game_error(t_game game, char *message)
 {
-	write(2, "\n\n ", 3);
-	write(2, error_message, ft_strlen(error_message));
-	write(2, "\n\n", 2);
-	exit_game(game, 1);
+	write(2, message, ft_strlen(message));
+	write(2, "\n", 1);
+	mlx_destroy_window(game->mlx, game->window);
+	exit(EXIT_FAILURE);
 }

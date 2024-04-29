@@ -5,49 +5,43 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 04:22:34 by hdeniz            #+#    #+#             */
-/*   Updated: 2024/03/08 04:22:35 by hdeniz           ###   ########.fr       */
+/*   Created: 2024/04/20 14:40:55 by hdeniz            #+#    #+#             */
+/*   Updated: 2024/04/20 14:40:56 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* **************************** [V] INCLUDES [V] **************************** */
 #include "../cub3D.h" /*
-# define LETTER_KEY_LEFT
-# define LETTER_KEY_RIGHT
-# define LETTER_KEY_UP
-# define LETTER_KEY_DOWN
-# define ARROW_KEY_LEFT
-# define ARROW_KEY_RIGHT
-# define ARROW_KEY_UP
-# define ARROW_KEY_DOWN
-#typedef *t_game;
-*/
-#include <stdbool.h> /*
-#define false;
-#*/
+# define LETTER_KEY_LEFT 0
+# define LETTER_KEY_RIGHT 2
+# define LETTER_KEY_UP 13
+# define LETTER_KEY_DOWN 1
+# define ARROW_KEY_LEFT 123
+# define ARROW_KEY_RIGHT 124
+# define ARROW_KEY_UP 126
+# define ARROW_KEY_DOWN 125
+#typedef t_game;
+#        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 int
-	key_up(int key, void *arg)
+	key_up(int key, t_game game)
 {
-	t_game	game;
-
-	game = (t_game)arg;
 	if (key == LETTER_KEY_DOWN)
-		game->move[0] = false;
+		game->key[0] = 0;
 	if (key == LETTER_KEY_UP)
-		game->move[1] = false;
+		game->key[1] = 0;
 	if (key == LETTER_KEY_LEFT)
-		game->move[2] = false;
+		game->key[2] = 0;
 	if (key == LETTER_KEY_RIGHT)
-		game->move[3] = false;
+		game->key[3] = 0;
 	if (key == ARROW_KEY_DOWN)
-		game->move[4] = false;
+		game->key[4] = 0;
 	if (key == ARROW_KEY_UP)
-		game->move[5] = false;
+		game->key[5] = 0;
 	if (key == ARROW_KEY_LEFT)
-		game->move[6] = false;
+		game->key[6] = 0;
 	if (key == ARROW_KEY_RIGHT)
-		game->move[7] = false;
+		game->key[7] = 0;
 	return (0);
 }

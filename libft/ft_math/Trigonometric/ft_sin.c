@@ -14,28 +14,25 @@
 #include "../ft_math.h"
 /* INCLUDES */
 
-#include <stdio.h>
+#define S1 -1.66666666666666324348e-01
+#define S2 8.33333333332248946124e-03
+#define S3 -1.98412698298579493134e-04
+#define S4 2.75573137070700676789e-06
+#define S5 -2.50507602534068634195e-08
+#define S6 1.58969099521155010221e-10
 
 double
 	ft_sin(register double x)
 {
-	double					result;
-	register double			term;
-	register unsigned int	epsilon;
+	double			result;
+	register double	x_x;
 
-	if (x == 0.0)
-		return (x);
-	if (ft_isinf(x))
-		return (0.0 / 0.0);
-	x = ft_fmod(x, 2.0 * M_PI);
-	epsilon = 3;
-	term = x;
-	result = x;
-	while (ft_fabs(term) > 1E-10)
-	{
-		term = -term * x * x / (epsilon * (epsilon - 1.0));
-		result += term;
-		epsilon += 2;
-	}
+	x = ((x) - ((long)(x / M_PI)) * (M_PI));
+	x_x = x * x;
+	result = (x + x_x * x * \
+		(S1 + x_x * S2 + x_x * \
+		(S3 + x_x * \
+		(S4 + x_x * \
+		(S5 + x_x * S6)))));
 	return (result);
 }

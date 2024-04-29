@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close_game.c                                       :+:      :+:    :+:   */
+/*   close_window.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 01:44:22 by hdeniz            #+#    #+#             */
-/*   Updated: 2024/03/08 01:44:25 by hdeniz           ###   ########.fr       */
+/*   Created: 2024/04/20 14:40:55 by hdeniz            #+#    #+#             */
+/*   Updated: 2024/04/20 14:40:56 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* **************************** [v] INCLUDES [v] **************************** */
+/* **************************** [V] INCLUDES [V] **************************** */
+#include "../../minilibx/mlx.h" /*
+#    int mlx_destroy_window(void *, void *);
+*/
 #include "../cub3D.h" /*
-#typedef *t_game;
-#   void free_game(t_game);
-#*/
+#typedef t_game;
+*/
 #include <stdlib.h> /*
 # define EXIT_SUCCESS
 #   void exit(int);
-#*/
+*/
 /* **************************** [^] INCLUDES [^] **************************** */
 
 int
-	close_game(void *arg)
+	close_window(t_game game)
 {
-	t_game	game;
-
-	game = (t_game)arg;
-	free_game(game);
+	mlx_destroy_window(game->mlx, game->window);
 	exit(EXIT_SUCCESS);
 }
