@@ -154,10 +154,10 @@
 /* Constants (Float) */
 
 /* Trigonometric functions */
-double		ft_sin(register double x);
+double		ft_sin(double x);
 double		ft_cos(register double x);
 /* [Float] */
-float		ft_sinf(register float x);
+float		ft_sinf(float x);
 float		ft_cosf(register float x);
 /* [Float] */
 /* Trigonometric functions */

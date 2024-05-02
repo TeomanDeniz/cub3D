@@ -25,9 +25,11 @@
 #*/
 #include "../../libft/ft_math/ft_math.h" /*
 #  float ft_lerpf(float, float, float);
+#  float ft_sinf(float);
+#  float ft_cosf(float);
+#  float ft_fmin(float, float);
+#  float ft_fabsf(float);
 #*/
-#include <math.h>
-#include "../../minilibx/mlx.h"
 /* **************************** [^] INCLUDES [^] **************************** */
 
 /* *************************** [v] PROTOTYPES [v] *************************** */
@@ -57,7 +59,7 @@ void
 	handle(game);
 	while (++index, index < game->number_of_rays)
 	{
-		render = fmin(WALL_SIZE + ft_fabsf(game->skyline - WINDOW_HEIGHT / 2), WALL_SIZE / game->ray[index].distance) * (game->ray[index].distance != 0.0);
+		render = ft_fminf(WALL_SIZE + ft_fabsf(game->skyline - WINDOW_HEIGHT / 2), WALL_SIZE / game->ray[index].distance) * (game->ray[index].distance != 0.0);
 		left_to_right = (int)(((float)index) * game->wall_pixel_width);
 		x = -1;
 		while (++x, x < game->wall_pixel_width)
@@ -123,14 +125,14 @@ extern __inline__ void
 		game->theta_target_rotation, SLICE);
 	if (game->theta_rotation < 0.0F)
 	{
-		game->theta_rotation = 6.3F;
-		game->theta_target_rotation += 6.3F;
+		game->theta_rotation = 6.283185F;
+		game->theta_target_rotation += 6.283185F;
 	}
-	if (game->theta_rotation > 6.3F)
+	if (game->theta_rotation > 6.283185F)
 	{
 		game->theta_rotation = 0.0F;
-		game->theta_target_rotation -= 6.3F;
+		game->theta_target_rotation -= 6.283185F;
 	}
-	game->cos_theta_rotation = cosf(game->theta_rotation) / 32.0F;
-	game->sin_theta_rotation = sinf(game->theta_rotation) / 32.0F;
+	game->cos_theta_rotation = ft_cosf(game->theta_rotation) / 32.0F;
+	game->sin_theta_rotation = ft_sinf(game->theta_rotation) / 32.0F;
 }

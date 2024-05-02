@@ -39,10 +39,10 @@
 /* **************************** [^] INCLUDES [^] **************************** */
 
 /* *************************** [v] PROTOTYPES [v] *************************** */
-extern inline char	*get_title(char **argv);
-extern inline void	set_key_inputs(t_game game);
-extern inline void	set_rays(t_game game);
-extern inline void	prepare_canvas(t_game game);
+extern __inline__ char	*get_title(char **argv);
+extern __inline__ void	set_key_inputs(t_game game);
+extern __inline__ void	set_rays(t_game game);
+extern __inline__ void	prepare_canvas(t_game game);
 /* *************************** [^] PROTOTYPES [^] *************************** */
 
 void
@@ -64,11 +64,11 @@ void
 	game->theta_perspective = ft_fmodf((game->perspective / 2.0F) * \
 		(M_PI_F / 180.0F) + 0.0001F, 2.0F * M_PI_F);
 	game->number_of_rays = (size_t)(game->perspective * RAY_MULTIPY);
-	game->x = 3.5; // MAP
-	game->y = 3.5; // MAP
+	game->x = 3.5F; // MAP
+	game->y = 3.5F; // MAP
 	game->target_x = game->x;
 	game->target_y = game->y;
-	game->theta_rotation = 1.57; // MAP
+	game->theta_rotation = 1.57F; // MAP
 	game->theta_target_rotation = game->theta_rotation;
 	game->wall_pixel_width = ((float)WINDOW_WIDTH / \
 		(float)game->number_of_rays);
@@ -82,7 +82,7 @@ void
 	prepare_canvas(game);
 }
 
-extern inline void
+extern __inline__ void
 	prepare_canvas(t_game game)
 {
 	game->canvas.image = \
@@ -97,7 +97,7 @@ extern inline void
 	game->canvas.size = WINDOW_WIDTH * WINDOW_HEIGHT;
 }
 
-extern inline void
+extern __inline__ void
 	set_rays(t_game game)
 {
 	register size_t	index;
@@ -113,11 +113,12 @@ extern inline void
 		game->ray[index].theta = ((index / \
 			(ft_floorf(game->perspective * RAY_MULTIPY) / 2.0F)) * \
 			game->theta_perspective) - game->theta_perspective;
+		game->ray[index].cos_theta = ft_cosf(game->ray[index].theta);
 		++index;
 	}
 }
 
-extern inline void
+extern __inline__ void
 	set_key_inputs(t_game game)
 {
 	game->key[0] = 0U;
@@ -130,7 +131,7 @@ extern inline void
 	game->key[7] = 0U;
 }
 
-extern inline char
+extern __inline__ char
 	*get_title(char **argv)
 {
 	register int	eax;

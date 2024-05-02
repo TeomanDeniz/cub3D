@@ -3,37 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cosf.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 11:38:23 by hdeniz            #+#    #+#             */
-/*   Updated: 2023/03/20 03:33:34 by hdeniz           ###   ########.fr       */
+/*   Updated: 2024/05/02 17:26:21 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* INCLUDES */
-#include "../ft_math.h"
-/* INCLUDES */
-
-#define C1 -0.5F
-#define C2 0.04166666790843009949F
-#define C3 -0.001388888922888541072845F
-#define C4 0.0000248010409741333834694453F
-#define C5 -0.00000027524696384370577306981F
-#define C6 0.00000000208765109230880597526F
+/* ************************* [v] MAGIC NUMBERS [v] ************************** */
+#define C1 4.16666666666666019037E-02F
+#define C2 -1.38888888888741095749E-03F
+#define C3 2.48015872894767294178E-05F
+#define C4 -2.75573143513906633035E-07F
+#define C5 2.08757232129817482790E-09F
+#define C6 -1.13596475577881948265E-11F
+/* ************************* [^] MAGIC NUMBERS [^] ************************** */
 
 float
 	ft_cosf(register float x)
 {
-    float			result;
-    register float	x_x;
+	float			result;
+	register float	x_x;
+	register float	magic;
+	register float	sign_bit;
 
-    x = ((x) - ((int)(x / M_PI_F)) * (M_PI_F));
-    x_x = x * x;
-    result = (1.0F + x_x * \
-    	(C1 + x_x * \
-    	(C2 + x_x * \
-    	(C3 + x_x * \
-    	(C4 + x_x * \
-    	(C5 + x_x * C6))))));
-    return (result);
+	sign_bit = 1.0F;
+	if (((x) - ((int)(x / 3.141592F)) * (3.141592F)) != \
+		((x) - ((int)(x / 6.283184F)) * (6.283184F)))
+		sign_bit = -1.0F;
+	x = ((x) - ((int)(x / 3.141592F)) * (3.141592F));
+	x_x = x * x;
+	magic = x_x * \
+		(C1 + x_x * (C2 + x_x * (C3 + x_x * (C4 + x_x * (C5 + x_x * C6)))));
+	result = (1.0F - (0.5F * x_x - x_x * magic)) * sign_bit;
+	return (result);
 }

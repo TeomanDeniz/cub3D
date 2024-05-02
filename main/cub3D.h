@@ -14,6 +14,7 @@
 # define CUB3D_H 202403
 
 #include <stdio.h> ////////////
+#include <unistd.h>
 
 /* ********************* [V] CONSTANTS - GAME SETUP [V] ********************* */
 # define SLICE 0.1
@@ -22,7 +23,7 @@
 # define RAY_MULTIPY 8
 # define PERSPECTIVE 66.0
 # define WALL_SIZE 600 // WINDOW_HEIGHT / 2 (PX)
-# define ROTATE_SPEED 0.05
+# define ROTATE_SPEED 0.03
 # define PLAYER_SPEED 0.2
 # define RENDER_EPSILON 0.01 // REMOVE
 /* ********************* [^] CONSTANTS - GAME SETUP [^] ********************* */
@@ -68,6 +69,7 @@ struct s_ray
 	float	y; // Ray's X coordinate on the map
 	float	distance; // Distance between ray and player
 	float	theta; // The angle of ray we throwed
+	float	cos_theta;
 };
 
 typedef struct s_game

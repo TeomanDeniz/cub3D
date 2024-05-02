@@ -20,7 +20,7 @@ void
 	putpixel(t_game game, register int x, register int y, register int color)
 {
 	if (x < 0 || y < 0 || \
-		(unsigned)x > game->canvas.x || (unsigned)y > game->canvas.y)
+		(unsigned)x >= game->canvas.x || (unsigned)y >= game->canvas.y)
 		return ;
 	*(unsigned int *)&game->canvas.buffer[y * game->canvas.line_length + x * \
 		(game->canvas.bits_per_pixel / 8)] = (unsigned int)color;
