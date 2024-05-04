@@ -18,81 +18,98 @@
 #  float ft_cosf(float);
 #  float ft_sinf(float);
 #        */
-#include <stdlib.h> /*
-#typedef size_t;
-#        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
-/* *************************** [V] PROTOTYPES [V] *************************** */
-extern __inline__ void	ray_going(t_game game, register size_t index);
-/* *************************** [^] PROTOTYPES [^] *************************** */
+#include <math.h>
 
 void
 	cast_rays(t_game game)
 {
-	register size_t	index;
+	register int index;
 
 	index = 0;
 	while (index < game->number_of_rays)
 	{
-		game->ray[index].distance = 0.0;
-		ray_going(game, index);
-		game->ray[index].distance *= game->ray[index].cos_theta;
+		float cell_step_x = 0;
+		float cell_step_y = 0;
+		float ray_direction_x = cos(game->theta_rotation + game->ray[index].theta);
+		float ray_direction_y = -sin(game->theta_rotation + game->ray[index].theta);
+		float ray_length = 0;
+		float ray_start_x = game->x;
+		float ray_start_y = game->y;
+		float x_ray_length = 0;
+		float y_ray_length = 0;
+		float x_ray_unit_length = (float)(sqrt(1 + (ray_direction_y / ray_direction_x) * (ray_direction_y / ray_direction_x)));
+		float y_ray_unit_length = (float)(sqrt(1 + (ray_direction_x / ray_direction_y) * (ray_direction_x / ray_direction_y)));
+
+		game->ray[index].x = (unsigned char)(floor(ray_start_x));
+		game->ray[index].y = (unsigned char)(floor(ray_start_y));
+		if (0 > ray_direction_x)
+		{
+			cell_step_x = -1;
+			x_ray_length = x_ray_unit_length * (ray_start_x - game->ray[index].x);
+		}
+		else if (0 < ray_direction_x)
+		{
+			cell_step_x = 1;
+
+			x_ray_length = x_ray_unit_length * (1 + game->ray[index].x - ray_start_x);
+		}
+		else
+			cell_step_x = 0;
+		if (0 > ray_direction_y)
+		{
+			cell_step_y = -1;
+
+			y_ray_length = y_ray_unit_length * (ray_start_y - game->ray[index].y);
+		}
+		else if (0 < ray_direction_y)
+		{
+			cell_step_y = 1;
+
+			y_ray_length = y_ray_unit_length * (1 + game->ray[index].y - ray_start_y);
+		}
+		else
+			cell_step_y = 0;
+		while (ray_length < RENDER_DISTANCE)
+		{
+			if (x_ray_length < y_ray_length)
+			{
+				ray_length = x_ray_length;
+				x_ray_length += x_ray_unit_length;
+
+				game->ray[index].x += cell_step_x;
+			}
+			else if (x_ray_length > y_ray_length)
+			{
+				ray_length = y_ray_length;
+				y_ray_length += y_ray_unit_length;
+
+				game->ray[index].y += cell_step_y;
+			}
+			else
+			{
+				ray_length = x_ray_length;
+				x_ray_length += x_ray_unit_length;
+				y_ray_length += y_ray_unit_length;
+				game->ray[index].x += cell_step_x;
+				game->ray[index].y += cell_step_y;
+			}
+			if (game->ray[index].x < 0.0F)
+				game->ray[index].x = 0.0F;
+			if (game->ray[index].y < 0.0F)
+				game->ray[index].y = 0.0F;
+			if (game->ray[index].x >= (float)game->map_width)
+				game->ray[index].x = (float)game->map_width - 1.0F;
+			if (game->ray[index].y >= (float)game->map_height)
+				game->ray[index].y = (float)game->map_height - 1.0F;
+			if (game->map[(int)game->ray[index].y][(int)game->ray[index].x] == '1' || \
+				game->map[(int)(game->ray[index].y + 0.01F)][(int)game->ray[index].x] == '1')
+			{
+				game->ray[index].distance = ft_fminf(RENDER_DISTANCE, ray_length) * game->ray[index].cos_theta;
+				break ;
+			}
+		}
 		++index;
 	}
 }
-
-extern __inline__ void
-	ray_going(t_game game, register size_t index)
-{
-	register float	ray_angle;
-	register float	x;
-	register float	y;
-
-	while (1)
-	{
-		ray_angle = game->theta_rotation - game->ray[index].theta;
-		x = game->ray[index].distance * ft_sinf(ray_angle) + game->x;
-		y = game->ray[index].distance * ft_cosf(ray_angle) + game->y;
-		if (x < 0.0F)
-			x = 0.0F;
-		if (y < 0.0F)
-			y = 0.0F;
-		if (x >= (float)game->map_weight)
-			x = (float)game->map_weight - 1.0F;
-		if (y >= (float)game->map_height)
-			y = (float)game->map_height - 1.0F;
-		if (game->map[(int)y][(int)x] == '1' || \
-			game->map[(int)(y + 0.01F)][(int)x] == '1')
-			return ;
-		game->ray[index].distance += RENDER_EPSILON;
-		putpixel(game, x * 10, y * 10, 0X6666FF);
-	}
-}
-/*
-extern __inline__ void
-	teleport_rays(t_game game)
-{
-	register int	jump_x;
-	register int	jump_y;
-	register float	x;
-	register float	y;
-	register float	tan_rotation;
-
-	jump_x = (fmodf(1.0F - game->y, 1.0F));
-	jump_y = (fmodf(1.0F - game->x, 1.0F));
-	tan_rotation = tanf(game->theta_rotation);
-	while (1)
-	{
-		x = (jump_x * 1.0F / tan_rotation + game->x);
-		y = (jump_y * tan_rotation + game->y);
-		if (jump_y < x)
-		{
-			++jump_y;
-		}
-		else
-		{
-			++jump_x;
-		}
-	}
-}*/

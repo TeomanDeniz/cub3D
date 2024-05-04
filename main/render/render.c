@@ -19,17 +19,14 @@
 # define SLICE
 #typedef t_game;
 #   void putpixel(t_game, int, int, uint);
-#*/
-#include <stdlib.h> /*
-#typedef size_t;
-#*/
+#        */
 #include "../../libft/ft_math/ft_math.h" /*
 #  float ft_lerpf(float, float, float);
 #  float ft_sinf(float);
 #  float ft_cosf(float);
 #  float ft_fmin(float, float);
 #  float ft_fabsf(float);
-#*/
+#        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 /* *************************** [v] PROTOTYPES [v] *************************** */
@@ -49,7 +46,7 @@ extern __inline__ int
 void
 	render(t_game game)
 {
-	register size_t	index;
+	register int	index;
 	register int	left_to_right;
 	register int	y;
 	register int	x;
@@ -87,23 +84,23 @@ extern __inline__ void
 {
 	if (game->key[0]) // s
 	{
-		game->target_x -= game->sin_theta_rotation;
-		game->target_y -= game->cos_theta_rotation;
+		game->target_x -= game->cos_theta_rotation;
+		game->target_y += game->sin_theta_rotation;
 	}
 	if (game->key[1]) // w
-	{
-		game->target_x += game->sin_theta_rotation;
-		game->target_y += game->cos_theta_rotation;
-	}
-	if (game->key[2]) // d
 	{
 		game->target_x += game->cos_theta_rotation;
 		game->target_y -= game->sin_theta_rotation;
 	}
+	if (game->key[2]) // d
+	{
+		game->target_x += game->sin_theta_rotation;
+		game->target_y += game->cos_theta_rotation;
+	}
 	if (game->key[3]) // a
 	{
-		game->target_x -= game->cos_theta_rotation;
-		game->target_y += game->sin_theta_rotation;
+		game->target_x -= game->sin_theta_rotation;
+		game->target_y -= game->cos_theta_rotation;
 	}
 	game->x = ft_lerpf(game->x, game->target_x, SLICE);
 	game->y = ft_lerpf(game->y, game->target_y, SLICE);
@@ -117,9 +114,9 @@ extern __inline__ void
 	if (game->key[5])
 		game->target_skyline += 30.0F;
 	if (game->key[6])
-		game->theta_target_rotation += ROTATE_SPEED;
-	if (game->key[7])
 		game->theta_target_rotation -= ROTATE_SPEED;
+	if (game->key[7])
+		game->theta_target_rotation += ROTATE_SPEED;
 	game->skyline = ft_lerpf(game->skyline, game->target_skyline, SLICE);
 	game->theta_rotation = ft_lerpf(game->theta_rotation, \
 		game->theta_target_rotation, SLICE);

@@ -25,7 +25,8 @@
 # define WALL_SIZE 600 // WINDOW_HEIGHT / 2 (PX)
 # define ROTATE_SPEED 0.03
 # define PLAYER_SPEED 0.2
-# define RENDER_EPSILON 0.01 // REMOVE
+# define CELL_SIZE 1.0F // ???
+# define RENDER_DISTANCE 100.0F // LIMIT OF RENDER DISTANCE
 /* ********************* [^] CONSTANTS - GAME SETUP [^] ********************* */
 
 /* ******************* [v] CONSTANTS - ERROR MESSAGES [v] ******************* */
@@ -70,6 +71,11 @@ struct s_ray
 	float	distance; // Distance between ray and player
 	float	theta; // The angle of ray we throwed
 	float	cos_theta;
+	float	sin_theta;
+	float	x_distance; // The total distance of only ray's x position
+	float	y_distance; // The total distance of only ray's y position
+	float	x_teleport_distance; // Distance between 2 grids of x_theta
+	float	y_teleport_distance; // Distance between 2 grids of y_theta
 };
 
 typedef struct s_game
@@ -101,15 +107,23 @@ typedef struct s_game
 	float			wall_pixel_width; // A calculation for... Idk
 	float			skyline; // The Z coordinate of walls
 	float			target_skyline; // For smooting lerp()
-	size_t			number_of_rays; // The number of rays in the perspective
+	int				number_of_rays; // The number of rays in the perspective
 	struct s_ray	*ray; // Rays
 	/* [^]			MATH FORMULAS [^] */
 
 	/* [v]			MAP [v] */
 	char			**map; // Map lol
-	int				map_weight; // map[ ][*]
+	int				map_width; // map[ ][*]
 	int				map_height; // map[*][ ]
 	/* [^]			MAP [^] */
+
+	/* [v]			SOME EXTRA VARIABLES FOR THROWING RAY [v] */
+	float			jump_x; // Jumping x for calculating y [y][jump_x]
+	float			jump_y; // Jumping y for calculating x [jump_y][x]
+	float			add_x; // Adder to jump_x variable += (-1 || 0 || 1)
+	float			add_y; // Adder to jump_y variable += (-1 || 0 || 1)
+	unsigned int	touching_corner; // If both x&y of ray touching corner
+	/* [^]			SOME EXTRA VARIABLES FOR THROWING RAY [^] */
 }	*t_game;
 /* ***************************** [^] STRUCTS [^] **************************** */
 

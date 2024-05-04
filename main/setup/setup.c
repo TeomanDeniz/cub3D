@@ -21,6 +21,7 @@
 #    int ft_matrixlen(char **);
 #        */
 #include "../cub3D.h" /*
+# define CELL_SIZE
 # define WINDOW_WIDTH
 # define WINDOW_HEIGHT
 # define PERSPECTIVE
@@ -63,7 +64,7 @@ void
 	game->perspective = PERSPECTIVE;
 	game->theta_perspective = ft_fmodf((game->perspective / 2.0F) * \
 		(M_PI_F / 180.0F) + 0.0001F, 2.0F * M_PI_F);
-	game->number_of_rays = (size_t)(game->perspective * RAY_MULTIPY);
+	game->number_of_rays = (int)(game->perspective * RAY_MULTIPY);
 	game->x = 3.5F; // MAP
 	game->y = 3.5F; // MAP
 	game->target_x = game->x;
@@ -72,7 +73,7 @@ void
 	game->theta_target_rotation = game->theta_rotation;
 	game->wall_pixel_width = ((float)WINDOW_WIDTH / \
 		(float)game->number_of_rays);
-	game->map_weight = ft_strlen(*game->map);
+	game->map_width = ft_strlen(*game->map);
 	game->map_height = ft_matrixlen(game->map);
 	game->skyline = (float)(WINDOW_HEIGHT / 2);
 	game->target_skyline = game->skyline;
@@ -100,7 +101,7 @@ extern __inline__ void
 extern __inline__ void
 	set_rays(t_game game)
 {
-	register size_t	index;
+	register int	index;
 
 	game->ray = (struct s_ray *) malloc(sizeof(struct s_ray) * RAY_MULTIPY * \
 		game->perspective);
@@ -109,7 +110,6 @@ extern __inline__ void
 	index = 0;
 	while (index < game->number_of_rays)
 	{
-		game->ray[index].distance = 0.0F;
 		game->ray[index].theta = ((index / \
 			(ft_floorf(game->perspective * RAY_MULTIPY) / 2.0F)) * \
 			game->theta_perspective) - game->theta_perspective;

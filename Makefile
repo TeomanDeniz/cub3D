@@ -41,7 +41,11 @@ LIBFT_SRC	=	./libft/memory/ft_free_matrix.c \
 				./libft/ft_math/Rounding_Remainder/ft_floorf.c \
 				./libft/ft_math/Rounding_Remainder/ft_fmodf.c \
 				./libft/ft_math/Floating-point_Classification/ft_isnan.c \
-				./libft/ft_math/Floating-point_Classification/ft_isinf.c
+				./libft/ft_math/Floating-point_Classification/ft_isinf.c \
+				./libft/ft_math/Power/ft_powf.c \
+				./libft/ft_math/Power/ft_sqrtf.c \
+				./libft/ft_math/Exponential_Logarithmic/ft_expf.c \
+				./libft/ft_math/Exponential_Logarithmic/ft_logf.c
 
 MAIN_SRC	=	$(LIBFT_SRC) \
 				./main/exit_functions/game_error.c \

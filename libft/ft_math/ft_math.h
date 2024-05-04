@@ -176,6 +176,13 @@ int			ft_isinf(register double x);
 int			ft_isnan(register double x);
 /* Floating-point Classification functions */
 
+/* Power functions */
+/* [Float] */
+float		ft_powf(register float base, register float power);
+float		ft_sqrtf(register float x);
+/* [Float] */
+/* Power functions */
+
 /* Other functions */
 double		ft_fabs(register double x);
 double		ft_fmin(register double x, register double y);
@@ -188,5 +195,12 @@ float		ft_fmaxf(register float x, register float y);
 float		ft_lerpf(register float x, register float y, register float f);
 /* [Float] */
 /* Other functions */
+
+/* Exponential and Logarithmic functions */
+/* [Float] */
+float		ft_expf(register float x);
+float		ft_logf(register float x);
+/* [Float] */
+/* Exponential and Logarithmic functions */
 
 #endif /* FT_MATH_H */
