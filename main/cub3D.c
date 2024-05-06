@@ -12,23 +12,22 @@
 
 /* **************************** [V] INCLUDES [V] **************************** */
 #include "../minilibx/mlx.h" /*
-#    int mlx_loop(void *);
-#    int mlx_clear_window(void *, void *);
-#   void *mlx_new_window(void *, int, int, char const *);
-#   void *mlx_new_image(void *, int, int);
-#   char *mlx_get_data_addr(void *, int *, int *, int *);
+#    int mlx_put_image_to_window(void *, void *, void *, int, int);
 #    int mlx_hook(void *, int, int, int (*f)(), void *);
-#    int mlx_destroy_window(void *, void *);
+#    int mlx_loop_hook(void *, int (*f)(), void *);
+#    int mlx_loop(void *);
 #        */
-#include "cub3D.h" /*
+#include "./cub3D.h" /*
 # struct s_game;
 #typedef t_game;
+#   void input_events(t_game);
+#   void skybox(t_game, int, int);
+#   void render(t_game);
+#   void cast_rays(t_game);
+#   void setup(t_game, int, char **);
+#    int close_window(t_game);
 #    int key_down(int, t_game);
 #    int key_up(int, t_game);
-#    int close_game(t_game);
-#   void skybox(t_game, int, int);
-#   void setup(t_game, int, char **);
-#   void cast_rays(t_game);
 #        */
 #include <stdlib.h> /*
 # define EXIT_SUCCESS
@@ -38,9 +37,10 @@
 int
 	loop(void *arg)
 {
-	t_game		game;
+	t_game	game;
 
 	game = (t_game)arg;
+	input_events(game);
 	skybox(game, 0X222222, 0X666666);
 	render(game);
 	cast_rays(game);
@@ -53,15 +53,15 @@ int
 {
 	struct s_game	game;
 
-	game.map = (char *[])\
+	game.map = (char *[]) \
 	{\
 		"111111111", \
 		"100000001", \
 		"100100001", \
 		"101000001", \
 		"100100001", \
-		"100000001", \
-		"111111111", \
+		"100000000", \
+		"000000100", \
 		NULL
 	};
 	setup(&game, argc, argv);

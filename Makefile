@@ -35,7 +35,10 @@ LIBFT_SRC	=	./libft/memory/ft_free_matrix.c \
 				./libft/string/ft_matrixlen.c \
 				./libft/ft_math/Other/ft_lerpf.c \
 				./libft/ft_math/Other/ft_fabsf.c \
+				./libft/ft_math/Other/ft_iabs.c \
 				./libft/ft_math/Other/ft_fminf.c \
+				./libft/ft_math/Other/ft_fmaxf.c \
+				./libft/ft_math/Other/ft_imax.c \
 				./libft/ft_math/Trigonometric/ft_sinf.c \
 				./libft/ft_math/Trigonometric/ft_cosf.c \
 				./libft/ft_math/Rounding_Remainder/ft_floorf.c \
@@ -50,13 +53,15 @@ LIBFT_SRC	=	./libft/memory/ft_free_matrix.c \
 MAIN_SRC	=	$(LIBFT_SRC) \
 				./main/exit_functions/game_error.c \
 				./main/exit_functions/close_window.c \
+				./main/exit_functions/free_game.c \
 				./main/setup/setup.c \
 				./main/events/key_down.c \
 				./main/events/key_up.c \
-				./main/render/cast_rays.c \
-				./main/render/render.c \
-				./main/render/putpixel.c \
-				./main/render/skybox.c
+				./main/game/input_events.c \
+				./main/game/cast_rays.c \
+				./main/game/render.c \
+				./main/game/putpixel.c \
+				./main/game/skybox.c
 # *************************** [^] MAIN SOURCES [^] *************************** #
 
 # ************************** [v] BONUS SOURCES [v] *************************** #

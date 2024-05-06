@@ -39,7 +39,7 @@ char
 	}
 	result[num_digits] = '\0';
 	while (((num_digits - 1U) >= 0) && ((unsigned int)number > 0))
-	{	
+	{
 		result[num_digits - 1U] = ((unsigned int)number % 10) + '0';
 		number = (unsigned int)number / 10;
 		--num_digits;

@@ -17,6 +17,9 @@
 #typedef *t_game;
 #   void putpixel(t_game, int, int, uint);
 #        */
+#include "../../libft/ft_math/ft_math.h" /*
+#    int ft_imax(int, int);
+#        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 void
@@ -25,8 +28,8 @@ void
 	register int	x;
 	register int	y;
 
-	y = 0;
-	while (y < (int)game->skyline)
+	y = -1;
+	while (++y, y < (int)game->skyline && y < WINDOW_HEIGHT)
 	{
 		x = 0;
 		while (x < WINDOW_WIDTH)
@@ -34,9 +37,8 @@ void
 			putpixel(game, x, y, (unsigned)floor);
 			++x;
 		}
-		++y;
 	}
-	y = (int)game->skyline;
+	y = ft_imax((int)game->skyline, 0);
 	while (y < WINDOW_HEIGHT)
 	{
 		x = 0;

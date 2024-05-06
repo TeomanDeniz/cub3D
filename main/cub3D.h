@@ -24,9 +24,11 @@
 # define PERSPECTIVE 66.0
 # define WALL_SIZE 600 // WINDOW_HEIGHT / 2 (PX)
 # define ROTATE_SPEED 0.03
-# define PLAYER_SPEED 0.2
+# define PLAYER_SPEED 1.5
 # define CELL_SIZE 1.0F // ???
-# define RENDER_DISTANCE 100.0F // LIMIT OF RENDER DISTANCE
+# define RENDER_DISTANCE 500.0F // LIMIT OF RENDER DISTANCE
+# define SHADOW_DISTANCE 40.0F
+# define SHADOW_ON 1 // SHOW SHADOW EFFECT OR NOT (1/0)
 /* ********************* [^] CONSTANTS - GAME SETUP [^] ********************* */
 
 /* ******************* [v] CONSTANTS - ERROR MESSAGES [v] ******************* */
@@ -52,6 +54,36 @@
 /* **************************** [^] INCLUDES [^] **************************** */
 
 /* ***************************** [V] STRUCTS [V] **************************** */
+typedef struct s_render // A struct only used at ./game/render.c
+{
+	float	z; // We have X and Y, so Z is also for looking up and down.
+	int		wall_height; // The wall height... That's all lol
+	int		ray_width; // The left to right rendering for per ray
+	float	check_up; // The limit of drawing top wall
+	float	check_down; // The limit of drawing bottom wall
+	float	middle_to_up; // Calculate the start point of wall (to top)
+	float	middle_to_down; // Calculate the start point of wall (to down)
+	int		index; // Ray index
+	float	x; // Left to right rendering
+	float	fade_color; // For fading the walls to shadows
+}	t_render;
+
+typedef struct s_lidar // A struct only used at ./game/cast_rays.c
+{
+	float	jump_x; // Jumping x for calculating y [y][jump_x]
+	float	jump_y; // Jumping y for calculating x [jump_y][x]
+	float	add_x; // Adder to jump_x variable += (-1 || 0 || 1)
+	float	add_y; // Adder to jump_y variable += (-1 || 0 || 1)
+	float	ray_length; // Total ray length that we sended
+	float	cos_theta; // Cos radiant of our rotation + ray angle
+	float	sin_theta; // -Sin radiant of our rotation + ray angle
+	float	x_distance; // The total distance of only ray's x position
+	float	y_distance; // The total distance of only ray's y position
+	float	x_start; // The start distance of the ray (x coordinate)
+	float	y_start; // The start distance of the ray (y coordinate)
+	int		index; // Index of the ray we are throwing
+}	t_lidar;
+
 typedef struct s_image
 {
 	void			*image; // Original image pointer. For MLX of course!
@@ -70,34 +102,38 @@ struct s_ray
 	float	y; // Ray's X coordinate on the map
 	float	distance; // Distance between ray and player
 	float	theta; // The angle of ray we throwed
-	float	cos_theta;
-	float	sin_theta;
-	float	x_distance; // The total distance of only ray's x position
-	float	y_distance; // The total distance of only ray's y position
-	float	x_teleport_distance; // Distance between 2 grids of x_theta
-	float	y_teleport_distance; // Distance between 2 grids of y_theta
+	float	cos_theta; // cos(ray.theta) for fixing fish eye effect
+};
+
+struct s_key
+{
+	unsigned char	a : 1; // PRO-TIP: Bit fields :3
+	unsigned char	d : 1;
+	unsigned char	w : 1;
+	unsigned char	s : 1;
+	unsigned char	arrow_l : 1;
+	unsigned char	arrow_r : 1;
+	unsigned char	arrow_u : 1;
+	unsigned char	arrow_d : 1;
 };
 
 typedef struct s_game
 {
 	/* [v]			MLX [v] */
-	void			*mlx; // MiniLibX MLX PTR
-	void			*window; // MiniLibX Window PTR
+	void			*mlx; // MiniLibX itself
+	void			*window; // MiniLibX Window
 	char			*window_title; // Window name
+	int				window_height_center; // WINDOW_HEIGHT / 2
 	char			**argv;
 	int				argc;
 	t_image			canvas; // The real paint
-	/* [^]			MLX [^] */
-
 	/* [v]			CHARACTER VALUES [v] */
 	float			perspective; // The perspective
 	float			x; // Player X coordinate on the map
 	float			y; // Player Y coordinate on the map
 	float			target_x; // For smooting lerp()
 	float			target_y; // For smooting lerp()
-	unsigned int	key[8]; // Key input (They are actually bool, 1/0)
-	/* [^]			CHARACTER VALUES [^] */
-
+	struct s_key	key; // Key input (They are actually bool, 1/0)
 	/* [v]			MATH FORMULAS [v] */
 	float			theta_rotation; // Angle of player rotation
 	float			theta_target_rotation; // For smooting lerp()
@@ -109,27 +145,17 @@ typedef struct s_game
 	float			target_skyline; // For smooting lerp()
 	int				number_of_rays; // The number of rays in the perspective
 	struct s_ray	*ray; // Rays
-	/* [^]			MATH FORMULAS [^] */
-
 	/* [v]			MAP [v] */
 	char			**map; // Map lol
 	int				map_width; // map[ ][*]
 	int				map_height; // map[*][ ]
-	/* [^]			MAP [^] */
-
-	/* [v]			SOME EXTRA VARIABLES FOR THROWING RAY [v] */
-	float			jump_x; // Jumping x for calculating y [y][jump_x]
-	float			jump_y; // Jumping y for calculating x [jump_y][x]
-	float			add_x; // Adder to jump_x variable += (-1 || 0 || 1)
-	float			add_y; // Adder to jump_y variable += (-1 || 0 || 1)
-	unsigned int	touching_corner; // If both x&y of ray touching corner
-	/* [^]			SOME EXTRA VARIABLES FOR THROWING RAY [^] */
 }	*t_game;
 /* ***************************** [^] STRUCTS [^] **************************** */
 
 /* ************************ [V] ./exit_functions [V] ************************ */
 extern void	game_error(t_game game, char *message);
 extern int	close_window(t_game game);
+extern void	free_game(t_game game);
 /* ************************ [^] ./exit_functions [^] ************************ */
 
 /* **************************** [V] ./events [V] **************************** */
@@ -141,13 +167,14 @@ extern int	key_up(int key, t_game game);
 extern void	setup(t_game game, int argc, char **argv);
 /* **************************** [^] ./setup [^] ***************************** */
 
-/* **************************** [v] ./render [v] **************************** */
+/* ***************************** [v] ./game [v] ***************************** */
 extern void	render(t_game game);
 extern void	cast_rays(t_game game);
 extern void	putpixel(t_game game, register int x, register int y, \
 register int color);
 extern void	skybox(t_game game, register int ground, register int floor);
-/* **************************** [^] ./render [^] **************************** */
+extern void	input_events(t_game game);
+/* ***************************** [^] ./game [^] ***************************** */
 
 /****************************************************************************\
 |*                        MINILIBX EVENT HOOK LIST                          *|

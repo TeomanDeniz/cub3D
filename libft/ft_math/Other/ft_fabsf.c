@@ -15,7 +15,7 @@
 /* INCLUDES */
 
 float
-	ft_fabsf(register float x)
+	ft_fabsf(float x)
 {
 	if (ft_isnan(x))
 		return (-(0.0F / 0.0F));

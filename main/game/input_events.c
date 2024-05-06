@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   input_events.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,68 +12,25 @@
 
 /* **************************** [v] INCLUDES [v] **************************** */
 #include "../cub3D.h" /*
-# define WINDOW_HEIGHT
-# define WALL_SIZE
 # define ROTATE_SPEED
 # define PLAYER_SPEED
 # define SLICE
 #typedef t_game;
-#   void putpixel(t_game, int, int, uint);
 #        */
 #include "../../libft/ft_math/ft_math.h" /*
 #  float ft_lerpf(float, float, float);
 #  float ft_sinf(float);
 #  float ft_cosf(float);
-#  float ft_fmin(float, float);
-#  float ft_fabsf(float);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 /* *************************** [v] PROTOTYPES [v] *************************** */
 extern __inline__ void	rotation_handle(t_game game);
 extern __inline__ void	movement_handle(t_game game);
-extern __inline__ void	handle(t_game game);
 /* *************************** [^] PROTOTYPES [^] *************************** */
 
-extern __inline__ int
-	int_max(int a, int b)
-{
-	if (a > b)
-		return (a);
-	return (b);
-}
-
 void
-	render(t_game game)
-{
-	register int	index;
-	register int	left_to_right;
-	register int	y;
-	register int	x;
-	register float	render;
-
-	index = -1;
-	handle(game);
-	while (++index, index < game->number_of_rays)
-	{
-		render = ft_fminf(WALL_SIZE + ft_fabsf(game->skyline - WINDOW_HEIGHT / 2), WALL_SIZE / game->ray[index].distance) * (game->ray[index].distance != 0.0);
-		left_to_right = (int)(((float)index) * game->wall_pixel_width);
-		x = -1;
-		while (++x, x < game->wall_pixel_width)
-		{
-			y = 0;
-			while ((int)(((float)y) < render))
-			{
-				putpixel(game, left_to_right + x, game->skyline - y, int_max(0XFFFFFF - ((((int)(game->ray[index].distance * 40)) << 8) + (((int)(game->ray[index].distance * 40)) << 16) + ((int)(game->ray[index].distance * 40))), 0));
-				putpixel(game, left_to_right + x, game->skyline + y, int_max(0XFFFFFF - ((((int)(game->ray[index].distance * 40)) << 8) + (((int)(game->ray[index].distance * 40)) << 16) + ((int)(game->ray[index].distance * 40))), 0));
-				++y;
-			}
-		}
-	}
-}
-
-extern __inline__ void
-	handle(t_game game)
+	input_events(t_game game)
 {
 	movement_handle(game);
 	rotation_handle(game);
@@ -82,25 +39,25 @@ extern __inline__ void
 extern __inline__ void
 	movement_handle(t_game game)
 {
-	if (game->key[0]) // s
+	if (game->key.s)
 	{
 		game->target_x -= game->cos_theta_rotation;
 		game->target_y += game->sin_theta_rotation;
 	}
-	if (game->key[1]) // w
+	if (game->key.w)
 	{
 		game->target_x += game->cos_theta_rotation;
 		game->target_y -= game->sin_theta_rotation;
 	}
-	if (game->key[2]) // d
-	{
-		game->target_x += game->sin_theta_rotation;
-		game->target_y += game->cos_theta_rotation;
-	}
-	if (game->key[3]) // a
+	if (game->key.d)
 	{
 		game->target_x -= game->sin_theta_rotation;
 		game->target_y -= game->cos_theta_rotation;
+	}
+	if (game->key.a)
+	{
+		game->target_x += game->sin_theta_rotation;
+		game->target_y += game->cos_theta_rotation;
 	}
 	game->x = ft_lerpf(game->x, game->target_x, SLICE);
 	game->y = ft_lerpf(game->y, game->target_y, SLICE);
@@ -109,14 +66,14 @@ extern __inline__ void
 extern __inline__ void
 	rotation_handle(t_game game)
 {
-	if (game->key[4])
-		game->target_skyline -= 30.0F;
-	if (game->key[5])
-		game->target_skyline += 30.0F;
-	if (game->key[6])
+	if (game->key.arrow_l)
 		game->theta_target_rotation -= ROTATE_SPEED;
-	if (game->key[7])
+	if (game->key.arrow_r)
 		game->theta_target_rotation += ROTATE_SPEED;
+	if (game->key.arrow_u)
+		game->target_skyline += 30.0F;
+	if (game->key.arrow_d)
+		game->target_skyline -= 30.0F;
 	game->skyline = ft_lerpf(game->skyline, game->target_skyline, SLICE);
 	game->theta_rotation = ft_lerpf(game->theta_rotation, \
 		game->theta_target_rotation, SLICE);
@@ -130,6 +87,8 @@ extern __inline__ void
 		game->theta_rotation = 0.0F;
 		game->theta_target_rotation -= 6.283185F;
 	}
-	game->cos_theta_rotation = ft_cosf(game->theta_rotation) / 32.0F;
-	game->sin_theta_rotation = ft_sinf(game->theta_rotation) / 32.0F;
+	game->cos_theta_rotation = (ft_cosf(game->theta_rotation) / 32.0F) \
+		* PLAYER_SPEED;
+	game->sin_theta_rotation = (ft_sinf(game->theta_rotation) / 32.0F) \
+		* PLAYER_SPEED;
 }

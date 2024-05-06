@@ -17,7 +17,7 @@
 /* **************************** [^] INCLUDES [^] **************************** */
 
 void
-	*ft_memcpy(void *destination, const void *const source, size_t number);
+	*ft_memcpy(void *destination, const void *const source, size_t number)
 {
 	register size_t	index;
 	const char		*buffer1;

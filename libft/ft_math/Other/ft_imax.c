@@ -1,29 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close_window.c                                     :+:      :+:    :+:   */
+/*   ft_imax.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 14:40:55 by hdeniz            #+#    #+#             */
-/*   Updated: 2024/04/20 14:40:56 by hdeniz           ###   ########.fr       */
+/*   Created: 2024/03/08 07:26:06 by hdeniz            #+#    #+#             */
+/*   Updated: 2024/03/08 07:26:07 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* **************************** [V] INCLUDES [V] **************************** */
-#include "../cub3D.h" /*
-#typedef t_game;
-#   void free_game(t_game);
-#        */
-#include <stdlib.h> /*
-# define EXIT_SUCCESS
-#   void exit(int);
-#        */
-/* **************************** [^] INCLUDES [^] **************************** */
-
 int
-	close_window(t_game game)
+	ft_imax(int a, int b)
 {
-	free_game(game);
-	exit(EXIT_SUCCESS);
+	if (a > b)
+		return (a);
+	return (b);
 }

@@ -13,13 +13,11 @@
 /* **************************** [V] INCLUDES [V] **************************** */
 #include "../cub3D.h" /*
 #typedef t_game;
+#   void free_game(t_game);
 #        */
 #include <stdlib.h> /*
 # define EXIT_FAILURE 1
 #   void exit(int);
-#        */
-#include "../../minilibx/mlx.h" /*
-#    int mlx_destroy_window(void *, void *);
 #        */
 #include "../../libft/libft.h" /*
 #    int ft_strlen(char *);
@@ -34,6 +32,6 @@ void
 {
 	write(2, message, ft_strlen(message));
 	write(2, "\n", 1);
-	mlx_destroy_window(game->mlx, game->window);
+	free_game(game);
 	exit(EXIT_FAILURE);
 }

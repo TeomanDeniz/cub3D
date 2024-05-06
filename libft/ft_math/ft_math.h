@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_math.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 18:17:45 by hdeniz            #+#    #+#             */
-/*   Updated: 2023/08/13 22:20:21 by hdeniz           ###   ########.fr       */
+/*   Updated: 2024/05/06 04:05:21 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_MATH_H
-# define FT_MATH_H 20230813L
+# define FT_MATH_H 202405
 
 /* Constants */
 # ifndef M_E
@@ -154,52 +154,55 @@
 /* Constants (Float) */
 
 /* Trigonometric functions */
-double		ft_sin(double x);
-double		ft_cos(register double x);
+extern double	ft_sin(double x);
+extern double	ft_cos(register double x);
 /* [Float] */
-float		ft_sinf(float x);
-float		ft_cosf(register float x);
+extern float	ft_sinf(float x);
+extern float	ft_cosf(register float x);
 /* [Float] */
 /* Trigonometric functions */
 
 /* Rounding and Remainder functions */
-double		ft_floor(register double x);
-double		ft_fmod(register double x, register double y);
+extern double	ft_floor(register double x);
+extern double	ft_fmod(register double x, register double y);
 /* [Float] */
-float		ft_floorf(register float x);
-float		ft_fmodf(register float x, register float y);
+extern float	ft_floorf(register float x);
+extern float	ft_fmodf(register float x, register float y);
 /* [Float] */
 /* Rounding and Remainder functions */
 
 /* Floating-point Classification functions */
-int			ft_isinf(register double x);
-int			ft_isnan(register double x);
+extern int		ft_isinf(register double x);
+extern int		ft_isnan(register double x);
 /* Floating-point Classification functions */
 
 /* Power functions */
 /* [Float] */
-float		ft_powf(register float base, register float power);
-float		ft_sqrtf(register float x);
+extern float	ft_powf(register float base, register float power);
+extern float	ft_sqrtf(register float x);
 /* [Float] */
 /* Power functions */
 
 /* Other functions */
-double		ft_fabs(register double x);
-double		ft_fmin(register double x, register double y);
-double		ft_fmax(register double x, register double y);
-double		ft_lerp(register double x, register double y, register double f);
+extern double	ft_fabs(double x);
+extern int		ft_iabs(int x);
+extern double	ft_fmin(register double x, register double y);
+extern double	ft_fmax(register double x, register double y);
+extern double	ft_lerp(register double x, register double y, register \
+double f);
+extern int		ft_imax(int a, int b);
 /* [Float] */
-float		ft_fabsf(register float x);
-float		ft_fminf(register float x, register float y);
-float		ft_fmaxf(register float x, register float y);
-float		ft_lerpf(register float x, register float y, register float f);
+extern float	ft_fabsf(float x);
+extern float	ft_fminf(register float x, register float y);
+extern float	ft_fmaxf(register float x, register float y);
+extern float	ft_lerpf(register float x, register float y, register float f);
 /* [Float] */
 /* Other functions */
 
 /* Exponential and Logarithmic functions */
 /* [Float] */
-float		ft_expf(register float x);
-float		ft_logf(register float x);
+extern float	ft_expf(register float x);
+extern float	ft_logf(register float x);
 /* [Float] */
 /* Exponential and Logarithmic functions */
 

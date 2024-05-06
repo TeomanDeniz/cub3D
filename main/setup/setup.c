@@ -12,6 +12,7 @@
 
 /* **************************** [V] INCLUDES [V] **************************** */
 #include "../../minilibx/mlx.h" /*
+#   void *mlx_init(void);
 #   void *mlx_new_window(void *, int, int, char *);
 #   void *mlx_new_image(void *, int, int);
 #   char *mlx_get_data_addr(void *, int *, int *, int *);
@@ -21,7 +22,6 @@
 #    int ft_matrixlen(char **);
 #        */
 #include "../cub3D.h" /*
-# define CELL_SIZE
 # define WINDOW_WIDTH
 # define WINDOW_HEIGHT
 # define PERSPECTIVE
@@ -34,8 +34,10 @@
 #        */
 #include "../../libft/ft_math/ft_math.h" /*
 # define M_PI_F
-#  float ft_floorf(float);
 #  float ft_fmodf(float, float);
+#  float ft_cosf(float);
+#  float ft_sinf(float);
+#  float ft_floorf(float);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
@@ -43,7 +45,7 @@
 extern __inline__ char	*get_title(char **argv);
 extern __inline__ void	set_key_inputs(t_game game);
 extern __inline__ void	set_rays(t_game game);
-extern __inline__ void	prepare_canvas(t_game game);
+extern __inline__ void	setup2(t_game game);
 /* *************************** [^] PROTOTYPES [^] *************************** */
 
 void
@@ -51,6 +53,7 @@ void
 {
 	game->argv = argv;
 	game->argc = argc;
+	game->canvas.image = NULL;
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		game_error(game, "MLX failed to create.");
@@ -67,25 +70,26 @@ void
 	game->number_of_rays = (int)(game->perspective * RAY_MULTIPY);
 	game->x = 3.5F; // MAP
 	game->y = 3.5F; // MAP
-	game->target_x = game->x;
-	game->target_y = game->y;
-	game->theta_rotation = 1.57F; // MAP
+	game->theta_rotation = 0.0F; // MAP
 	game->theta_target_rotation = game->theta_rotation;
 	game->wall_pixel_width = ((float)WINDOW_WIDTH / \
 		(float)game->number_of_rays);
+	setup2(game);
+}
+
+extern __inline__ void
+	setup2(t_game game)
+{
+	game->target_x = game->x;
+	game->target_y = game->y;
 	game->map_width = ft_strlen(*game->map);
 	game->map_height = ft_matrixlen(game->map);
 	game->skyline = (float)(WINDOW_HEIGHT / 2);
 	game->target_skyline = game->skyline;
 	game->cos_theta_rotation = ft_cosf(game->theta_rotation);
 	game->sin_theta_rotation = ft_sinf(game->theta_rotation);
+	game->window_height_center = WINDOW_HEIGHT / 2;
 	set_rays(game);
-	prepare_canvas(game);
-}
-
-extern __inline__ void
-	prepare_canvas(t_game game)
-{
 	game->canvas.image = \
 		mlx_new_image(game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	if (!game->canvas.image)
@@ -110,6 +114,7 @@ extern __inline__ void
 	index = 0;
 	while (index < game->number_of_rays)
 	{
+		game->ray[index].distance = 0.0F;
 		game->ray[index].theta = ((index / \
 			(ft_floorf(game->perspective * RAY_MULTIPY) / 2.0F)) * \
 			game->theta_perspective) - game->theta_perspective;
@@ -121,14 +126,14 @@ extern __inline__ void
 extern __inline__ void
 	set_key_inputs(t_game game)
 {
-	game->key[0] = 0U;
-	game->key[1] = 0U;
-	game->key[2] = 0U;
-	game->key[3] = 0U;
-	game->key[4] = 0U;
-	game->key[5] = 0U;
-	game->key[6] = 0U;
-	game->key[7] = 0U;
+	game->key.w = 0U;
+	game->key.a = 0U;
+	game->key.d = 0U;
+	game->key.s = 0U;
+	game->key.arrow_l = 0U;
+	game->key.arrow_r = 0U;
+	game->key.arrow_u = 0U;
+	game->key.arrow_d = 0U;
 }
 
 extern __inline__ char

@@ -27,21 +27,21 @@
 int
 	key_up(int key, t_game game)
 {
-	if (key == LETTER_KEY_DOWN)
-		game->key[0] = 0;
 	if (key == LETTER_KEY_UP)
-		game->key[1] = 0;
+		game->key.w = 0U;
 	if (key == LETTER_KEY_LEFT)
-		game->key[2] = 0;
+		game->key.a = 0U;
+	if (key == LETTER_KEY_DOWN)
+		game->key.s = 0U;
 	if (key == LETTER_KEY_RIGHT)
-		game->key[3] = 0;
-	if (key == ARROW_KEY_DOWN)
-		game->key[4] = 0;
+		game->key.d = 0U;
 	if (key == ARROW_KEY_UP)
-		game->key[5] = 0;
+		game->key.arrow_u = 0U;
 	if (key == ARROW_KEY_LEFT)
-		game->key[6] = 0;
+		game->key.arrow_l = 0U;
+	if (key == ARROW_KEY_DOWN)
+		game->key.arrow_d = 0U;
 	if (key == ARROW_KEY_RIGHT)
-		game->key[7] = 0;
+		game->key.arrow_r = 0U;
 	return (0);
 }
