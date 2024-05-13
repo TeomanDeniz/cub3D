@@ -29,6 +29,12 @@
 # ifndef M_LN10
 #  define M_LN10 2.30258509299404568402 // ln(10)
 # endif
+# ifndef M_PIX2
+#  define M_PIX2 6.28318530717958647692 // PI * 2
+# endif
+# ifndef M_PIX2_3
+#  define M_PIX2_3 4.71238898038400589261 // PI * 2 / 3
+# endif
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846 // PI
 # endif
@@ -118,8 +124,14 @@
 # ifndef M_LN10_F
 #  define M_LN10_F 2.30258509299404568402F // ln(10)
 # endif
+# ifndef M_PIX2_F
+#  define M_PIX2_F 6.28318530717958647692F // PI * 2
+# endif
+# ifndef M_PIX2_3_F
+#  define M_PIX2_3_F 4.71238898038400589261F // PI * 2 / 3
+# endif
 # ifndef M_PI_F
-#  define M_PI_F 3.14159265358979323846F // PI
+#  define M_PI_F   3.14159265358979323846F // PI
 # endif
 # ifndef M_PI_2_F
 #  define M_PI_2_F 1.57079632679489661923F // PI / 2
@@ -154,26 +166,23 @@
 /* Constants (Float) */
 
 /* Trigonometric functions */
-extern double	ft_sin(double x);
-extern double	ft_cos(register double x);
 /* [Float] */
 extern float	ft_sinf(float x);
 extern float	ft_cosf(register float x);
+extern float	ft_tanf(register float x);
 /* [Float] */
 /* Trigonometric functions */
 
 /* Rounding and Remainder functions */
-extern double	ft_floor(register double x);
-extern double	ft_fmod(register double x, register double y);
 /* [Float] */
-extern float	ft_floorf(register float x);
-extern float	ft_fmodf(register float x, register float y);
+extern float	ft_floorf(float x);
+extern float	ft_fmodf(float x, float y);
 /* [Float] */
 /* Rounding and Remainder functions */
 
 /* Floating-point Classification functions */
 extern int		ft_isinf(register double x);
-extern int		ft_isnan(register double x);
+extern int		ft_isnan(double x);
 /* Floating-point Classification functions */
 
 /* Power functions */
@@ -184,18 +193,13 @@ extern float	ft_sqrtf(register float x);
 /* Power functions */
 
 /* Other functions */
-extern double	ft_fabs(double x);
 extern int		ft_iabs(int x);
-extern double	ft_fmin(register double x, register double y);
-extern double	ft_fmax(register double x, register double y);
-extern double	ft_lerp(register double x, register double y, register \
-double f);
 extern int		ft_imax(int a, int b);
 /* [Float] */
 extern float	ft_fabsf(float x);
-extern float	ft_fminf(register float x, register float y);
-extern float	ft_fmaxf(register float x, register float y);
-extern float	ft_lerpf(register float x, register float y, register float f);
+extern float	ft_fminf(float x, float y);
+extern float	ft_fmaxf(float x, float y);
+extern float	ft_lerpf(float x, float y, float f);
 /* [Float] */
 /* Other functions */
 

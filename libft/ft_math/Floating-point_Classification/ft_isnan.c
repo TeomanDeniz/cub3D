@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isnan.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 16:06:06 by hdeniz            #+#    #+#             */
 /*   Updated: 2023/02/24 16:06:07 by hdeniz           ###   ########.fr       */
@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 int
-	ft_isnan(register double x)
+	ft_isnan(double x)
 {
 	return (x != x);
 }

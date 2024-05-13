@@ -23,7 +23,7 @@
 #   void input_events(t_game);
 #   void skybox(t_game, int, int);
 #   void render(t_game);
-#   void cast_rays(t_game);
+#   void lidar(t_game);
 #   void setup(t_game, int, char **);
 #    int close_window(t_game);
 #    int key_down(int, t_game);
@@ -42,8 +42,8 @@ int
 	game = (t_game)arg;
 	input_events(game);
 	skybox(game, 0X222222, 0X666666);
+	lidar(game);
 	render(game);
-	cast_rays(game);
 	mlx_put_image_to_window(game->mlx, game->window, game->canvas.image, 0, 0);
 	return (0);
 }
@@ -60,8 +60,9 @@ int
 		"100100001", \
 		"101000001", \
 		"100100001", \
-		"100000000", \
-		"000000100", \
+		"100000001", \
+		"111111111", \
+		"111111111", \
 		NULL
 	};
 	setup(&game, argc, argv);

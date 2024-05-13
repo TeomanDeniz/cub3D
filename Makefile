@@ -41,6 +41,7 @@ LIBFT_SRC	=	./libft/memory/ft_free_matrix.c \
 				./libft/ft_math/Other/ft_imax.c \
 				./libft/ft_math/Trigonometric/ft_sinf.c \
 				./libft/ft_math/Trigonometric/ft_cosf.c \
+				./libft/ft_math/Trigonometric/ft_tanf.c \
 				./libft/ft_math/Rounding_Remainder/ft_floorf.c \
 				./libft/ft_math/Rounding_Remainder/ft_fmodf.c \
 				./libft/ft_math/Floating-point_Classification/ft_isnan.c \
@@ -55,13 +56,20 @@ MAIN_SRC	=	$(LIBFT_SRC) \
 				./main/exit_functions/close_window.c \
 				./main/exit_functions/free_game.c \
 				./main/setup/setup.c \
+				./main/setup/create_image.c \
 				./main/events/key_down.c \
 				./main/events/key_up.c \
-				./main/game/input_events.c \
-				./main/game/cast_rays.c \
-				./main/game/render.c \
-				./main/game/putpixel.c \
-				./main/game/skybox.c
+				./main/render/input_events.c \
+				./main/render/render.c \
+				./main/render/putpixel.c \
+				./main/render/skybox.c \
+				./main/render/lidar/lidar.c \
+				./main/render/lidar/calculate_distance_x.c \
+				./main/render/lidar/calculate_distance_y.c \
+				./main/render/lidar/check_between_0_90.c \
+				./main/render/lidar/check_between_90_180.c \
+				./main/render/lidar/check_between_180_240.c \
+				./main/render/lidar/check_between_240_360.c
 # *************************** [^] MAIN SOURCES [^] *************************** #
 
 # ************************** [v] BONUS SOURCES [v] *************************** #
@@ -90,9 +98,9 @@ BONUS_SRC	=	$(LIBFT_SRC)
 		MAIN		=	./main/cub3D.c
 	# [EXE]
 	# [COMPILER FLAGS]
-		CFLAGS		=	-Wall -Wextra -Werror -O3 -Imlx # -g
-		MAIN_FLAGS	=	-Wall -Wextra -Werror -lmlx -O3 \
-						-framework OpenGL -framework AppKit -L./minilibx # -g
+		CFLAGS		=	-O3 -Imlx -g
+		MAIN_FLAGS	=	-lmlx -O3 \
+						-framework OpenGL -framework AppKit -L./minilibx -g
 	# [COMPILER FLAGS]
 	# [.c STRINGS TO .o]
 		MAIN_OBJ	=	$(MAIN_SRC:.c=.o)
@@ -155,7 +163,7 @@ endef
 
 all: $(MAIN_EXE)
 
-$(MAIN_EXE): $(MAIN) $(MAIN_OBJ)
+$(MAIN_EXE): $(MLX) $(MAIN) $(MAIN_OBJ)
 	@$(CC) $(MAIN_FLAGS) $(MAIN) $(MAIN_OBJ) -o "$(MAIN_EXE)" && \
 		echo "\n\n $(C_BLINK)$(B2F15) $(MAIN_EXE) is ready! $(C_RESET)\n"
 
@@ -177,8 +185,10 @@ clean:
 	@rm $(MAIN_OBJ) $(BONUS_OBJ) 2>/dev/null && \
 		echo "\n $(B1F15) Objects are cleared! $(C_RESET)\n" || \
 		echo "\n $(B12F15) Nothing to clear! $(C_RESET)\n"
-	@#@make -C "./minilibx" "clean" 1>/dev/null
 	$(eval N_OBJ := "0")
+
+cmlx:
+	@make -C "./minilibx" "clean" 1>/dev/null
 
 fc: fclean
 fclean: clean
@@ -188,4 +198,4 @@ fclean: clean
 
 re: fc all
 
-.PHONY: all fclean fc clean clear c #bonus b
+.PHONY: all fclean fc clean clear c cmlx #bonus b

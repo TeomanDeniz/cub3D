@@ -13,22 +13,20 @@
 #ifndef CUB3D_H
 # define CUB3D_H 202403
 
-#include <stdio.h> ////////////
-#include <unistd.h>
-
 /* ********************* [V] CONSTANTS - GAME SETUP [V] ********************* */
 # define SLICE 0.1
-# define WINDOW_WIDTH 2200
+# define WINDOW_WIDTH 2000
 # define WINDOW_HEIGHT 1200
+# define WALL_SIZE 600 // WINDOW_HEIGHT / 2 (PX)
 # define RAY_MULTIPY 8
 # define PERSPECTIVE 66.0
-# define WALL_SIZE 600 // WINDOW_HEIGHT / 2 (PX)
 # define ROTATE_SPEED 0.03
 # define PLAYER_SPEED 1.5
 # define CELL_SIZE 1.0F // ???
 # define RENDER_DISTANCE 500.0F // LIMIT OF RENDER DISTANCE
-# define SHADOW_DISTANCE 40.0F
+# define SHADOW_DISTANCE 50.0F
 # define SHADOW_ON 1 // SHOW SHADOW EFFECT OR NOT (1/0)
+# define RAY_JUMP_LIMIT 100 // RAY DISTANCE LIMIT
 /* ********************* [^] CONSTANTS - GAME SETUP [^] ********************* */
 
 /* ******************* [v] CONSTANTS - ERROR MESSAGES [v] ******************* */
@@ -47,40 +45,43 @@
 # define KEY_ESC 53 // ESC
 /* *********************** [^] CONSTANTS - INPUTS [^] *********************** */
 
-/* **************************** [v] INCLUDES [v] **************************** */
-# include <stdlib.h> /*
-# typedef size_t;
-#         */
-/* **************************** [^] INCLUDES [^] **************************** */
-
 /* ***************************** [V] STRUCTS [V] **************************** */
 typedef struct s_render // A struct only used at ./game/render.c
 {
-	float	z; // We have X and Y, so Z is also for looking up and down.
-	int		wall_height; // The wall height... That's all lol
-	int		ray_width; // The left to right rendering for per ray
-	float	check_up; // The limit of drawing top wall
-	float	check_down; // The limit of drawing bottom wall
-	float	middle_to_up; // Calculate the start point of wall (to top)
-	float	middle_to_down; // Calculate the start point of wall (to down)
-	int		index; // Ray index
-	float	x; // Left to right rendering
-	float	fade_color; // For fading the walls to shadows
+	float			half_wall_size; // The (size / 2) of wall
+	int				shadow; // The shadow value of the ray, yeah there is shadow
+	unsigned int	shadow_bitwised; // render.shadow << 24
+	int				textrue_x; // The X coordinate of the texture (image)
+	float			textrue_y; // The X coordinate of the texture (image)
+	float			texture_y_step; // Determine the Y index of image via that
+	int				update_textrue_y; // A variable for textrue_y on X loop
+	float			wall_height; // The height of the wall
+	int				wall_y_start_point; // The start of the line coordinate
+	float			wall_y_end_point; // The end of the line coordinate
+	int				x; // Left to right rendering
+	int				y; // Top to down rendering
+	float			x_coordinates; // x + padding. 2 pixels or something
+	int				index; // Ray index
+	int				padding; // Spaces between rays
 }	t_render;
 
 typedef struct s_lidar // A struct only used at ./game/cast_rays.c
 {
-	float	jump_x; // Jumping x for calculating y [y][jump_x]
-	float	jump_y; // Jumping y for calculating x [jump_y][x]
-	float	add_x; // Adder to jump_x variable += (-1 || 0 || 1)
-	float	add_y; // Adder to jump_y variable += (-1 || 0 || 1)
-	float	ray_length; // Total ray length that we sended
-	float	cos_theta; // Cos radiant of our rotation + ray angle
-	float	sin_theta; // -Sin radiant of our rotation + ray angle
-	float	x_distance; // The total distance of only ray's x position
-	float	y_distance; // The total distance of only ray's y position
-	float	x_start; // The start distance of the ray (x coordinate)
-	float	y_start; // The start distance of the ray (y coordinate)
+	float	x; // x coordinate of the current ray
+	float	y; // y coordinate of the current ray
+	float	theta; // ray->theta + game->theta_rotation
+	float	x_add; // The x jumper (-1 / 1)
+	float	y_add; // The y jumper (-1 / 1)
+	int		x_jump; // Total teleport number (jump_x += add_x)
+	int		y_jump; // Total teleport number (jump_y += add_y)
+	int		x_jump_on_map; // Kind of Jump's size (jump + game->x)
+	int		y_jump_on_map; // Kind of Jump's size (jump + game->y)
+	int		x_jump_on_map_pow2; // power ^2 (x_jump_on_map * x_jump_on_map)
+	int		y_jump_on_map_pow2; // power ^2 (y_jump_on_map * y_jump_on_map)
+	float	mod_game_x; // mod(game->x, 1.0) = 5.371 -> 0.371
+	float	mod_game_y; // mod(game->y, 1.0) = 5.371 -> 0.371
+	float	x_tan; // 1 / tan(ray_and_rotation_theta)
+	float	y_tan; // tan(ray_and_rotation_theta)
 	int		index; // Index of the ray we are throwing
 }	t_lidar;
 
@@ -88,7 +89,7 @@ typedef struct s_image
 {
 	void			*image; // Original image pointer. For MLX of course!
 	char			*buffer; // Pixel matrix, please use it as an array
-	int				bits_per_pixel; // Hpw many bits a pixel uses
+	int				bits_per_pixel; // How many bits a pixel uses
 	int				line_length; // How many pixels a line has
 	int				endian; // wtf is that
 	unsigned int	x; // Max Image X size
@@ -103,6 +104,7 @@ struct s_ray
 	float	distance; // Distance between ray and player
 	float	theta; // The angle of ray we throwed
 	float	cos_theta; // cos(ray.theta) for fixing fish eye effect
+	char	hit; // The part of the wall ray hit (0=nan, 1=d, 2=r, 3=l 4=u)
 };
 
 struct s_key
@@ -127,6 +129,8 @@ typedef struct s_game
 	char			**argv;
 	int				argc;
 	t_image			canvas; // The real paint
+	t_image			*textures; // Textures
+	int				number_of_textures; // The size of the this->textures
 	/* [v]			CHARACTER VALUES [v] */
 	float			perspective; // The perspective
 	float			x; // Player X coordinate on the map
@@ -165,16 +169,25 @@ extern int	key_up(int key, t_game game);
 
 /* **************************** [v] ./setup [v] ***************************** */
 extern void	setup(t_game game, int argc, char **argv);
+extern void	create_image(t_game game, t_image *image, char *path);
 /* **************************** [^] ./setup [^] ***************************** */
 
-/* ***************************** [v] ./game [v] ***************************** */
+/* **************************** [v] ./render [v] **************************** */
 extern void	render(t_game game);
-extern void	cast_rays(t_game game);
 extern void	putpixel(t_game game, register int x, register int y, \
 register int color);
 extern void	skybox(t_game game, register int ground, register int floor);
 extern void	input_events(t_game game);
-/* ***************************** [^] ./game [^] ***************************** */
+/* ***************************** [v] ./lidar [v] **************************** */
+extern void	lidar(t_game game);
+extern int	calculate_distance_x(t_game game, t_lidar lidar, int hit);
+extern int	calculate_distance_y(t_game game, t_lidar lidar, int hit);
+extern int	check_between_0_90(t_game game, t_lidar *lidar);
+extern int	check_between_90_180(t_game game, t_lidar *lidar);
+extern int	check_between_180_240(t_game game, t_lidar *lidar);
+extern int	check_between_240_360(t_game game, t_lidar *lidar);
+/* ***************************** [^] ./lidar [^] **************************** */
+/* **************************** [^] ./render [^] **************************** */
 
 /****************************************************************************\
 |*                        MINILIBX EVENT HOOK LIST                          *|

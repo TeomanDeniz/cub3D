@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lerpf.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 17:41:13 by hdeniz            #+#    #+#             */
 /*   Updated: 2023/08/14 17:41:33 by hdeniz           ###   ########.fr       */
@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 float
-	ft_lerpf(register float x, register float y, register float f)
+	ft_lerpf(float x, float y, float f)
 {
 	return (x + f * (y - x));
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_game.c                                        :+:      :+:    :+:   */
+/*   check_between_240_360.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,35 +11,36 @@
 /* ************************************************************************** */
 
 /* **************************** [V] INCLUDES [V] **************************** */
-#include "../cub3D.h" /*
+#include "../../cub3D.h" /*
 #typedef t_game;
+#typedef t_lidar;
+#    int calculate_distance_x(t_game, t_lidar, int);
+#    int calculate_distance_y(t_game, t_lidar, int);
 #        */
-#include <stdlib.h> /*
-#   void free(void *);
-#        */
-#include "../../minilibx/mlx.h" /*
-#    int mlx_destroy_window(void *, void *);
-#    int mlx_destroy_image(void *, void *);
+#include "../../../libft/ft_math/ft_math.h" /*
+# define M_PI_F
+#    int ft_imax(int, int);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
-void
-	free_game(t_game game)
+int
+	check_between_240_360(t_game game, t_lidar *lidar)
 {
-	register int	index;
-
-	if (!!game->ray)
-		free(game->ray);
-	if (!!game->mlx && !!game->window)
-		mlx_destroy_window(game->mlx, game->window);
-	if (!!game->canvas.image)
-		mlx_destroy_image(game->mlx, game->canvas.image);
-	if (!!game->textures)
+	if (lidar->x_jump_on_map < lidar->x)
 	{
-		index = -1;
-		while (++index, index < game->number_of_textures)
-			mlx_destroy_image(game->mlx, game->textures[index].image);
-		free(game->textures);
-		game->textures = NULL;
+		if (game->map[(int)lidar->y][lidar->x_jump_on_map] == '1' && \
+			calculate_distance_x(game, *lidar, 1))
+			return (1);
+		else
+			lidar->x_add++;
 	}
+	else
+	{
+		if (game->map[ft_imax(lidar->y_jump_on_map - 1.0F, 0)] \
+			[(int)lidar->x] == '1' && calculate_distance_y(game, *lidar, 4))
+			return (1);
+		else
+			lidar->y_add++;
+	}
+	return (0);
 }

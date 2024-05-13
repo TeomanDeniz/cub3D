@@ -3,23 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_floorf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 16:04:12 by hdeniz            #+#    #+#             */
 /*   Updated: 2023/03/19 22:04:16 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* INCLUDES */
-#include "../ft_math.h"
-/* INCLUDES */
+/* **************************** [v] INCLUDES [v] **************************** */
+#include "../ft_math.h" /*
+#    int ft_isinf(double);
+#    int ft_isnan(double);
+#        */
+/* **************************** [^] INCLUDES [^] **************************** */
 
 float
-	ft_floorf(register float x)
+	ft_floorf(float x)
 {
 	if (ft_isnan(x) || ft_isinf(x))
 		return (x);
 	if (x < 0.0F)
-		return ((long)x - 1.0F);
-	return ((long)x);
+		return ((int)x - 1);
+	return ((int)x);
 }

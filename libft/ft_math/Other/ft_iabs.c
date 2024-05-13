@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_iabs.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 20:31:50 by hdeniz            #+#    #+#             */
 /*   Updated: 2023/03/19 21:13:52 by hdeniz           ###   ########.fr       */

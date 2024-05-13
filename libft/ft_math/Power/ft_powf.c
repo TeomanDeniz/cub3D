@@ -3,21 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_powf.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:38:18 by hdeniz            #+#    #+#             */
 /*   Updated: 2023/03/19 21:20:54 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* INCLUDES */
-#include "../ft_math.h"
-/* INCLUDES */
+/* **************************** [v] INCLUDES [v] **************************** */
+#include "../ft_math.h" /*
+#    int ft_isinf(double);
+#    int ft_isnan(double);
+#  float ft_expf(float);
+#  float ft_expf(float);
+#        */
+/* **************************** [^] INCLUDES [^] **************************** */
 
-/* PROTOTYPES */
+/* *************************** [v] PROTOTYPES [v] *************************** */
 static inline float	check_your_six(register float base, register float power);
 static inline float	base_is_minus(register float base, register float power);
-/* PROTOTYPES */
+/* *************************** [^] PROTOTYPES [^] *************************** */
 
 float
 	ft_powf(register float base, register float power)

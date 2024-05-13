@@ -3,22 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_logf.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 20:35:52 by hdeniz            #+#    #+#             */
 /*   Updated: 2023/03/20 03:36:38 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* INCLUDES */
-#include "../ft_math.h"
-/* INCLUDES */
+/* **************************** [v] INCLUDES [v] **************************** */
+#include "../ft_math.h" /*
+#    int ft_isinf(double);
+#    int ft_isnan(double);
+#  float ft_fabsf(float);
+#        */
+/* **************************** [^] INCLUDES [^] **************************** */
 
-/* PROTOTYPES */
+/* *************************** [v] PROTOTYPES [v] *************************** */
 static inline float	check_your_six(register float x);
 static inline float	log2_simplifier(float *x);
-static inline float	two_or_bigger(float x, register float result);
-/* PROTOTYPES */
+static inline float	two_or_bigger(float x, float result);
+/* *************************** [^] PROTOTYPES [^] *************************** */
 
 float
 	ft_logf(register float x)
@@ -27,7 +31,7 @@ float
 	register float	numerator;
 	register float	denominator;
 	register float	term;
-	register float	result;
+	float			result;
 
 	if (x < 0.0F || x == 0.0F || ft_isinf(x) || ft_isnan(x))
 		return (check_your_six(x));
@@ -45,7 +49,7 @@ float
 		denominator += 2.0F;
 		term = numerator / denominator;
 	}
-	return (2.0F * result);
+	return (result * 2.0F);
 }
 
 static inline float
@@ -60,7 +64,7 @@ static inline float
 }
 
 static inline float
-	two_or_bigger(float x, register float result)
+	two_or_bigger(float x, float result)
 {
 	register float	__log2__;
 	register float	calculator;

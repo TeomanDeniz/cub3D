@@ -3,20 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expf.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:58:09 by hdeniz            #+#    #+#             */
 /*   Updated: 2023/03/19 20:41:30 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* INCLUDES */
-#include "../ft_math.h"
-/* INCLUDES */
+/* **************************** [v] INCLUDES [v] **************************** */
+#include "../ft_math.h" /*
+#    int ft_isinf(double);
+#    int ft_isnan(double);
+#        */
+/* **************************** [^] INCLUDES [^] **************************** */
 
-/* PROTOTYPES */
+/* *************************** [v] PROTOTYPES [v] *************************** */
 static inline float	check_your_six(register float x);
-/* PROTOTYPES */
+/* *************************** [^] PROTOTYPES [^] *************************** */
 
 float
 	ft_expf(register float x)

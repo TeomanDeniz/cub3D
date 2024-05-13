@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_game.c                                        :+:      :+:    :+:   */
+/*   create_image.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,35 +11,27 @@
 /* ************************************************************************** */
 
 /* **************************** [V] INCLUDES [V] **************************** */
+#include "../../minilibx/mlx.h" /*
+#   char *mlx_get_data_addr(void *, int *, int *, int *);
+#   void *mlx_xpm_file_to_image(void *, char *, int *, int *);
+#        */
 #include "../cub3D.h" /*
 #typedef t_game;
-#        */
-#include <stdlib.h> /*
-#   void free(void *);
-#        */
-#include "../../minilibx/mlx.h" /*
-#    int mlx_destroy_window(void *, void *);
-#    int mlx_destroy_image(void *, void *);
+#   void game_error(t_game, char *);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 void
-	free_game(t_game game)
+	create_image(t_game game, t_image *image, char *path)
 {
-	register int	index;
-
-	if (!!game->ray)
-		free(game->ray);
-	if (!!game->mlx && !!game->window)
-		mlx_destroy_window(game->mlx, game->window);
-	if (!!game->canvas.image)
-		mlx_destroy_image(game->mlx, game->canvas.image);
-	if (!!game->textures)
-	{
-		index = -1;
-		while (++index, index < game->number_of_textures)
-			mlx_destroy_image(game->mlx, game->textures[index].image);
-		free(game->textures);
-		game->textures = NULL;
-	}
+	if (!path)
+		game_error(game, "create_image.c: <path> is null!");
+	image->image = mlx_xpm_file_to_image(game->mlx, path, (signed *)&image->x, \
+		(signed *)&image->y);
+	if (!image->image)
+		game_error(game, "Incorrect Path");
+	image->buffer = mlx_get_data_addr(image->image, \
+		&image->bits_per_pixel, &image->line_length, \
+		&image->endian);
+	image->size = image->x * image->y;
 }

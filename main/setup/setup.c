@@ -54,6 +54,8 @@ void
 	game->argv = argv;
 	game->argc = argc;
 	game->canvas.image = NULL;
+	game->textures = NULL;
+	game->number_of_textures = 0;
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		game_error(game, "MLX failed to create.");
@@ -68,12 +70,18 @@ void
 	game->theta_perspective = ft_fmodf((game->perspective / 2.0F) * \
 		(M_PI_F / 180.0F) + 0.0001F, 2.0F * M_PI_F);
 	game->number_of_rays = (int)(game->perspective * RAY_MULTIPY);
-	game->x = 3.5F; // MAP
-	game->y = 3.5F; // MAP
-	game->theta_rotation = 0.0F; // MAP
+	game->x = 6.217586F; // MAP 
+	game->y = 3.173563F; // MAP
+	game->theta_rotation = 3.749784F; // MAP
 	game->theta_target_rotation = game->theta_rotation;
 	game->wall_pixel_width = ((float)WINDOW_WIDTH / \
 		(float)game->number_of_rays);
+	game->number_of_textures = 1; // MAP
+	game->textures = (t_image *)malloc(game->number_of_textures * \
+		sizeof(t_image));
+	if (!game->textures)
+		game_error(game, "game->textures failed to allocate.");
+	create_image(game, &game->textures[0], "./textures/xpm/test.xpm");
 	setup2(game);
 }
 
@@ -114,6 +122,7 @@ extern __inline__ void
 	index = 0;
 	while (index < game->number_of_rays)
 	{
+		game->ray[index].hit = 0;
 		game->ray[index].distance = 0.0F;
 		game->ray[index].theta = ((index / \
 			(ft_floorf(game->perspective * RAY_MULTIPY) / 2.0F)) * \

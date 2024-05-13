@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_game.c                                        :+:      :+:    :+:   */
+/*   calculate_distance_x.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,35 +11,23 @@
 /* ************************************************************************** */
 
 /* **************************** [V] INCLUDES [V] **************************** */
-#include "../cub3D.h" /*
+#include "../../cub3D.h" /*
 #typedef t_game;
+#typedef t_lidar;
 #        */
-#include <stdlib.h> /*
-#   void free(void *);
-#        */
-#include "../../minilibx/mlx.h" /*
-#    int mlx_destroy_window(void *, void *);
-#    int mlx_destroy_image(void *, void *);
+#include <math.h> /*
+#  float sqrtf(float);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
-void
-	free_game(t_game game)
+int
+	calculate_distance_x(t_game game, t_lidar lidar, int hit)
 {
-	register int	index;
-
-	if (!!game->ray)
-		free(game->ray);
-	if (!!game->mlx && !!game->window)
-		mlx_destroy_window(game->mlx, game->window);
-	if (!!game->canvas.image)
-		mlx_destroy_image(game->mlx, game->canvas.image);
-	if (!!game->textures)
-	{
-		index = -1;
-		while (++index, index < game->number_of_textures)
-			mlx_destroy_image(game->mlx, game->textures[index].image);
-		free(game->textures);
-		game->textures = NULL;
-	}
+	game->ray[lidar.index].hit = hit;
+	game->ray[lidar.index].x = lidar.x_jump_on_map;
+	game->ray[lidar.index].y = lidar.y;
+	game->ray[lidar.index].distance = \
+		sqrtf((lidar.y - game->y) * (lidar.y - game->y) + \
+		(lidar.x_jump_on_map - game->x) * (lidar.x_jump_on_map - game->x));
+	return (1);
 }

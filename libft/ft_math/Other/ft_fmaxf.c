@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_fmaxf.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 21:24:18 by hdeniz            #+#    #+#             */
 /*   Updated: 2023/03/19 21:54:21 by hdeniz           ###   ########.fr       */
@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 float
-	ft_fmaxf(register float x, register float y)
+	ft_fmaxf(float x, float y)
 {
 	if (x > y)
 		return (x);
