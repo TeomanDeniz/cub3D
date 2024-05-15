@@ -41,7 +41,7 @@ int
 
 	game = (t_game)arg;
 	input_events(game);
-	skybox(game, 0X222222, 0X666666);
+	skybox(game, game->floor_color, game->ceiling_color);
 	lidar(game);
 	render(game);
 	mlx_put_image_to_window(game->mlx, game->window, game->canvas.image, 0, 0);
@@ -53,19 +53,14 @@ int
 {
 	struct s_game	game;
 
-	game.map = (char *[]) \
-	{\
-		"111111111", \
-		"100000001", \
-		"100100001", \
-		"101000001", \
-		"100100001", \
-		"100000001", \
-		"111111111", \
-		"111111111", \
-		NULL
-	};
-	setup(&game, argc, argv);
+	game.argv = argv;
+	game.argc = argc;
+	game.textures[0].image = NULL;
+	game.textures[1].image = NULL;
+	game.textures[2].image = NULL;
+	game.textures[3].image = NULL;
+	game.textures[4].image = NULL;
+	setup(&game);
 	mlx_hook(game.window, 17, (1L << 0), close_window, (void *)&game);
 	mlx_hook(game.window, 2, 1L << 0, key_down, (void *)&game);
 	mlx_hook(game.window, 3, 1L << 1, key_up, (void *)&game);

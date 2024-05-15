@@ -28,11 +28,28 @@ endif
 # ************************* [^] SET MAKECMDGOALS [^] ************************* #
 
 # *************************** [v] MAIN SOURCES [v] *************************** #
-LIBFT_SRC	=	./libft/memory/ft_free_matrix.c \
+LIBFT_SRC	=	./libft/bool/ft_isdigit.c \
+				./libft/converters/ft_atoi.c \
+				./libft/converters/ft_numlen.c \
 				./libft/memory/ft_safe_free.c \
-				./libft/memory/ft_matrixlen.c \
+				./libft/memory/ft_memmove.c \
+				./libft/memory/ft_calloc.c \
+				./libft/memory/ft_bzero.c \
+				./libft/memory/ft_memset.c \
 				./libft/string/ft_strlen.c \
-				./libft/string/ft_matrixlen.c \
+				./libft/string/ft_split.c \
+				./libft/string/ft_strcdup.c \
+				./libft/string/ft_strdup.c \
+				./libft/string/ft_strchr.c \
+				./libft/string/ft_strncmp.c \
+				./libft/string/ft_strtrim.c \
+				./libft/string/ft_substr.c \
+				./libft/string/ft_strlcpy.c \
+				./libft/matrix/ft_matrixlen.c \
+				./libft/matrix/ft_copy_matrix.c \
+				./libft/matrix/ft_free_matrix.c \
+				./libft/get_next_line/get_next_line.c \
+				./libft/get_next_line/get_next_line_utils.c \
 				./libft/ft_math/Other/ft_lerpf.c \
 				./libft/ft_math/Other/ft_fabsf.c \
 				./libft/ft_math/Other/ft_iabs.c \
@@ -55,10 +72,20 @@ MAIN_SRC	=	$(LIBFT_SRC) \
 				./main/exit_functions/game_error.c \
 				./main/exit_functions/close_window.c \
 				./main/exit_functions/free_game.c \
+				./main/exit_functions/game_warning.c \
 				./main/setup/setup.c \
-				./main/setup/create_image.c \
+				./main/setup/map/check_map_data.c \
+				./main/setup/map/check_map_header.c \
+				./main/setup/map/check_map_header_color.c \
+				./main/setup/map/check_map_header_xpm.c \
+				./main/setup/map/get_data_map.c \
+				./main/setup/map/get_map_header.c \
+				./main/setup/map/map_control.c \
+				./main/setup/map/free_map.c \
+				./main/setup/map/set_map_to_game.c \
 				./main/events/key_down.c \
 				./main/events/key_up.c \
+				./main/events/mouse_event.c \
 				./main/render/input_events.c \
 				./main/render/render.c \
 				./main/render/putpixel.c \
@@ -98,9 +125,9 @@ BONUS_SRC	=	$(LIBFT_SRC)
 		MAIN		=	./main/cub3D.c
 	# [EXE]
 	# [COMPILER FLAGS]
-		CFLAGS		=	-O3 -Imlx -g
+		CFLAGS		=	-Wall -Wextra -Werror -O3 -Imlx # -g
 		MAIN_FLAGS	=	-lmlx -O3 \
-						-framework OpenGL -framework AppKit -L./minilibx -g
+						-framework OpenGL -framework AppKit -L./minilibx # -g
 	# [COMPILER FLAGS]
 	# [.c STRINGS TO .o]
 		MAIN_OBJ	=	$(MAIN_SRC:.c=.o)

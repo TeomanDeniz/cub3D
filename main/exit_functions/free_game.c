@@ -12,6 +12,7 @@
 
 /* **************************** [V] INCLUDES [V] **************************** */
 #include "../cub3D.h" /*
+#typedef t_image;
 #typedef t_game;
 #        */
 #include <stdlib.h> /*
@@ -20,6 +21,9 @@
 #include "../../minilibx/mlx.h" /*
 #    int mlx_destroy_window(void *, void *);
 #    int mlx_destroy_image(void *, void *);
+#        */
+#include "../../libft/libft.h" /*
+#    int ft_free_matrix(char ***);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
@@ -34,12 +38,11 @@ void
 		mlx_destroy_window(game->mlx, game->window);
 	if (!!game->canvas.image)
 		mlx_destroy_image(game->mlx, game->canvas.image);
-	if (!!game->textures)
-	{
-		index = -1;
-		while (++index, index < game->number_of_textures)
-			mlx_destroy_image(game->mlx, game->textures[index].image);
-		free(game->textures);
-		game->textures = NULL;
-	}
+	if (game->map != NULL)
+		ft_free_matrix(&game->map);
+	index = -1;
+	while (++index, game->textures_are_ready && \
+		index < (int)(sizeof(game->textures) / sizeof(t_image)) && \
+		!!game->textures[index].image)
+		mlx_destroy_image(game->mlx, game->textures[index].image);
 }

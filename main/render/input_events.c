@@ -17,6 +17,7 @@
 # define PLAYER_SPEED
 # define SLICE
 #typedef t_game;
+#   void mouse_event(t_game);
 #        */
 #include "../../libft/ft_math/ft_math.h" /*
 # define M_PIX2_F
@@ -35,6 +36,7 @@ void
 	input_events(t_game game)
 {
 	movement_handle(game);
+	mouse_event(game);
 	rotation_handle(game);
 }
 
@@ -68,33 +70,29 @@ extern __inline__ void
 extern __inline__ void
 	rotation_handle(t_game game)
 {
-	if (game->key.arrow_l)
-		game->theta_target_rotation -= ROTATE_SPEED;
-	if (game->key.arrow_r)
-		game->theta_target_rotation += ROTATE_SPEED;
-	game->skyline = ft_lerpf(game->skyline, game->target_skyline, SLICE);
-	game->theta_rotation = ft_lerpf(game->theta_rotation, \
-		game->theta_target_rotation, SLICE);
 	if (game->theta_rotation < 0.0F)
 	{
-		game->theta_rotation = M_PIX2_F;
+		game->theta_rotation += M_PIX2_F;
 		game->theta_target_rotation += M_PIX2_F;
 	}
 	if (game->theta_rotation > M_PIX2_F)
 	{
-		game->theta_rotation = 0.0F;
+		game->theta_rotation -= M_PIX2_F;
 		game->theta_target_rotation -= M_PIX2_F;
 	}
+	if (game->key.arrow_l)
+		game->theta_target_rotation -= ROTATE_SPEED;
+	if (game->key.arrow_r)
+		game->theta_target_rotation += ROTATE_SPEED;
+	if (game->target_skyline < (float)WALL_SIZE * 2.0F && game->key.arrow_u)
+		game->target_skyline += WINDOW_HEIGHT * ROTATE_SPEED;
+	if (game->target_skyline > 0.0F && game->key.arrow_d)
+		game->target_skyline -= WINDOW_HEIGHT * ROTATE_SPEED;
+	game->skyline = ft_lerpf(game->skyline, game->target_skyline, SLICE);
+	game->theta_rotation = ft_lerpf(game->theta_rotation, \
+		game->theta_target_rotation, SLICE);
 	game->cos_theta_rotation = (ft_cosf(game->theta_rotation) / 32.0F) \
 		* PLAYER_SPEED;
 	game->sin_theta_rotation = (ft_sinf(game->theta_rotation) / 32.0F) \
 		* PLAYER_SPEED;
 }
-
-/*
-For looking up and down:
-	if (game->key.arrow_u)
-		game->target_skyline += WINDOW_HEIGHT * ROTATE_SPEED;
-	if (game->key.arrow_d)
-		game->target_skyline -= WINDOW_HEIGHT * ROTATE_SPEED;
-*/

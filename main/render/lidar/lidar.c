@@ -37,8 +37,6 @@ extern __inline__ void	fix_seg_error(t_game game, t_lidar *lidar);
 extern __inline__ int	ray_event(t_game game, t_lidar *lidar);
 /* *************************** [^] PROTOTYPES [^] *************************** */
 
-#include <stdio.h>
-
 void
 	lidar(t_game game)
 {
@@ -64,7 +62,7 @@ void
 			if (ray_event(game, &lidar))
 				break ;
 		}
-		game->ray[lidar.index].distance *= game->ray[lidar.index].cos_theta;
+		game->ray[lidar.index].distance *= game->ray[lidar.index].sin_theta;
 	}
 }
 
@@ -77,10 +75,10 @@ extern __inline__ int
 	if (M_PI_2 <= lidar->theta && lidar->theta < M_PI_F)
 		if (check_between_90_180(game, lidar))
 			return (1);
-	if (M_PI_F <= lidar->theta && lidar->theta < M_PIX2_3_F)
+	if (M_PI_F <= lidar->theta && lidar->theta <= M_PIX2_3_F)
 		if (check_between_180_240(game, lidar))
 			return (1);
-	if (M_PIX2_3_F <= lidar->theta && lidar->theta <= M_PIX2_F)
+	if (M_PIX2_3_F < lidar->theta && lidar->theta <= M_PIX2_F)
 		if (check_between_240_360(game, lidar))
 			return (1);
 	if (0.0F <= lidar->theta && lidar->theta < M_PI_F)
@@ -132,6 +130,9 @@ extern __inline__ void
 		lidar->theta -= M_PIX2_F;
 	else if (lidar->theta < 0.0F)
 		lidar->theta += M_PIX2_F;
+	if (lidar->theta == M_PI_2 || lidar->theta == M_PI_F || \
+		lidar->theta == M_PIX2_3_F || lidar->theta == M_PIX2_F)
+		lidar->theta += 0.0102192F;
 	if (M_PI_F <= lidar->theta && lidar->theta < M_PIX2_F)
 		lidar->y_jump = -1;
 	if (M_PI_2 < lidar->theta && lidar->theta < M_PIX2_3_F)

@@ -14,13 +14,13 @@ char
 	*ft_strchr(const char *string, register int character)
 {
 	if (!string)
-		return (NULL);
+		return ((void *)0);
 	while (*string != (char)character && *string != '\0')
 		++string;
 	if (*string == '\0')
 	{
 		if (character != '\0')
-			return (NULL);
+			return ((void *)0);
 		else
 			return ((char *)string);
 	}

@@ -56,18 +56,16 @@ extern int		ft_lstsize(t_list *list);
 /* **************************** [v] ./memory [v] **************************** */
 extern void		ft_bzero(void *base, size_t index);
 extern void		*ft_calloc(register size_t count, register size_t size);
-extern bool		ft_free_matrix(char ***matrix);
 extern void		*ft_memchr(const void *base, register int find, \
 register size_t len);
 extern int		ft_memcmp(const void *left, const void *right, size_t number);
 extern void		*ft_memcpy(void *destination, const void *source, \
 size_t number);
-extern void		*ft_memmove(void *destination, const void *source, \
+extern void		*ft_memmove(void *destination, void *source, \
 register size_t len);
 extern void		*ft_memset(void *base, register int character, \
 register size_t len);
 extern bool		ft_safe_free(void **variable);
-extern int		ft_matrixlen(char **matrix);
 /* **************************** [^] ./memory [^] **************************** */
 /* **************************** [v] ./output [v] **************************** */
 extern void		ft_putchar_fd(char character, register int fd);
@@ -76,8 +74,7 @@ extern void		ft_putnbr_fd(register int number, register int fd);
 extern void		ft_putstr_fd(const char *const string, register int fd);
 /* **************************** [^] ./output [^] **************************** */
 /* **************************** [v] ./string [v] **************************** */
-extern size_t	ft_matrixrlen(char **matrix);
-extern char		**ft_split(char const *const string, register char character);
+extern char		**ft_split(const char *string, register char character);
 extern bool		ft_strboolcmp(const char *const string, \
 const char *const compare);
 extern bool		ft_strcasecmp(const char *const string, \
@@ -102,5 +99,11 @@ register size_t len);
 extern char		*ft_strrchr(const char *const string, register int character);
 extern char		*ft_strtrim(char const *const left, char const *const right);
 extern char		*ft_substr(char const *string, unsigned int start, size_t len);
+extern char		*ft_strcdup(char *string, register char charcater);
 /* **************************** [^] ./string [^] **************************** */
+/* **************************** [v] ./matrix [v] **************************** */
+extern char		**ft_copy_matrix(const char **map);
+extern int		ft_matrixlen(const char **map);
+extern int		ft_free_matrix(char ***matrix);
+/* **************************** [^] ./matrix [^] **************************** */
 #endif /* LIBFT_H */

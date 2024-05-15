@@ -15,9 +15,10 @@
 #typedef t_game;
 #typedef t_lidar;
 #        */
-#include <math.h> /*
-#  float sqrtf(float);
+#include "../../../libft/ft_math/ft_math.h" /*
+#  float ft_sqrtf(float);
 #        */
+
 /* **************************** [^] INCLUDES [^] **************************** */
 
 int
@@ -27,7 +28,7 @@ int
 	game->ray[lidar.index].x = lidar.x;
 	game->ray[lidar.index].y = lidar.y_jump_on_map;
 	game->ray[lidar.index].distance = \
-		sqrtf((lidar.x - game->x) * (lidar.x - game->x) + \
+		ft_sqrtf((lidar.x - game->x) * (lidar.x - game->x) + \
 		(lidar.y_jump_on_map - game->y) * (lidar.y_jump_on_map - game->y));
 	return (1);
 }

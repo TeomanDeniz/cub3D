@@ -30,8 +30,11 @@
 void
 	game_error(t_game game, char *message)
 {
-	write(2, message, ft_strlen(message));
-	write(2, "\n", 1);
+	if (message != NULL)
+	{
+		write(2, message, ft_strlen(message));
+		write(2, "\n", 1);
+	}
 	free_game(game);
 	exit(EXIT_FAILURE);
 }

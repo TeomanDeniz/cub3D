@@ -18,15 +18,15 @@
 # define WINDOW_WIDTH 2000
 # define WINDOW_HEIGHT 1200
 # define WALL_SIZE 600 // WINDOW_HEIGHT / 2 (PX)
-# define RAY_MULTIPY 8
-# define PERSPECTIVE 66.0
+# define RAY_MULTIPY 16 // PERSPECTIVE * RAY_MULTIPY = number_of_rays
+# define PERSPECTIVE 66.0 // Degree
 # define ROTATE_SPEED 0.03
 # define PLAYER_SPEED 1.5
 # define CELL_SIZE 1.0F // ???
 # define RENDER_DISTANCE 500.0F // LIMIT OF RENDER DISTANCE
-# define SHADOW_DISTANCE 50.0F
-# define SHADOW_ON 1 // SHOW SHADOW EFFECT OR NOT (1/0)
+# define SHADOW_DISTANCE 30.0F
 # define RAY_JUMP_LIMIT 100 // RAY DISTANCE LIMIT
+# define SHADOW_ON 0 // SHOW SHADOW EFFECT OR NOT (1/0)
 /* ********************* [^] CONSTANTS - GAME SETUP [^] ********************* */
 
 /* ******************* [v] CONSTANTS - ERROR MESSAGES [v] ******************* */
@@ -48,21 +48,24 @@
 /* ***************************** [V] STRUCTS [V] **************************** */
 typedef struct s_render // A struct only used at ./game/render.c
 {
-	float			half_wall_size; // The (size / 2) of wall
-	int				shadow; // The shadow value of the ray, yeah there is shadow
-	unsigned int	shadow_bitwised; // render.shadow << 24
-	int				textrue_x; // The X coordinate of the texture (image)
-	float			textrue_y; // The X coordinate of the texture (image)
-	float			texture_y_step; // Determine the Y index of image via that
-	int				update_textrue_y; // A variable for textrue_y on X loop
-	float			wall_height; // The height of the wall
-	int				wall_y_start_point; // The start of the line coordinate
-	float			wall_y_end_point; // The end of the line coordinate
-	int				x; // Left to right rendering
-	int				y; // Top to down rendering
-	float			x_coordinates; // x + padding. 2 pixels or something
-	int				index; // Ray index
-	int				padding; // Spaces between rays
+	float	half_wall_size; // The (size / 2) of wall
+	int		shadow; // The shadow value of the ray, yeah there is shadow
+	int		shadow_r; // 0XFF0000 shadow << 16
+	int		shadow_g; // 0X00FF00 shadow << 8
+	int		shadow_b; // 0X0000FF shadow itself
+	int		texture_x; // The X coordinate of the texture (image)
+	float	texture_y; // The X coordinate of the texture (image)
+	float	texture_y_step; // Determine the Y index of image via that
+	int		update_texture_y; // A variable for texture_y on X loop
+	float	wall_height; // The height of the wall
+	int		wall_y_start_point; // The start of the line coordinate
+	float	wall_y_end_point; // The end of the line coordinate
+	int		x; // Left to right rendering
+	int		y; // Top to down rendering
+	float	x_coordinates; // x + padding. 2 pixels or something
+	int		index; // Ray index
+	int		padding; // Spaces between rays
+	int		hit; // The game->textures[hit] we gonna draw
 }	t_render;
 
 typedef struct s_lidar // A struct only used at ./game/cast_rays.c
@@ -92,9 +95,8 @@ typedef struct s_image
 	int				bits_per_pixel; // How many bits a pixel uses
 	int				line_length; // How many pixels a line has
 	int				endian; // wtf is that
-	unsigned int	x; // Max Image X size
-	unsigned int	y; // Max Image Y size
-	unsigned int	size; // Total pixel size of image
+	unsigned int	x; // Max Image X size (pixel)
+	unsigned int	y; // Max Image Y size (pixel)
 }	t_image;
 
 struct s_ray
@@ -103,7 +105,7 @@ struct s_ray
 	float	y; // Ray's X coordinate on the map
 	float	distance; // Distance between ray and player
 	float	theta; // The angle of ray we throwed
-	float	cos_theta; // cos(ray.theta) for fixing fish eye effect
+	float	sin_theta; // sin(90deg - ray.theta) for fixing fish eye effect
 	char	hit; // The part of the wall ray hit (0=nan, 1=d, 2=r, 3=l 4=u)
 };
 
@@ -119,6 +121,18 @@ struct s_key
 	unsigned char	arrow_d : 1;
 };
 
+typedef struct s_map // For map controls, nothing else
+{
+	char	*no; // Texture string
+	char	*so; // Texture string
+	char	*we; // Texture string
+	char	*ea; // Texture string
+	char	*cd; // Door?
+	char	*f; // Floor part (255,255,255\n)
+	char	*c; // Ceiling part (255,255,255\n)
+	char	**map; // Map itself (Matrix)
+}	t_map;
+
 typedef struct s_game
 {
 	/* [v]			MLX [v] */
@@ -129,8 +143,8 @@ typedef struct s_game
 	char			**argv;
 	int				argc;
 	t_image			canvas; // The real paint
-	t_image			*textures; // Textures
-	int				number_of_textures; // The size of the this->textures
+	t_image			textures[5]; // Textures, + door texture
+	int				textures_are_ready; // To free textures if they are ready
 	/* [v]			CHARACTER VALUES [v] */
 	float			perspective; // The perspective
 	float			x; // Player X coordinate on the map
@@ -153,6 +167,8 @@ typedef struct s_game
 	char			**map; // Map lol
 	int				map_width; // map[ ][*]
 	int				map_height; // map[*][ ]
+	int				floor_color;
+	int				ceiling_color;
 }	*t_game;
 /* ***************************** [^] STRUCTS [^] **************************** */
 
@@ -160,16 +176,31 @@ typedef struct s_game
 extern void	game_error(t_game game, char *message);
 extern int	close_window(t_game game);
 extern void	free_game(t_game game);
+extern int	game_warning(const char *const message, const char *const prefix);
 /* ************************ [^] ./exit_functions [^] ************************ */
 
 /* **************************** [V] ./events [V] **************************** */
 extern int	key_down(int key, t_game game);
 extern int	key_up(int key, t_game game);
+extern void	mouse_event(t_game game);
 /* **************************** [^] ./events [^] **************************** */
 
 /* **************************** [v] ./setup [v] ***************************** */
-extern void	setup(t_game game, int argc, char **argv);
+extern void	setup(t_game game);
 extern void	create_image(t_game game, t_image *image, char *path);
+/* ***************************** [v] ./map [v] ****************************** */
+extern int	check_map_data(t_game game, t_map *map);
+extern int	check_map_header(t_game game, t_map *map);
+extern int	check_map_header_color(const char *const line, \
+const char *const prefix);
+extern int	check_map_header_xpm(t_game game, const char *const line, \
+const char *const prefix);
+extern int	get_data_map(const char *const line, t_map *map);
+extern int	get_map_header(char *line, t_map *map);
+extern int	map_control(t_game game, const char *cub_file);
+extern void	free_map(t_map *map);
+extern void	set_map_to_game(t_game game, t_map map);
+/* ***************************** [^] ./map [^] ****************************** */
 /* **************************** [^] ./setup [^] ***************************** */
 
 /* **************************** [v] ./render [v] **************************** */

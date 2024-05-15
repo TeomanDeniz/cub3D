@@ -16,6 +16,8 @@
 #   void *mlx_new_window(void *, int, int, char *);
 #   void *mlx_new_image(void *, int, int);
 #   char *mlx_get_data_addr(void *, int *, int *, int *);
+#    int mlx_mouse_move(void *, int, int);
+#    int mlx_mouse_hide(void);
 #        */
 #include "../../libft/libft.h" /*
 #    int ft_strlen(char *);
@@ -28,6 +30,7 @@
 # define RAY_MULTIPY
 #typedef t_game;
 #   void game_error(t_game, char *);
+#    int map_control(t_game, char *, t_map *);
 #        */
 #include <stdlib.h> /*
 #   void *malloc(size_t);
@@ -49,16 +52,22 @@ extern __inline__ void	setup2(t_game game);
 /* *************************** [^] PROTOTYPES [^] *************************** */
 
 void
-	setup(t_game game, int argc, char **argv)
+	setup(t_game game)
 {
-	game->argv = argv;
-	game->argc = argc;
+	game->map = NULL;
+	game->ray = NULL;
+	game->window = NULL;
 	game->canvas.image = NULL;
-	game->textures = NULL;
-	game->number_of_textures = 0;
+	game->textures_are_ready = 0;
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		game_error(game, "MLX failed to create.");
+	if (game->argc != 2)
+		game_error(game, "Give at least one cub file to game!");
+	if (map_control(game, *(game->argv + 1)) == -1)
+		game_error(game, NULL);
+	game->textures_are_ready = 1;
+	game->canvas.image = NULL;
 	game->window_title = get_title(game->argv);
 	game->window = mlx_new_window(\
 		game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, \
@@ -69,29 +78,18 @@ void
 	game->perspective = PERSPECTIVE;
 	game->theta_perspective = ft_fmodf((game->perspective / 2.0F) * \
 		(M_PI_F / 180.0F) + 0.0001F, 2.0F * M_PI_F);
-	game->number_of_rays = (int)(game->perspective * RAY_MULTIPY);
-	game->x = 6.217586F; // MAP 
-	game->y = 3.173563F; // MAP
-	game->theta_rotation = 3.749784F; // MAP
-	game->theta_target_rotation = game->theta_rotation;
-	game->wall_pixel_width = ((float)WINDOW_WIDTH / \
-		(float)game->number_of_rays);
-	game->number_of_textures = 1; // MAP
-	game->textures = (t_image *)malloc(game->number_of_textures * \
-		sizeof(t_image));
-	if (!game->textures)
-		game_error(game, "game->textures failed to allocate.");
-	create_image(game, &game->textures[0], "./textures/xpm/test.xpm");
 	setup2(game);
 }
 
 extern __inline__ void
 	setup2(t_game game)
 {
+	game->number_of_rays = (int)(game->perspective * RAY_MULTIPY);
+	game->wall_pixel_width = (float)WINDOW_WIDTH / (float)game->number_of_rays;
 	game->target_x = game->x;
 	game->target_y = game->y;
 	game->map_width = ft_strlen(*game->map);
-	game->map_height = ft_matrixlen(game->map);
+	game->map_height = ft_matrixlen((const char **)game->map);
 	game->skyline = (float)(WINDOW_HEIGHT / 2);
 	game->target_skyline = game->skyline;
 	game->cos_theta_rotation = ft_cosf(game->theta_rotation);
@@ -107,7 +105,8 @@ extern __inline__ void
 		&game->canvas.endian);
 	game->canvas.x = WINDOW_WIDTH;
 	game->canvas.y = WINDOW_HEIGHT;
-	game->canvas.size = WINDOW_WIDTH * WINDOW_HEIGHT;
+	mlx_mouse_move(game->window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	mlx_mouse_hide();
 }
 
 extern __inline__ void
@@ -127,7 +126,7 @@ extern __inline__ void
 		game->ray[index].theta = ((index / \
 			(ft_floorf(game->perspective * RAY_MULTIPY) / 2.0F)) * \
 			game->theta_perspective) - game->theta_perspective;
-		game->ray[index].cos_theta = ft_cosf(game->ray[index].theta);
+		game->ray[index].sin_theta = ft_sinf(M_PI_2_F - game->ray[index].theta);
 		++index;
 	}
 }
@@ -151,7 +150,7 @@ extern __inline__ char
 	register int	eax;
 
 	if (!argv[1])
-		return ("[Random Map]"); // BURAYA BAK
+		return ("[Unknown Map]");
 	eax = ft_strlen(argv[1]) - 1;
 	while ((eax > 0) && (argv[1][eax] != '/') && (argv[1][eax] != '\\'))
 		--eax;

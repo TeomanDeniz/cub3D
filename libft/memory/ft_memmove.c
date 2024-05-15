@@ -24,11 +24,10 @@ const void *source, register size_t len);
 /* *************************** [^] PROTOTYPES [^] *************************** */
 
 void
-	*ft_memmove(void *destination, const void *source, register size_t len)
+	*ft_memmove(void *destination, void *source, register size_t len)
 {
-	register size_t	index;
-	const char		*buffer1;
-	char			*buffer2;
+	const char	*buffer1;
+	char		*buffer2;
 
 	if ((destination == source) || !source)
 		return (destination);

@@ -22,6 +22,6 @@ void
 	if (x < 0 || y < 0 || \
 		(unsigned)x >= game->canvas.x || (unsigned)y >= game->canvas.y)
 		return ;
-	*(unsigned int *)&game->canvas.buffer[y * game->canvas.line_length + x * \
-		(game->canvas.bits_per_pixel / 8)] = (unsigned int)color;
+	*(unsigned int *)&game->canvas.buffer \
+		[y * game->canvas.line_length + (x << 2)] = (unsigned int)color;
 }

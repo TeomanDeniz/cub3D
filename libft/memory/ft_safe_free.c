@@ -13,19 +13,15 @@
 /* **************************** [v] INCLUDES [v] **************************** */
 #include <stdlib.h> /*
 #   void free(void *);
-#*/
-#include <stdbool.h> /*
-#typedef bool;
-# define true;
-#*/
+#        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
-bool
+int
 	ft_safe_free(void **variable)
 {
 	if (!variable || !*variable)
-		return (true);
+		return (1);
 	free(*variable);
 	*variable = NULL;
-	return (true);
+	return (1);
 }

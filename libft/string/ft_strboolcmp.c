@@ -11,30 +11,25 @@
 /* ************************************************************************** */
 
 /* **************************** [v] INCLUDES [v] **************************** */
-#include <stdbool.h> /*
-#typedef bool;
-# define false;
-# define true;
-*/
 #include <stdlib.h> /*
 #typedef size_t;
-#*/
+#        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
-bool
+int
 	ft_strboolcmp(const char *const string, const char *const compare)
 {
 	register size_t	index;
 
 	if ((string == compare) || (!string && !compare))
-		return (false);
+		return (0);
 	if (!string || !compare)
-		return (true);
+		return (1);
 	index = 0;
 	while ((string[index] == compare[index]) && \
 		(!!string[index] && !!compare[index]))
 		++index;
 	if (!*compare && !*string)
-		return (true);
-	return (false);
+		return (1);
+	return (0);
 }
