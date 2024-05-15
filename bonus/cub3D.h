@@ -26,7 +26,8 @@
 # define RENDER_DISTANCE 500.0F // LIMIT OF RENDER DISTANCE
 # define SHADOW_DISTANCE 30.0F
 # define RAY_JUMP_LIMIT 200 // RAY DISTANCE LIMIT
-# define SHADOW_ON 0 // SHOW SHADOW EFFECT OR NOT (1/0)
+# define MAP_GRID_SIZE 50 // Map size, Example: 50 pixels per grid
+# define SHADOW_ON 1 // SHOW SHADOW EFFECT OR NOT (1/0)
 /* ********************* [^] CONSTANTS - GAME SETUP [^] ********************* */
 
 /* ******************* [v] CONSTANTS - ERROR MESSAGES [v] ******************* */
@@ -43,6 +44,7 @@
 # define ARROW_KEY_UP 126 // ^
 # define ARROW_KEY_DOWN 125 // V
 # define KEY_ESC 53 // ESC
+# define SPACE_BAR 49
 /* *********************** [^] CONSTANTS - INPUTS [^] *********************** */
 
 /* ***************************** [V] STRUCTS [V] **************************** */
@@ -108,7 +110,7 @@ struct s_ray
 	float	theta; // The angle of ray we throwed
 	float	sin_theta; // sin(90deg - ray.theta) for fixing fish eye effect
 	char	hit; // The part of the wall ray hit (0=nan, 1=d, 2=r, 3=l 4=u)
-};
+}; // (5=door_d, 6=door_r, door_7=l 8=door_u)
 
 struct s_key
 {
@@ -120,6 +122,7 @@ struct s_key
 	unsigned char	arrow_r : 1;
 	unsigned char	arrow_u : 1;
 	unsigned char	arrow_d : 1;
+	unsigned char	space;
 };
 
 typedef struct s_map // For map controls, nothing else
@@ -128,7 +131,7 @@ typedef struct s_map // For map controls, nothing else
 	char	*so; // Texture string
 	char	*we; // Texture string
 	char	*ea; // Texture string
-	char	*cd; // Door?
+	char	*door; // Door?
 	char	*f; // Floor part (255,255,255\n)
 	char	*c; // Ceiling part (255,255,255\n)
 	char	**map; // Map itself (Matrix)
@@ -144,7 +147,7 @@ typedef struct s_game
 	char			**argv;
 	int				argc;
 	t_image			canvas; // The real paint
-	t_image			textures[5]; // Textures, + door texture
+	t_image			textures[9]; // Textures, + door texture
 	int				textures_are_ready; // To free textures if they are ready
 	/* [v]			CHARACTER VALUES [v] */
 	float			perspective; // The perspective
@@ -163,6 +166,8 @@ typedef struct s_game
 	float			skyline; // The Z coordinate of walls
 	float			target_skyline; // For smooting lerp()
 	int				number_of_rays; // The number of rays in the perspective
+	float			target_shadow;
+	float			shadow;
 	struct s_ray	*ray; // Rays
 	/* [v]			MAP [v] */
 	char			**map; // Map lol
@@ -222,6 +227,10 @@ extern int	check_between_180_240(t_game game, t_lidar *lidar);
 extern int	check_between_240_360(t_game game, t_lidar *lidar);
 /* ***************************** [^] ./lidar [^] **************************** */
 /* **************************** [^] ./render [^] **************************** */
+
+/* *************************** [v] ./minimap [v] **************************** */
+extern void	minimap(t_game game, register int x, register int y);
+/* *************************** [^] ./minimap [^] **************************** */
 
 /****************************************************************************\
 |*                        MINILIBX EVENT HOOK LIST                          *|

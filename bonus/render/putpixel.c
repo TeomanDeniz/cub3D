@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_game.c                                        :+:      :+:    :+:   */
+/*   putpixel.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,37 +12,16 @@
 
 /* **************************** [V] INCLUDES [V] **************************** */
 #include "../cub3D.h" /*
-#typedef t_image;
 #typedef t_game;
-#        */
-#include <stdlib.h> /*
-#   void free(void *);
-#        */
-#include "../../minilibx/mlx.h" /*
-#    int mlx_destroy_window(void *, void *);
-#    int mlx_destroy_image(void *, void *);
-#        */
-#include "../../libft/libft.h" /*
-#    int ft_free_matrix(char ***);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 void
-	free_game(t_game game)
+	putpixel(t_game game, register int x, register int y, register int color)
 {
-	register int	index;
-
-	if (!!game->ray)
-		free(game->ray);
-	if (!!game->canvas.image)
-		mlx_destroy_image(game->mlx, game->canvas.image);
-	if (game->map != NULL)
-		ft_free_matrix(&game->map);
-	index = -1;
-	while (++index, game->textures_are_ready && \
-		index < (int)(sizeof(game->textures) / sizeof(t_image)) && \
-		!!game->textures[index].image)
-		mlx_destroy_image(game->mlx, game->textures[index].image);
-	if (!!game->mlx && !!game->window)
-		mlx_destroy_window(game->mlx, game->window);
+	if (x < 0 || y < 0 || \
+		(unsigned)x >= game->canvas.x || (unsigned)y >= game->canvas.y)
+		return ;
+	*(unsigned int *)&game->canvas.buffer \
+		[y * game->canvas.line_length + (x << 2)] = (unsigned int)color;
 }

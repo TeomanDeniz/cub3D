@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_game.c                                        :+:      :+:    :+:   */
+/*   free_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,39 +10,35 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* **************************** [V] INCLUDES [V] **************************** */
-#include "../cub3D.h" /*
-#typedef t_image;
-#typedef t_game;
+/* **************************** [v] INCLUDES [v] **************************** */
+#include "../../cub3D.h" /*
+#typedef t_map;
 #        */
 #include <stdlib.h> /*
 #   void free(void *);
 #        */
-#include "../../minilibx/mlx.h" /*
-#    int mlx_destroy_window(void *, void *);
-#    int mlx_destroy_image(void *, void *);
-#        */
-#include "../../libft/libft.h" /*
+#include "../../../libft/libft.h" /*
 #    int ft_free_matrix(char ***);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 void
-	free_game(t_game game)
+	free_map(t_map *map)
 {
-	register int	index;
-
-	if (!!game->ray)
-		free(game->ray);
-	if (!!game->canvas.image)
-		mlx_destroy_image(game->mlx, game->canvas.image);
-	if (game->map != NULL)
-		ft_free_matrix(&game->map);
-	index = -1;
-	while (++index, game->textures_are_ready && \
-		index < (int)(sizeof(game->textures) / sizeof(t_image)) && \
-		!!game->textures[index].image)
-		mlx_destroy_image(game->mlx, game->textures[index].image);
-	if (!!game->mlx && !!game->window)
-		mlx_destroy_window(game->mlx, game->window);
+	if (!!map->no)
+		free(map->no);
+	if (!!map->so)
+		free(map->so);
+	if (!!map->we)
+		free(map->we);
+	if (!!map->ea)
+		free(map->ea);
+	if (!!map->door)
+		free(map->door);
+	if (!!map->f)
+		free(map->f);
+	if (!!map->c)
+		free(map->c);
+	if (!!map->map)
+		ft_free_matrix(&map->map);
 }

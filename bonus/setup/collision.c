@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_game.c                                        :+:      :+:    :+:   */
+/*   collision.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,37 +12,41 @@
 
 /* **************************** [V] INCLUDES [V] **************************** */
 #include "../cub3D.h" /*
-#typedef t_image;
 #typedef t_game;
-#        */
-#include <stdlib.h> /*
-#   void free(void *);
-#        */
-#include "../../minilibx/mlx.h" /*
-#    int mlx_destroy_window(void *, void *);
-#    int mlx_destroy_image(void *, void *);
-#        */
-#include "../../libft/libft.h" /*
-#    int ft_free_matrix(char ***);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
-void
-	free_game(t_game game)
-{
-	register int	index;
+/* *************************** [v] PROTOTYPES [v] *************************** */
+extern __inline__ int	is_hit(t_game game, register float x, register float y);
+/* *************************** [^] PROTOTYPES [^] *************************** */
 
-	if (!!game->ray)
-		free(game->ray);
-	if (!!game->canvas.image)
-		mlx_destroy_image(game->mlx, game->canvas.image);
-	if (game->map != NULL)
-		ft_free_matrix(&game->map);
-	index = -1;
-	while (++index, game->textures_are_ready && \
-		index < (int)(sizeof(game->textures) / sizeof(t_image)) && \
-		!!game->textures[index].image)
-		mlx_destroy_image(game->mlx, game->textures[index].image);
-	if (!!game->mlx && !!game->window)
-		mlx_destroy_window(game->mlx, game->window);
+void
+	collision(t_game game)
+{
+	register float	dx;
+	register float	dy;
+
+	dx = game->target_x - game->x;
+	dy = game->target_y - game->y;
+	if (dx > 0.1F)
+		dx = 0.1F;
+	if (dy > 0.1F)
+		dy = 0.1F;
+	if (dx < -0.1F)
+		dx = -0.1F;
+	if (dy < -0.1F)
+		dy = -0.1F;
+	if (is_hit(game, game->x + dx, game->y))
+		game->target_x = game->x;
+	if (is_hit(game, game->x, game->y + dy))
+		game->target_y = game->y;
+}
+
+extern __inline__ int
+	is_hit(t_game game, register float x, register float y)
+{
+	if (x < 0.0F || x >= game->map_width || y < 0.0F || y >= game->map_height)
+		return (1);
+	return (game->map[(int)y][(int)x] == '1' || \
+		game->map[(int)y][(int)x] == 'D');
 }

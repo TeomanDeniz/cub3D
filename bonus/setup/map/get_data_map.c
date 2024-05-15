@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map_header.c                                 :+:      :+:    :+:   */
+/*   get_data_map.c                                   	:+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,25 +12,43 @@
 
 /* **************************** [v] INCLUDES [v] **************************** */
 #include "../../cub3D.h" /*
-#    int check_map_header_xpm(t_game, char *, char *);
-#    int check_map_header_color(char *, char *);
+#typedef t_map;
+#    int game_warning(char *, char *);
+#        */
+#include "../../../libft/libft.h" /*
+#    int ft_matrixlen(char **);
+#   void *ft_calloc(size_t, size_t);
+#   char *ft_strdup(char *);
+#    int ft_free_matrix(char ***);
+#        */
+#include <stdlib.h> /*
+#   void free(void *);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 int
-	check_map_header(t_game game, t_map *map)
+	get_data_map(const char *const line, t_map *map)
 {
-	if (check_map_header_xpm(game, map->no, "NO") == -1)
-		return (-1);
-	if (check_map_header_xpm(game, map->so, "SO") == -1)
-		return (-1);
-	if (check_map_header_xpm(game, map->ea, "EA") == -1)
-		return (-1);
-	if (check_map_header_xpm(game, map->we, "WE") == -1)
-		return (-1);
-	if (check_map_header_color(map->f, "F") == -1)
-		return (-1);
-	if (check_map_header_color(map->c, "C") == -1)
-		return (-1);
-	return (0);
+	char			**new_map;
+	register int	index;
+
+	new_map = (char **)ft_calloc(\
+		ft_matrixlen((const char **)map->map) + 2, sizeof(char *));
+	if (new_map == NULL)
+		return (game_warning("Memory allocation failed", NULL));
+	index = 0;
+	while (map->map && map->map[index] != NULL)
+	{
+		new_map[index] = map->map[index];
+		++index;
+	}
+	new_map[index] = ft_strdup(line);
+	if (new_map[index] == NULL)
+	{
+		ft_free_matrix(&new_map);
+		return (game_warning("Memory allocation failed5", NULL));
+	}
+	free(map->map);
+	map->map = new_map;
+	return (3);
 }

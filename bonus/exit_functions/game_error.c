@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_game.c                                        :+:      :+:    :+:   */
+/*   game_error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,37 +12,29 @@
 
 /* **************************** [V] INCLUDES [V] **************************** */
 #include "../cub3D.h" /*
-#typedef t_image;
 #typedef t_game;
+#   void free_game(t_game);
 #        */
 #include <stdlib.h> /*
-#   void free(void *);
-#        */
-#include "../../minilibx/mlx.h" /*
-#    int mlx_destroy_window(void *, void *);
-#    int mlx_destroy_image(void *, void *);
+# define EXIT_FAILURE 1
+#   void exit(int);
 #        */
 #include "../../libft/libft.h" /*
-#    int ft_free_matrix(char ***);
+#    int ft_strlen(char *);
+#        */
+#include <unistd.h> /*
+#sszie_t write(int, void *, size_t);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 void
-	free_game(t_game game)
+	game_error(t_game game, char *message)
 {
-	register int	index;
-
-	if (!!game->ray)
-		free(game->ray);
-	if (!!game->canvas.image)
-		mlx_destroy_image(game->mlx, game->canvas.image);
-	if (game->map != NULL)
-		ft_free_matrix(&game->map);
-	index = -1;
-	while (++index, game->textures_are_ready && \
-		index < (int)(sizeof(game->textures) / sizeof(t_image)) && \
-		!!game->textures[index].image)
-		mlx_destroy_image(game->mlx, game->textures[index].image);
-	if (!!game->mlx && !!game->window)
-		mlx_destroy_window(game->mlx, game->window);
+	if (message != NULL)
+	{
+		write(2, message, ft_strlen(message));
+		write(2, "\n", 1);
+	}
+	free_game(game);
+	exit(EXIT_FAILURE);
 }

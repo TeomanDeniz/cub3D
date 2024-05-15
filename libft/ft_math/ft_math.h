@@ -165,6 +165,12 @@
 # endif
 /* Constants (Float) */
 
+typedef union s_cast
+{
+	const char			*ptr;
+	unsigned long long	integer;
+}	t_cast;
+
 /* Trigonometric functions */
 /* [Float] */
 extern float	ft_sinf(float x);
@@ -195,6 +201,7 @@ extern float	ft_sqrtf(register float x);
 /* Other functions */
 extern int		ft_iabs(int x);
 extern int		ft_imax(int a, int b);
+extern int		ft_rand(register int min, register int max);
 /* [Float] */
 extern float	ft_fabsf(float x);
 extern float	ft_fminf(float x, float y);

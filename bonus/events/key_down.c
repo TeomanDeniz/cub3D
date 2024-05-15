@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_game.c                                        :+:      :+:    :+:   */
+/*   key_down.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,37 +12,42 @@
 
 /* **************************** [V] INCLUDES [V] **************************** */
 #include "../cub3D.h" /*
-#typedef t_image;
+# define KEY_ESC 53
+# define LETTER_KEY_LEFT 0
+# define LETTER_KEY_RIGHT 2
+# define LETTER_KEY_UP 13
+# define LETTER_KEY_DOWN 1
+# define ARROW_KEY_LEFT 123
+# define ARROW_KEY_RIGHT 124
+# define ARROW_KEY_UP 126
+# define ARROW_KEY_DOWN 125
+#   void close_window(t_game);
 #typedef t_game;
-#        */
-#include <stdlib.h> /*
-#   void free(void *);
-#        */
-#include "../../minilibx/mlx.h" /*
-#    int mlx_destroy_window(void *, void *);
-#    int mlx_destroy_image(void *, void *);
-#        */
-#include "../../libft/libft.h" /*
-#    int ft_free_matrix(char ***);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
-void
-	free_game(t_game game)
+int
+	key_down(int key, t_game game)
 {
-	register int	index;
-
-	if (!!game->ray)
-		free(game->ray);
-	if (!!game->canvas.image)
-		mlx_destroy_image(game->mlx, game->canvas.image);
-	if (game->map != NULL)
-		ft_free_matrix(&game->map);
-	index = -1;
-	while (++index, game->textures_are_ready && \
-		index < (int)(sizeof(game->textures) / sizeof(t_image)) && \
-		!!game->textures[index].image)
-		mlx_destroy_image(game->mlx, game->textures[index].image);
-	if (!!game->mlx && !!game->window)
-		mlx_destroy_window(game->mlx, game->window);
+	if (key == KEY_ESC)
+		close_window(game);
+	if (key == SPACE_BAR)
+		game->key.space = 1U;
+	if (key == LETTER_KEY_UP)
+		game->key.w = 1U;
+	if (key == LETTER_KEY_LEFT)
+		game->key.a = 1U;
+	if (key == LETTER_KEY_DOWN)
+		game->key.s = 1U;
+	if (key == LETTER_KEY_RIGHT)
+		game->key.d = 1U;
+	if (key == ARROW_KEY_UP)
+		game->key.arrow_u = 1U;
+	if (key == ARROW_KEY_LEFT)
+		game->key.arrow_l = 1U;
+	if (key == ARROW_KEY_DOWN)
+		game->key.arrow_d = 1U;
+	if (key == ARROW_KEY_RIGHT)
+		game->key.arrow_r = 1U;
+	return (0);
 }

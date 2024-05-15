@@ -56,6 +56,7 @@ LIBFT_SRC	=	./libft/bool/ft_isdigit.c \
 				./libft/ft_math/Other/ft_fminf.c \
 				./libft/ft_math/Other/ft_fmaxf.c \
 				./libft/ft_math/Other/ft_imax.c \
+				./libft/ft_math/Other/ft_rand.c \
 				./libft/ft_math/Trigonometric/ft_sinf.c \
 				./libft/ft_math/Trigonometric/ft_cosf.c \
 				./libft/ft_math/Trigonometric/ft_tanf.c \
@@ -74,6 +75,7 @@ MAIN_SRC	=	$(LIBFT_SRC) \
 				./main/exit_functions/free_game.c \
 				./main/exit_functions/game_warning.c \
 				./main/setup/setup.c \
+				./main/setup/collision.c \
 				./main/setup/map/check_map_data.c \
 				./main/setup/map/check_map_header.c \
 				./main/setup/map/check_map_header_color.c \
@@ -83,6 +85,7 @@ MAIN_SRC	=	$(LIBFT_SRC) \
 				./main/setup/map/map_control.c \
 				./main/setup/map/free_map.c \
 				./main/setup/map/set_map_to_game.c \
+				./main/setup/map/map_extension.c \
 				./main/events/key_down.c \
 				./main/events/key_up.c \
 				./main/events/mouse_event.c \
@@ -100,16 +103,47 @@ MAIN_SRC	=	$(LIBFT_SRC) \
 # *************************** [^] MAIN SOURCES [^] *************************** #
 
 # ************************** [v] BONUS SOURCES [v] *************************** #
-BONUS_SRC	=	$(LIBFT_SRC)
+BONUS_SRC	=	$(LIBFT_SRC) \
+				./bonus/exit_functions/game_error.c \
+				./bonus/exit_functions/close_window.c \
+				./bonus/exit_functions/free_game.c \
+				./bonus/exit_functions/game_warning.c \
+				./bonus/setup/setup.c \
+				./bonus/setup/collision.c \
+				./bonus/setup/map/check_map_data.c \
+				./bonus/setup/map/check_map_header.c \
+				./bonus/setup/map/check_map_header_color.c \
+				./bonus/setup/map/check_map_header_xpm.c \
+				./bonus/setup/map/get_data_map.c \
+				./bonus/setup/map/get_map_header.c \
+				./bonus/setup/map/map_control.c \
+				./bonus/setup/map/free_map.c \
+				./bonus/setup/map/set_map_to_game.c \
+				./bonus/setup/map/map_extension.c \
+				./bonus/events/key_down.c \
+				./bonus/events/key_up.c \
+				./bonus/events/mouse_event.c \
+				./bonus/render/input_events.c \
+				./bonus/render/render.c \
+				./bonus/render/putpixel.c \
+				./bonus/render/skybox.c \
+				./bonus/render/lidar/lidar.c \
+				./bonus/render/lidar/calculate_distance_x.c \
+				./bonus/render/lidar/calculate_distance_y.c \
+				./bonus/render/lidar/check_between_0_90.c \
+				./bonus/render/lidar/check_between_90_180.c \
+				./bonus/render/lidar/check_between_180_240.c \
+				./bonus/render/lidar/check_between_240_360.c \
+				./bonus/minimap/minimap.c \
 # ************************** [^] BONUS SOURCES [^] *************************** #
 
 # ****************************** [v] BONUS [v] ******************************* #
 	# [EXE]
-#		BONUS_EXE	=	#"cub3D_bonus"
-#		BONUS		=	#./bonus/cub3D.c
+		BONUS_EXE	=	./cub3D_bonus
+		BONUS		=	./bonus/cub3D.c
 	# [EXE]
 	# [.c STRINGS TO .o]
-#		BONUS_OBJ	=	$(eval BONUS_OBJ := $$(BONUS_SRC:.c=.o))$(BONUS_OBJ)
+		BONUS_OBJ	=	$(BONUS_SRC:.c=.o)
 	# [.c STRINGS TO .o]
 # ****************************** [^] BONUS [^] ******************************* #
 
@@ -125,16 +159,13 @@ BONUS_SRC	=	$(LIBFT_SRC)
 		MAIN		=	./main/cub3D.c
 	# [EXE]
 	# [COMPILER FLAGS]
-		CFLAGS		=	-Wall -Wextra -Werror -O3 -Imlx # -g
+		CFLAGS		=	-Wall -Wextra -Werror -O3 -Imlx -g
 		MAIN_FLAGS	=	-lmlx -O3 \
-						-framework OpenGL -framework AppKit -L./minilibx # -g
+						-framework OpenGL -framework AppKit -L./minilibx -g
 	# [COMPILER FLAGS]
 	# [.c STRINGS TO .o]
 		MAIN_OBJ	=	$(MAIN_SRC:.c=.o)
 	# [.c STRINGS TO .o]
-	# [CHECK MAIN IS COMPILED]
-		MAIN_READY	=	$(MAIN:.c=.o)
-	# [CHECK MAIN IS COMPILED]
 	# ANIMATION VARIABLES
 		TERMINAL_LEN	:=	\
 			$(eval TERMINAL_LEN := $(shell tput cols))$(TERMINAL_LEN)
@@ -183,7 +214,7 @@ endef
 	$(eval FILE_COUNTER := $(shell echo $(FILE_COUNTER) + 1 | bc))
 	$(call progress_bar,$(FILE_COUNTER),$(NUMBER_OF_FILES),$<)
 	@rm -f $(MAIN_EXE) 2>/dev/null
-	@#@rm -f $(BONUS_EXE) 2>/dev/null
+	@rm -f $(BONUS_EXE) 2>/dev/null
 	@$(CC) $(CFLAGS) -c $< -o $@ 2>/dev/null || (\
 		echo "\n\n $(B1F15) Failed to compile [$(F11)$<$(F15)] $(C_RESET)\n" &&\
 		$(CC) $(CFLAGS) -c $< -o $@)
@@ -194,17 +225,17 @@ $(MAIN_EXE): $(MLX) $(MAIN) $(MAIN_OBJ)
 	@$(CC) $(MAIN_FLAGS) $(MAIN) $(MAIN_OBJ) -o "$(MAIN_EXE)" && \
 		echo "\n\n $(C_BLINK)$(B2F15) $(MAIN_EXE) is ready! $(C_RESET)\n"
 
-#$(BONUS_EXE): $(BONUS) $(BONUS_OBJ)
-#	@$(CC) $(MAIN_FLAGS) $(BONUS) $(BONUS_OBJ) -o "./$(BONUS_EXE)" && \
-#		echo "\n\n $(C_BLINK)$(B2F15) $(BONUS_EXE) is ready! $(C_RESET)\n"
+$(BONUS_EXE): $(MLX) $(BONUS) $(BONUS_OBJ)
+	@$(CC) $(MAIN_FLAGS) $(BONUS) $(BONUS_OBJ) -o "$(BONUS_EXE)" && \
+		echo "\n\n $(C_BLINK)$(B2F15) $(BONUS_EXE) is ready! $(C_RESET)\n"
 
 $(MLX):
 	@echo " $(F0)COMPILING MLX!!!! $(C_RESET)"
 	@make -C "./minilibx" 1>/dev/null
 	@echo " $(B2F15)MLX Done !$(C_RESET)"
 
-#b: bonus
-#bonus: $(BONUS_EXE)
+b: bonus
+bonus: $(BONUS_EXE)
 
 c: clean
 clear: clean
@@ -225,4 +256,4 @@ fclean: clean
 
 re: fc all
 
-.PHONY: all fclean fc clean clear c cmlx #bonus b
+.PHONY: all fclean fc clean clear c cmlx bonus b

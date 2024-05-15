@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map_header.c                                 :+:      :+:    :+:   */
+/*   map_extension.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,25 +12,27 @@
 
 /* **************************** [v] INCLUDES [v] **************************** */
 #include "../../cub3D.h" /*
-#    int check_map_header_xpm(t_game, char *, char *);
-#    int check_map_header_color(char *, char *);
+#typedef t_game;
+#    int game_warning(char *, char *);
+#        */
+#include "../../../libft/libft.h" /*
+#    int ft_strlen(char *);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
 int
-	check_map_header(t_game game, t_map *map)
+	map_extension(const char *file)
 {
-	if (check_map_header_xpm(game, map->no, "NO") == -1)
-		return (-1);
-	if (check_map_header_xpm(game, map->so, "SO") == -1)
-		return (-1);
-	if (check_map_header_xpm(game, map->ea, "EA") == -1)
-		return (-1);
-	if (check_map_header_xpm(game, map->we, "WE") == -1)
-		return (-1);
-	if (check_map_header_color(map->f, "F") == -1)
-		return (-1);
-	if (check_map_header_color(map->c, "C") == -1)
-		return (-1);
-	return (0);
+	register int	string_size;
+
+	if (!file)
+		return (game_warning("How the heck is file variable null???", NULL));
+	string_size = ft_strlen(file);
+	if (string_size < 5)
+		return (game_warning("Name is a litle strange. A little short", NULL));
+	if (file[string_size - 1] == 'b' && file[string_size - 2] == 'u' && \
+		file[string_size - 3] == 'c' && file[string_size - 4] == '.')
+		return (1);
+	game_warning("The file extension is not \".cub\" file!", file);
+	return (-1);
 }

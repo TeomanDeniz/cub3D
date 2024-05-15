@@ -28,9 +28,14 @@
 #    int close_window(t_game);
 #    int key_down(int, t_game);
 #    int key_up(int, t_game);
+#   void minimap(t_game, int, int);
 #        */
 #include <stdlib.h> /*
 # define EXIT_SUCCESS
+#        */
+#include "../libft/ft_math/ft_math.h" /*
+#  float ft_lerpf(float, float, float);
+#    int ft_rand(int, int);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
@@ -50,6 +55,10 @@ int
 	game.textures[2].image = NULL;
 	game.textures[3].image = NULL;
 	game.textures[4].image = NULL;
+	game.textures[5].image = NULL;
+	game.textures[6].image = NULL;
+	game.textures[7].image = NULL;
+	game.textures[8].image = NULL;
 	setup(&game);
 	mlx_hook(game.window, 17, (1L << 0), close_window, (void *)&game);
 	mlx_hook(game.window, 2, 1L << 0, key_down, (void *)&game);
@@ -65,10 +74,13 @@ extern __inline__ int
 	t_game	game;
 
 	game = (t_game)arg;
+	game->target_shadow = (float)ft_rand(-50, 240);
 	input_events(game);
 	skybox(game, game->floor_color, game->ceiling_color);
 	lidar(game);
 	render(game);
+	minimap(game, -3, -3);
 	mlx_put_image_to_window(game->mlx, game->window, game->canvas.image, 0, 0);
+	game->shadow = ft_lerpf(game->shadow, game->target_shadow, 0.02F);
 	return (0);
 }

@@ -25,7 +25,7 @@ typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
-}					t_list;
+}	t_list;
 /* **************************** [^] STRUCTS [^] ***************************** */
 /* ***************************** [v] ./bool [v] ***************************** */
 extern int		ft_isalnum(register int character);

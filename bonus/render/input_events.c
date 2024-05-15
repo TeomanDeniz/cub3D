@@ -30,6 +30,7 @@
 /* *************************** [v] PROTOTYPES [v] *************************** */
 extern __inline__ void	rotation_handle(t_game game);
 extern __inline__ void	movement_handle(t_game game);
+extern __inline__ void	door_handle(t_game game);
 /* *************************** [^] PROTOTYPES [^] *************************** */
 
 void
@@ -38,6 +39,7 @@ void
 	movement_handle(game);
 	mouse_event(game);
 	rotation_handle(game);
+	door_handle(game);
 }
 
 extern __inline__ void
@@ -96,4 +98,33 @@ extern __inline__ void
 		* PLAYER_SPEED;
 	game->sin_theta_rotation = (ft_sinf(game->theta_rotation) / 32.0F) \
 		* PLAYER_SPEED;
+}
+
+extern __inline__ void
+	door_handle(t_game game)
+{
+	if (game->key.space)
+	{
+		game->key.space = 0U;
+		if ((int)game->x + 1 < game->map_width && (int)game->x - 1 > 0 && \
+			(int)game->y + 1 < game->map_height && (int)game->y - 1 > 0)
+		{
+			if (game->map[(int)game->y + 1][(int)game->x] == 'D')
+				game->map[(int)game->y + 1][(int)game->x] = 'C';
+			else if (game->map[(int)game->y][(int)game->x + 1] == 'D')
+				game->map[(int)game->y][(int)game->x + 1] = 'C';
+			else if (game->map[(int)game->y - 1][(int)game->x] == 'D')
+				game->map[(int)game->y - 1][(int)game->x] = 'C';
+			else if (game->map[(int)game->y][(int)game->x - 1] == 'D')
+				game->map[(int)game->y][(int)game->x - 1] = 'C';
+			else if (game->map[(int)game->y + 1][(int)game->x] == 'C')
+				game->map[(int)game->y + 1][(int)game->x] = 'D';
+			else if (game->map[(int)game->y][(int)game->x + 1] == 'C')
+				game->map[(int)game->y][(int)game->x + 1] = 'D';
+			else if (game->map[(int)game->y - 1][(int)game->x] == 'C')
+				game->map[(int)game->y - 1][(int)game->x] = 'D';
+			else if (game->map[(int)game->y][(int)game->x - 1] == 'C')
+				game->map[(int)game->y][(int)game->x - 1] = 'D';
+		}
+	}
 }

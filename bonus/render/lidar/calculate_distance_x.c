@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_game.c                                        :+:      :+:    :+:   */
+/*   calculate_distance_x.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hdeniz <Discord:@teomandeniz>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,38 +11,23 @@
 /* ************************************************************************** */
 
 /* **************************** [V] INCLUDES [V] **************************** */
-#include "../cub3D.h" /*
-#typedef t_image;
+#include "../../cub3D.h" /*
 #typedef t_game;
+#typedef t_lidar;
 #        */
-#include <stdlib.h> /*
-#   void free(void *);
-#        */
-#include "../../minilibx/mlx.h" /*
-#    int mlx_destroy_window(void *, void *);
-#    int mlx_destroy_image(void *, void *);
-#        */
-#include "../../libft/libft.h" /*
-#    int ft_free_matrix(char ***);
+#include "../../../libft/ft_math/ft_math.h" /*
+#  float ft_sqrtf(float);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
-void
-	free_game(t_game game)
+int
+	calculate_distance_x(t_game game, t_lidar lidar, int hit)
 {
-	register int	index;
-
-	if (!!game->ray)
-		free(game->ray);
-	if (!!game->canvas.image)
-		mlx_destroy_image(game->mlx, game->canvas.image);
-	if (game->map != NULL)
-		ft_free_matrix(&game->map);
-	index = -1;
-	while (++index, game->textures_are_ready && \
-		index < (int)(sizeof(game->textures) / sizeof(t_image)) && \
-		!!game->textures[index].image)
-		mlx_destroy_image(game->mlx, game->textures[index].image);
-	if (!!game->mlx && !!game->window)
-		mlx_destroy_window(game->mlx, game->window);
+	game->ray[lidar.index].hit = hit;
+	game->ray[lidar.index].x = lidar.x_jump_on_map;
+	game->ray[lidar.index].y = lidar.y;
+	game->ray[lidar.index].distance = \
+		ft_sqrtf((lidar.y - game->y) * (lidar.y - game->y) + \
+		(lidar.x_jump_on_map - game->x) * (lidar.x_jump_on_map - game->x));
+	return (1);
 }

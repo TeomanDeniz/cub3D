@@ -62,7 +62,7 @@ int
 	map.so = NULL;
 	map.we = NULL;
 	map.ea = NULL;
-	map.cd = NULL;
+	map.door = NULL;
 	map.f = NULL;
 	map.c = NULL;
 	map.map = NULL;
@@ -139,6 +139,8 @@ extern __inline__ int
 		prefix = "WE";
 	else if (map->ea == NULL)
 		prefix = "EA";
+	else if (map->door == NULL)
+		prefix = "DC";
 	else if (map->f == NULL)
 		prefix = "F";
 	else if (map->c == NULL)
@@ -147,11 +149,6 @@ extern __inline__ int
 		return (game_warning("Missing data", prefix));
 	return (2);
 }
-
-/*
-	else if (map->cd == NULL)
-		prefix = "DC";
-*/
 
 extern __inline__ int
 	skip_empty_line(const char *const line)
