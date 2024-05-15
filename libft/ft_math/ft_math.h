@@ -193,28 +193,18 @@ extern int		ft_isnan(double x);
 
 /* Power functions */
 /* [Float] */
-extern float	ft_powf(register float base, register float power);
 extern float	ft_sqrtf(register float x);
 /* [Float] */
 /* Power functions */
 
 /* Other functions */
-extern int		ft_iabs(int x);
 extern int		ft_imax(int a, int b);
 extern int		ft_rand(register int min, register int max);
 /* [Float] */
 extern float	ft_fabsf(float x);
 extern float	ft_fminf(float x, float y);
-extern float	ft_fmaxf(float x, float y);
 extern float	ft_lerpf(float x, float y, float f);
 /* [Float] */
 /* Other functions */
-
-/* Exponential and Logarithmic functions */
-/* [Float] */
-extern float	ft_expf(register float x);
-extern float	ft_logf(register float x);
-/* [Float] */
-/* Exponential and Logarithmic functions */
 
 #endif /* FT_MATH_H */

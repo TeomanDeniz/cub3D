@@ -31,43 +31,35 @@ endif
 LIBFT_SRC	=	./libft/bool/ft_isdigit.c \
 				./libft/converters/ft_atoi.c \
 				./libft/converters/ft_numlen.c \
-				./libft/memory/ft_safe_free.c \
-				./libft/memory/ft_memmove.c \
-				./libft/memory/ft_calloc.c \
-				./libft/memory/ft_bzero.c \
-				./libft/memory/ft_memset.c \
-				./libft/string/ft_strlen.c \
 				./libft/string/ft_split.c \
-				./libft/string/ft_strcdup.c \
-				./libft/string/ft_strdup.c \
 				./libft/string/ft_strchr.c \
+				./libft/string/ft_strlen.c \
 				./libft/string/ft_strncmp.c \
 				./libft/string/ft_strtrim.c \
 				./libft/string/ft_substr.c \
+				./libft/string/ft_strdup.c \
 				./libft/string/ft_strlcpy.c \
+				./libft/memory/ft_calloc.c \
+				./libft/memory/ft_memset.c \
+				./libft/memory/ft_bzero.c \
 				./libft/matrix/ft_matrixlen.c \
 				./libft/matrix/ft_copy_matrix.c \
 				./libft/matrix/ft_free_matrix.c \
 				./libft/get_next_line/get_next_line.c \
 				./libft/get_next_line/get_next_line_utils.c \
-				./libft/ft_math/Other/ft_lerpf.c \
-				./libft/ft_math/Other/ft_fabsf.c \
-				./libft/ft_math/Other/ft_iabs.c \
-				./libft/ft_math/Other/ft_fminf.c \
-				./libft/ft_math/Other/ft_fmaxf.c \
 				./libft/ft_math/Other/ft_imax.c \
 				./libft/ft_math/Other/ft_rand.c \
+				./libft/ft_math/Other/ft_fabsf.c \
+				./libft/ft_math/Other/ft_fminf.c \
+				./libft/ft_math/Other/ft_lerpf.c \
+				./libft/ft_math/Rounding_Remainder/ft_floorf.c \
+				./libft/ft_math/Rounding_Remainder/ft_fmodf.c \
+				./libft/ft_math/Power/ft_sqrtf.c \
 				./libft/ft_math/Trigonometric/ft_sinf.c \
 				./libft/ft_math/Trigonometric/ft_cosf.c \
 				./libft/ft_math/Trigonometric/ft_tanf.c \
-				./libft/ft_math/Rounding_Remainder/ft_floorf.c \
-				./libft/ft_math/Rounding_Remainder/ft_fmodf.c \
 				./libft/ft_math/Floating-point_Classification/ft_isnan.c \
-				./libft/ft_math/Floating-point_Classification/ft_isinf.c \
-				./libft/ft_math/Power/ft_powf.c \
-				./libft/ft_math/Power/ft_sqrtf.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_expf.c \
-				./libft/ft_math/Exponential_Logarithmic/ft_logf.c
+				./libft/ft_math/Floating-point_Classification/ft_isinf.c
 
 MAIN_SRC	=	$(LIBFT_SRC) \
 				./main/exit_functions/game_error.c \
@@ -159,9 +151,9 @@ BONUS_SRC	=	$(LIBFT_SRC) \
 		MAIN		=	./main/cub3D.c
 	# [EXE]
 	# [COMPILER FLAGS]
-		CFLAGS		=	-Wall -Wextra -Werror -O3 -Imlx -g
+		CFLAGS		=	-Wall -Wextra -Werror -O3 -Imlx # -g
 		MAIN_FLAGS	=	-lmlx -O3 \
-						-framework OpenGL -framework AppKit -L./minilibx -g
+						-framework OpenGL -framework AppKit -L./minilibx # -g
 	# [COMPILER FLAGS]
 	# [.c STRINGS TO .o]
 		MAIN_OBJ	=	$(MAIN_SRC:.c=.o)
