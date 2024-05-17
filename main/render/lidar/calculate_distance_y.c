@@ -18,7 +18,6 @@
 #include "../../../libft/ft_math/ft_math.h" /*
 #  float ft_sqrtf(float);
 #        */
-
 /* **************************** [^] INCLUDES [^] **************************** */
 
 int

@@ -6,7 +6,7 @@
 /*   By: hdeniz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 18:10:11 by hdeniz            #+#    #+#             */
-/*   Updated: 2023/09/03 18:10:13 by hdeniz           ###   ########.fr       */
+/*   Updated: 2024/05/17 16:21:00 by hdeniz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@ int
 {
 	int	result;
 
+	if (number < 0)
+		number = ((~number) + 1);
+	if (number < 10)
+		return (1);
 	result = -1;
 	while (++result, number)
 		number /= 10;
