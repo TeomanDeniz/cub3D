@@ -14,6 +14,8 @@
 #include "../cub3D.h" /*
 # define ROTATE_SPEED
 # define WALL_SIZE
+# define WINDOW_WIDTH
+# define WINDOW_HEIGHT
 #typedef t_game;
 #        */
 #include "../../minilibx/mlx.h" /*
