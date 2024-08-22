@@ -1,6 +1,12 @@
 # cub3D
 Ecole-42 cub3D project. We are using ray-casting to make the 2D look more like 3D.
 
+[![Youtube Embeded](https://img.youtube.com/vi/fC1tMDBh9gY/0.jpg)](https://www.youtube.com/watch?v=fC1tMDBh9gY)
+
+https://github.com/user-attachments/assets/6e31701b-71c3-44c6-b3fd-9c2608f0f05c
+
+https://github.com/user-attachments/assets/5b868b83-cd37-453f-a507-c3dcb4dfe200
+
 # Setup:
 
 Works only in MacOS OpenGL framework. (miniLibX)
