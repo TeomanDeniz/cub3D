@@ -52,8 +52,8 @@ int
 	game.textures[4].image = NULL;
 	setup(&game);
 	mlx_hook(game.window, 17, (1L << 0), close_window, (void *)&game);
-	mlx_hook(game.window, 2, 1L << 0, key_down, (void *)&game);
-	mlx_hook(game.window, 3, 1L << 1, key_up, (void *)&game);
+	mlx_hook(game.window, 2, (1L << 0), key_down, (void *)&game);
+	mlx_hook(game.window, 3, (1L << 1), key_up, (void *)&game);
 	mlx_loop_hook(game.mlx, loop, (void *)&game);
 	mlx_loop(game.mlx);
 	return (EXIT_SUCCESS);

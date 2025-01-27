@@ -19,8 +19,8 @@
 #typedef t_game;
 #        */
 #include "../../minilibx/mlx.h" /*
-#    int mlx_mouse_move(void *, int , int);
-#    int mlx_mouse_get_pos(void *, int *, int *);
+#    int mlx_mouse_move(void *, void *, int , int);
+#    int mlx_mouse_get_pos(void *, void *, int *, int *);
 #        */
 /* **************************** [^] INCLUDES [^] **************************** */
 
@@ -37,7 +37,7 @@ void
 	int				x;
 	int				y;
 
-	mlx_mouse_get_pos(game->window, &x, &y);
+	mlx_mouse_get_pos(game->mlx, game->window, &x, &y);
 	if (old_x == -1 || old_y == -1)
 	{
 		old_x = x;
@@ -50,8 +50,9 @@ void
 			(float)(20000.0F * ROTATE_SPEED);
 	}
 	check_y_position(game, old_y, y);
-	mlx_mouse_move(game->window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-	mlx_mouse_get_pos(game->window, &x, &y);
+	mlx_mouse_move(game->mlx, game->window, \
+		WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	mlx_mouse_get_pos(game->mlx, game->window, &x, &y);
 	old_x = x;
 	old_y = y;
 }

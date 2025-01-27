@@ -15,9 +15,9 @@
 
 /* ********************* [V] CONSTANTS - GAME SETUP [V] ********************* */
 # define SLICE 0.1
-# define WINDOW_WIDTH 2000
-# define WINDOW_HEIGHT 1200
-# define WALL_SIZE 600 // WINDOW_HEIGHT / 2 (PX)
+# define WINDOW_WIDTH 2500
+# define WINDOW_HEIGHT 1800
+# define WALL_SIZE 900 // WINDOW_HEIGHT / 2 (PX)
 # define RAY_MULTIPY 16 // PERSPECTIVE * RAY_MULTIPY = number_of_rays
 # define PERSPECTIVE 66.0 // Degree
 # define ROTATE_SPEED 0.03
@@ -34,15 +34,26 @@
 /* ******************* [^] CONSTANTS - ERROR MESSAGES [^] ******************* */
 
 /* *********************** [V] CONSTANTS - INPUTS [V] *********************** */
-# define LETTER_KEY_LEFT 0 // A
-# define LETTER_KEY_RIGHT 2 // D
-# define LETTER_KEY_UP 13 // W
-# define LETTER_KEY_DOWN 1 // S
-# define ARROW_KEY_LEFT 123 // <-
-# define ARROW_KEY_RIGHT 124 // ->
-# define ARROW_KEY_UP 126 // ^
-# define ARROW_KEY_DOWN 125 // V
-# define KEY_ESC 53 // ESC
+# include <X11/keysym.h> /*
+#  define XK_a
+#  define XK_d
+#  define XK_w
+#  define XK_s
+#  define XK_Left
+#  define XK_Right
+#  define XK_Up
+#  define XK_Down
+#  define XK_Escape
+#         */
+# define LETTER_KEY_LEFT XK_a // A
+# define LETTER_KEY_RIGHT XK_d // D
+# define LETTER_KEY_UP XK_w // W
+# define LETTER_KEY_DOWN XK_s // S
+# define ARROW_KEY_LEFT XK_Left // <-
+# define ARROW_KEY_RIGHT XK_Right // ->
+# define ARROW_KEY_UP XK_Up // ^
+# define ARROW_KEY_DOWN XK_Down // V
+# define KEY_ESC XK_Escape // ESC
 /* *********************** [^] CONSTANTS - INPUTS [^] *********************** */
 
 /* ***************************** [V] STRUCTS [V] **************************** */

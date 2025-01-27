@@ -27,6 +27,13 @@ else
 endif
 # ************************* [^] SET MAKECMDGOALS [^] ************************* #
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	MLX_FLAGS = -Lminilibx/ -lmlx -lXext -lX11 -lm -lbsd -I/usr/include
+else ifeq ($(UNAME_S),Darwin)
+	MLX_FLAGS = -Lminilibx/ -lmlx -framework OpenGL -framework AppKit
+endif
+
 # *************************** [v] MAIN SOURCES [v] *************************** #
 LIBFT_SRC	=	./libft/bool/ft_isdigit.c \
 				./libft/converters/ft_atoi.c \
@@ -151,9 +158,9 @@ BONUS_SRC	=	$(LIBFT_SRC) \
 		MAIN		=	./main/cub3D.c
 	# [EXE]
 	# [COMPILER FLAGS]
-		CFLAGS		=	-Wall -Wextra -Werror -O3 -Imlx # -g
-		MAIN_FLAGS	=	-lmlx -O3 \
-						-framework OpenGL -framework AppKit -L./minilibx # -g
+		CFLAGS		=	-Wall -Wextra -Werror -O3 -Iminilibx/ # -g
+		MAIN_FLAGS	=	-Wall -Wextra -Werror $(MLX) -Lminilibx/ \
+							-lmlx -lXext -lX11 -lm -lbsd -O3 # -g
 	# [COMPILER FLAGS]
 	# [.c STRINGS TO .o]
 		MAIN_OBJ	=	$(MAIN_SRC:.c=.o)
@@ -208,18 +215,18 @@ endef
 	@rm -f $(MAIN_EXE) 2>/dev/null
 	@rm -f $(BONUS_EXE) 2>/dev/null
 	@$(CC) $(CFLAGS) -c $< -o $@ 2>/dev/null || (\
-		echo "\n\n $(B1F15) Failed to compile [$(F11)$<$(F15)] $(C_RESET)\n" &&\
-		$(CC) $(CFLAGS) -c $< -o $@)
+		echo "\n\n $(B1F15) Failed to compile [$(F11)$<$(F15)] $(C_RESET)\n" \
+		&& $(CC) $(CFLAGS) -c $< -o $@)
 
 all: $(MAIN_EXE)
 
 $(MAIN_EXE): $(MLX) $(MAIN) $(MAIN_OBJ)
-	@$(CC) $(MAIN_FLAGS) $(MAIN) $(MAIN_OBJ) -o "$(MAIN_EXE)" && \
+	@$(CC) $(MAIN_FLAGS) $(MAIN) $(MAIN_OBJ) $(MLX_FLAGS) -o "$(MAIN_EXE)" && \
 		echo "\n\n $(C_BLINK)$(B2F15) $(MAIN_EXE) is ready! $(C_RESET)\n"
 
 $(BONUS_EXE): $(MLX) $(BONUS) $(BONUS_OBJ)
-	@$(CC) $(MAIN_FLAGS) $(BONUS) $(BONUS_OBJ) -o "$(BONUS_EXE)" && \
-		echo "\n\n $(C_BLINK)$(B2F15) $(BONUS_EXE) is ready! $(C_RESET)\n"
+	@$(CC) $(MAIN_FLAGS) $(BONUS) $(BONUS_OBJ) $(MLX_FLAGS) -o "$(BONUS_EXE)" \
+		&& echo "\n\n $(C_BLINK)$(B2F15) $(BONUS_EXE) is ready! $(C_RESET)\n"
 
 $(MLX):
 	@echo " $(F0)COMPILING MLX!!!! $(C_RESET)"

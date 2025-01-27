@@ -39,6 +39,7 @@ void
 {
 	t_render	render;
 
+	render.texture_x = 0;
 	render.index = -1;
 	while (++render.index, render.index < game->number_of_rays)
 	{

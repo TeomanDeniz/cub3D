@@ -16,8 +16,8 @@
 #   void *mlx_new_window(void *, int, int, char *);
 #   void *mlx_new_image(void *, int, int);
 #   char *mlx_get_data_addr(void *, int *, int *, int *);
-#    int mlx_mouse_move(void *, int, int);
-#    int mlx_mouse_hide(void);
+#    int mlx_mouse_move(void *, void *, int, int);
+#    int mlx_mouse_hide(void *, void *);
 #        */
 #include "../../libft/libft.h" /*
 #    int ft_strlen(char *);
@@ -105,8 +105,9 @@ extern __inline__ void
 		&game->canvas.endian);
 	game->canvas.x = WINDOW_WIDTH;
 	game->canvas.y = WINDOW_HEIGHT;
-	mlx_mouse_move(game->window, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-	mlx_mouse_hide();
+	mlx_mouse_move(game->mlx, game->window, \
+		WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	mlx_mouse_hide(game->mlx, game->window);
 }
 
 extern __inline__ void

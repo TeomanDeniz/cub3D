@@ -24,16 +24,23 @@ int
 {
 	if (!prefix)
 	{
-		write(2, "Error - Reason: ", 16);
-		write(2, message, ft_strlen(message));
+		if (write(2, "Error - Reason: ", 16) == -1)
+			return (-1);
+		if (write(2, message, ft_strlen(message)) == -1)
+			return (-1);
 	}
 	else
 	{
-		write(2, "Error - Reason: ", 16);
-		write(2, message, ft_strlen(message));
-		write(2, " ", 1);
-		write(2, prefix, ft_strlen(prefix));
+		if (write(2, "Error - Reason: ", 16) == -1)
+			return (-1);
+		if (write(2, message, ft_strlen(message)) == -1)
+			return (-1);
+		if (write(2, " ", 1) == -1)
+			return (-1);
+		if (write(2, prefix, ft_strlen(prefix)) == -1)
+			return (-1);
 	}
-	write(2, "\n", 1);
+	if (write(2, "\n", 1) == -1)
+		return (-1);
 	return (-1);
 }

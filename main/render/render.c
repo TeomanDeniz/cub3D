@@ -39,6 +39,7 @@ void
 {
 	t_render	render;
 
+	render.texture_x = 0;
 	render.index = -1;
 	while (++render.index, render.index < game->number_of_rays)
 	{
@@ -122,7 +123,7 @@ extern __inline__ unsigned int
 		game->textures[render.hit].line_length + (render.texture_x << 2);
 	if (render.texture_x >= 0 && texture_y >= 0 && \
 		(unsigned)render.texture_x < game->textures[render.hit].x && \
-		(unsigned)render.texture_y < game->textures[render.hit].y)
+		render.texture_y < game->textures[render.hit].y)
 		color = *(unsigned int *) \
 			&game->textures[render.hit].buffer[pixel_coordinate];
 	else

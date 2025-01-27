@@ -32,8 +32,10 @@ void
 {
 	if (message != NULL)
 	{
-		write(2, message, ft_strlen(message));
-		write(2, "\n", 1);
+		if (write(2, message, ft_strlen(message)) == -1)
+			exit(EXIT_FAILURE);
+		if (write(2, "\n", 1) == -1)
+			exit(EXIT_FAILURE);
 	}
 	free_game(game);
 	exit(EXIT_FAILURE);
